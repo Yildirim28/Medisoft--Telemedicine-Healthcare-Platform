@@ -1,0 +1,59 @@
+### Medisoft API Testing
+### Requires VS Code "REST Client" extension or PyCharm
+
+@baseUrl = http://127.0.0.1:8000/api
+
+### 1. Register a Patient
+POST {{baseUrl}}/auth/register/
+Content-Type: application/json
+
+{
+    "email": "new.patient@test.com",
+    "password": "password123",
+    "full_name": "Testing User",
+    "phone": "01799999999",
+    "role": "patient",
+    "city": "Dhaka"
+}
+
+###
+
+### 2. Login
+# @name login
+POST {{baseUrl}}/auth/login/
+Content-Type: application/json
+
+{
+    "email": "new.patient@test.com",
+    "password": "password123"
+}
+
+###
+
+### 3. View Profile (Uses Session Cookie from Login)
+GET {{baseUrl}}/auth/profile/
+
+###
+
+### 4. View Available Doctors
+GET {{baseUrl}}/doctors/
+
+###
+
+### 5. View Hospitals
+GET {{baseUrl}}/hospitals/
+
+###
+
+### 6. View Medicines
+GET {{baseUrl}}/medicines/
+
+###
+
+### 7. Search Blood Donors in Dhaka
+GET {{baseUrl}}/blood-donors/?city=Dhaka
+
+###
+
+### 8. View Health Articles
+GET {{baseUrl}}/articles/
