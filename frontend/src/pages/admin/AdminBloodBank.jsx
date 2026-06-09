@@ -8,6 +8,12 @@ import {
 } from '../../api';
 
 var BLOOD_GROUPS = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
+var REQUEST_STATUSES = ['Pending', 'Fulfilled', 'Cancelled'];
+var STATUS_COLORS = {
+  Pending: 'bg-blue-100 text-blue-700',
+  Fulfilled: 'bg-green-100 text-green-700',
+  Cancelled: 'bg-gray-100 text-gray-600',
+};
 
 export default function AdminBloodBank() {
   var [tab, setTab] = useState('donors');
@@ -216,6 +222,7 @@ export default function AdminBloodBank() {
                 <tr><td colSpan={7} className="px-4 py-8 text-center text-gray-400">No blood requests found</td></tr>
               )}
               {requests.map(function (r) {
+                var statusColor = STATUS_COLORS[r.status] || 'bg-gray-100 text-gray-600';
                 return (
                   <tr key={r.request_id} className="border-b hover:bg-gray-50">
                     <td className="px-4 py-3 font-medium">{r.patient_name || r.user_name || '-'}</td>
@@ -225,22 +232,25 @@ export default function AdminBloodBank() {
                     <td className="px-4 py-3">{r.units_needed}</td>
                     <td className="px-4 py-3">{r.hospital_name || '-'}</td>
                     <td className="px-4 py-3">
-                      <span className={'px-2 py-1 rounded-full text-xs font-semibold ' + (r.urgency === 'critical' ? 'bg-red-100 text-red-700' : r.urgency === 'urgent' ? 'bg-orange-100 text-orange-700' : 'bg-yellow-100 text-yellow-700')}>
+                      <span className={'px-2 py-1 rounded-full text-xs font-semibold ' + (r.urgency === 'Critical' ? 'bg-red-100 text-red-700' : r.urgency === 'Urgent' ? 'bg-orange-100 text-orange-700' : 'bg-yellow-100 text-yellow-700')}>
                         {r.urgency}
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      <span className={'px-2 py-1 rounded-full text-xs font-semibold ' + (r.status === 'fulfilled' ? 'bg-green-100 text-green-700' : r.status === 'cancelled' ? 'bg-gray-100 text-gray-600' : 'bg-blue-100 text-blue-700')}>
+                      <span className={'px-2 py-1 rounded-full text-xs font-semibold ' + statusColor}>
                         {r.status}
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      {r.status === 'pending' && (
-                        <div className="flex gap-2">
-                          <button onClick={function () { handleRequestStatus(r.request_id, 'fulfilled'); }} className="text-green-600 hover:text-green-800 text-xs font-medium">Fulfill</button>
-                          <button onClick={function () { handleRequestStatus(r.request_id, 'cancelled'); }} className="text-red-600 hover:text-red-800 text-xs font-medium">Cancel</button>
-                        </div>
-                      )}
+                      <select
+                        value={r.status}
+                        onChange={function (e) { handleRequestStatus(r.request_id, e.target.value); }}
+                        className="px-2 py-1 border border-gray-300 rounded-lg text-xs font-medium bg-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent cursor-pointer"
+                      >
+                        {REQUEST_STATUSES.map(function (s) {
+                          return <option key={s} value={s}>{s}</option>;
+                        })}
+                      </select>
                     </td>
                   </tr>
                 );

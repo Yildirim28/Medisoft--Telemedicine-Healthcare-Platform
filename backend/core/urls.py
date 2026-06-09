@@ -29,6 +29,7 @@ urlpatterns = [
     
     path('medicines/', views.medicine_list_view, name='medicine_list'),
     path('medicines/orders/', views.medicine_order_view, name='medicine_orders'),
+    path('medicines/orders/<int:order_id>/cancel/', views.cancel_medicine_order_view, name='cancel_medicine_order'),
     
     path('articles/', views.articles_view, name='articles'),
     path('articles/<int:id>/', views.articles_view, name='article_detail'),
@@ -45,6 +46,7 @@ urlpatterns = [
     path('payments/bkash/cancel/', views.bkash_cancel_view, name='bkash_cancel'),
     path('payments/bkash/ipn/', views.bkash_ipn_view, name='bkash_ipn'),
     path('payments/prices/', views.get_service_prices_view, name='service_prices'),
+    path('dashboard-stats/', views.dashboard_stats_view, name='dashboard_stats'),
 ]
 
 # ══════════════════════════════════════════════════════════════════════

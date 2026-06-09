@@ -42,7 +42,7 @@ export default function AdminUsers() {
 
   var handleUpdate = function () {
     setError('');
-    updateAdminUser(editingUser.id, editForm)
+    updateAdminUser(editingUser.user_id, editForm)
       .then(function () {
         setEditingUser(null);
         loadUsers();
@@ -163,8 +163,8 @@ export default function AdminUsers() {
                   admin: 'bg-purple-100 text-purple-700',
                 };
                 return (
-                  <tr key={u.id} className="border-b hover:bg-gray-50">
-                    <td className="px-4 py-3">{u.id}</td>
+                  <tr key={u.user_id} className="border-b hover:bg-gray-50">
+                    <td className="px-4 py-3">{u.user_id}</td>
                     <td className="px-4 py-3 font-medium">{u.full_name}</td>
                     <td className="px-4 py-3">{u.email}</td>
                     <td className="px-4 py-3">{u.phone || '-'}</td>
@@ -177,7 +177,7 @@ export default function AdminUsers() {
                       <div className="flex gap-2">
                         <button onClick={function () { handleEdit(u); }} className="text-indigo-600 hover:text-indigo-800 text-xs font-medium">Edit</button>
                         {u.role !== 'admin' && (
-                          <button onClick={function () { handleDelete(u.id); }} className="text-red-600 hover:text-red-800 text-xs font-medium">Delete</button>
+                          <button onClick={function () { handleDelete(u.user_id); }} className="text-red-600 hover:text-red-800 text-xs font-medium">Delete</button>
                         )}
                       </div>
                     </td>

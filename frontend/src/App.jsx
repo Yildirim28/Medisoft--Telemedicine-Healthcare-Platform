@@ -22,6 +22,7 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminDoctors from './pages/admin/AdminDoctors';
 import AdminHospitals from './pages/admin/AdminHospitals';
 import AdminMedicines from './pages/admin/AdminMedicines';
+import AdminMedicineOrders from './pages/admin/AdminMedicineOrders';
 import AdminBloodBank from './pages/admin/AdminBloodBank';
 import AdminAmbulance from './pages/admin/AdminAmbulance';
 import AdminAppointments from './pages/admin/AdminAppointments';
@@ -79,6 +80,7 @@ function AppRoutes() {
       <Route path="/admin/doctors" element={<AdminRoute><AdminDoctors /></AdminRoute>} />
       <Route path="/admin/hospitals" element={<AdminRoute><AdminHospitals /></AdminRoute>} />
       <Route path="/admin/medicines" element={<AdminRoute><AdminMedicines /></AdminRoute>} />
+      <Route path="/admin/medicine-orders" element={<AdminRoute><AdminMedicineOrders /></AdminRoute>} />
       <Route path="/admin/blood-bank" element={<AdminRoute><AdminBloodBank /></AdminRoute>} />
       <Route path="/admin/ambulance" element={<AdminRoute><AdminAmbulance /></AdminRoute>} />
       <Route path="/admin/appointments" element={<AdminRoute><AdminAppointments /></AdminRoute>} />

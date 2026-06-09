@@ -52,10 +52,10 @@ export default function AdminAppointments() {
           className="w-full md:w-48 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
         >
           <option value="">All Status</option>
-          <option value="pending">Pending</option>
-          <option value="confirmed">Confirmed</option>
-          <option value="completed">Completed</option>
-          <option value="cancelled">Cancelled</option>
+          <option value="Pending">Pending</option>
+          <option value="Confirmed">Confirmed</option>
+          <option value="Completed">Completed</option>
+          <option value="Cancelled">Cancelled</option>
         </select>
       </div>
 
@@ -81,10 +81,10 @@ export default function AdminAppointments() {
               )}
               {appointments.map(function (a) {
                 var statusColors = {
-                  pending: 'bg-yellow-100 text-yellow-700',
-                  confirmed: 'bg-blue-100 text-blue-700',
-                  completed: 'bg-green-100 text-green-700',
-                  cancelled: 'bg-gray-100 text-gray-600',
+                  Pending: 'bg-yellow-100 text-yellow-700',
+                  Confirmed: 'bg-blue-100 text-blue-700',
+                  Completed: 'bg-green-100 text-green-700',
+                  Cancelled: 'bg-gray-100 text-gray-600',
                 };
                 return (
                   <tr key={a.appointment_id} className="border-b hover:bg-gray-50">
@@ -106,10 +106,10 @@ export default function AdminAppointments() {
                         onChange={function (e) { handleStatus(a.appointment_id, e.target.value); }}
                         className="text-xs border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-indigo-500"
                       >
-                        <option value="pending">Pending</option>
-                        <option value="confirmed">Confirmed</option>
-                        <option value="completed">Completed</option>
-                        <option value="cancelled">Cancelled</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Cancelled">Cancelled</option>
                       </select>
                     </td>
                   </tr>

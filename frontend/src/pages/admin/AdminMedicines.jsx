@@ -6,7 +6,9 @@ export default function AdminMedicines() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ brand_name: '', generic_name: '', price: '', category: 'General', unit: '', stock: '', requires_rx: false });
+  const [customCategory, setCustomCategory] = useState('');
   const [error, setError] = useState('');
+  const CATEGORIES = ['Pain Relief', 'Neurology', 'Gastroenterology', 'Allergy', 'Antibiotic', 'Diabetes', 'Cardiology', 'Respiratory', 'Vitamins', 'Pediatrics', 'Dermatology', 'Oncology', 'General'];
   const [search, setSearch] = useState('');
 
   var loadMedicines = function() {
@@ -26,6 +28,7 @@ export default function AdminMedicines() {
       .then(function() {
         setShowForm(false);
         setForm({ brand_name: '', generic_name: '', price: '', category: 'General', unit: '', stock: '', requires_rx: false });
+        setCustomCategory('');
         loadMedicines();
       })
       .catch(function(e) {
@@ -55,7 +58,15 @@ export default function AdminMedicines() {
             <input type="text" placeholder="Brand Name *" required value={form.brand_name} onChange={function(e) { setForm(Object.assign({}, form, { brand_name: e.target.value })); }} className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
             <input type="text" placeholder="Generic Name *" required value={form.generic_name} onChange={function(e) { setForm(Object.assign({}, form, { generic_name: e.target.value })); }} className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
             <input type="number" step="0.01" placeholder="Price *" required value={form.price} onChange={function(e) { setForm(Object.assign({}, form, { price: e.target.value })); }} className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
-            <input type="text" placeholder="Category" value={form.category} onChange={function(e) { setForm(Object.assign({}, form, { category: e.target.value })); }} className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
+            <div className="flex flex-col gap-1.5">
+              <select value={form.category} onChange={function(e) { var val = e.target.value; setForm(Object.assign({}, form, { category: val })); if (val !== 'Other') setCustomCategory(''); }} className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none bg-white">
+                {CATEGORIES.map(function(cat) { return <option key={cat} value={cat}>{cat}</option>; })}
+                <option value="Other">Other</option>
+              </select>
+              {form.category === 'Other' && (
+                <input type="text" placeholder="Enter custom category" value={customCategory} onChange={function(e) { var val = e.target.value; setCustomCategory(val); setForm(Object.assign({}, form, { category: val })); }} className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
+              )}
+            </div>
             <input type="text" placeholder="Unit (e.g. tablet, capsule)" value={form.unit} onChange={function(e) { setForm(Object.assign({}, form, { unit: e.target.value })); }} className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
             <input type="number" placeholder="Stock" value={form.stock} onChange={function(e) { setForm(Object.assign({}, form, { stock: e.target.value })); }} className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
             <div className="flex items-center gap-2">

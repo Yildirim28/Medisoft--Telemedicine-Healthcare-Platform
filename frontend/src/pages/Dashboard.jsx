@@ -1,6 +1,8 @@
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import Layout from '../components/Layout';
 import { Link } from 'react-router-dom';
+import { getDashboardStats } from '../api';
 
 const features = [
   {
@@ -71,6 +73,20 @@ const features = [
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const [stats, setStats] = useState({ doctors: 0, hospitals: 0, patients: 0 });
+
+  useEffect(() => {
+    getDashboardStats()
+      .then((res) => {
+        const d = res.data || res;
+        setStats({
+          doctors: d.doctors || 0,
+          hospitals: d.hospitals || 0,
+          patients: d.patients || 0,
+        });
+      })
+      .catch(() => {});
+  }, []);
 
   const initials = user?.full_name
     ? user.full_name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
@@ -123,10 +139,10 @@ export default function Dashboard() {
         {/* Quick stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { label: 'Doctors', value: '50+', icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z', color: 'text-blue-600 bg-blue-50' },
-            { label: 'Hospitals', value: '10+', icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4', color: 'text-emerald-600 bg-emerald-50' },
+            { label: 'Doctors', value: String(stats.doctors), icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z', color: 'text-blue-600 bg-blue-50' },
+            { label: 'Hospitals', value: String(stats.hospitals), icon: 'M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4', color: 'text-emerald-600 bg-emerald-50' },
             { label: 'Services', value: '24/7', icon: 'M13 10V3L4 14h7v7l9-11h-7z', color: 'text-orange-600 bg-orange-50' },
-            { label: 'Happy Patients', value: '1K+', icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z', color: 'text-pink-600 bg-pink-50' },
+            { label: 'Patients', value: String(stats.patients), icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z', color: 'text-pink-600 bg-pink-50' },
           ].map((stat) => (
             <div key={stat.label} className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
               <div className={`inline-flex items-center justify-center w-10 h-10 rounded-xl ${stat.color} mb-3`}>

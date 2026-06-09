@@ -417,13 +417,17 @@ class Medicine(models.Model):
         db_table = 'medicines'
 
     def to_dict(self):
+        try:
+            price_val = float(self.price)
+        except (TypeError, ValueError):
+            price_val = 0.0
         return {
             'medicine_id': self.medicine_id,
             'brand_name': self.brand_name,
             'generic_name': self.generic_name,
             'category': self.category,
             'unit': self.unit,
-            'price': f"{self.price:.2f}",
+            'price': f"{price_val:.2f}",
             'stock': self.stock,
             'requires_rx': self.requires_rx,
             'is_active': self.is_active,
@@ -462,10 +466,12 @@ class MedicineOrder(models.Model):
             'quantity': self.quantity,
             'unit_price': f"{self.unit_price:.2f}",
             'total_price': f"{self.total_price:.2f}",
+            'total_amount': f"{self.total_price:.2f}",
             'delivery_address': self.delivery_address,
             'prescription_id': self.prescription_id,
             'status': self.status,
             'placed_at': _to_iso(self.placed_at),
+            'created_at': _to_iso(self.placed_at),
         }
 
 class LabBooking(models.Model):

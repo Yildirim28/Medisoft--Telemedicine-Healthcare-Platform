@@ -97,6 +97,9 @@ export const getMedicineOrders = () =>
 export const createMedicineOrder = (data) =>
   api.post('/medicines/orders/', data).then((r) => r.data);
 
+export const cancelMedicineOrder = (orderId) =>
+  api.put(`/medicines/orders/${orderId}/cancel/`).then((r) => r.data);
+
 // ── Lab Bookings ──────────────────────────────────────────────────
 export const getLabBookings = () =>
   api.get('/lab-bookings/').then((r) => r.data);
@@ -120,6 +123,9 @@ export const createPayment = (data) =>
 
 export const getServicePrices = () =>
   api.get('/payments/prices/').then((r) => r.data);
+
+export const getDashboardStats = () =>
+  api.get('/dashboard-stats/').then((r) => r.data);
 
 export const initBkashPayment = (data) =>
   api.post('/payments/bkash/init/', data).then((r) => r.data);

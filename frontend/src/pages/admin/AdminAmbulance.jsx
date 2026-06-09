@@ -52,11 +52,11 @@ export default function AdminAmbulance() {
           className="w-full md:w-48 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
         >
           <option value="">All Status</option>
-          <option value="pending">Pending</option>
-          <option value="confirmed">Confirmed</option>
-          <option value="in_transit">In Transit</option>
-          <option value="completed">Completed</option>
-          <option value="cancelled">Cancelled</option>
+          <option value="Requested">Requested</option>
+          <option value="Assigned">Assigned</option>
+          <option value="En-Route">En-Route</option>
+          <option value="Completed">Completed</option>
+          <option value="Cancelled">Cancelled</option>
         </select>
       </div>
 
@@ -83,11 +83,11 @@ export default function AdminAmbulance() {
               )}
               {bookings.map(function (b) {
                 var statusColors = {
-                  pending: 'bg-yellow-100 text-yellow-700',
-                  confirmed: 'bg-blue-100 text-blue-700',
-                  in_transit: 'bg-purple-100 text-purple-700',
-                  completed: 'bg-green-100 text-green-700',
-                  cancelled: 'bg-gray-100 text-gray-600',
+                  Requested: 'bg-yellow-100 text-yellow-700',
+                  Assigned: 'bg-blue-100 text-blue-700',
+                  'En-Route': 'bg-purple-100 text-purple-700',
+                  Completed: 'bg-green-100 text-green-700',
+                  Cancelled: 'bg-gray-100 text-gray-600',
                 };
                 return (
                   <tr key={b.booking_id} className="border-b hover:bg-gray-50">
@@ -108,11 +108,11 @@ export default function AdminAmbulance() {
                         onChange={function (e) { handleStatus(b.booking_id, e.target.value); }}
                         className="text-xs border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-indigo-500"
                       >
-                        <option value="pending">Pending</option>
-                        <option value="confirmed">Confirmed</option>
-                        <option value="in_transit">In Transit</option>
-                        <option value="completed">Completed</option>
-                        <option value="cancelled">Cancelled</option>
+                        <option value="Requested">Requested</option>
+                        <option value="Assigned">Assigned</option>
+                        <option value="En-Route">En-Route</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Cancelled">Cancelled</option>
                       </select>
                     </td>
                   </tr>

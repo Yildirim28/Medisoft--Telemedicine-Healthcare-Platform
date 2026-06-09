@@ -8,8 +8,27 @@ from datetime import timedelta
 from .models import (
     User, Patient, Doctor, Hospital, Appointment, Prescription,
     SeatBooking, BloodDonor, BloodRequest, AmbulanceBooking,
-    Medicine, MedicineOrder, LabBooking, Article, Payment
+    Medicine, MedicineOrder, LabBooking, Article, Payment,
+    _to_iso, _to_time
 )
+
+# Valid status values for each model (must match model STATUS_CHOICES exactly)
+VALID_STATUSES = {
+    'appointment': ['Pending', 'Confirmed', 'Completed', 'Cancelled'],
+    'blood_request': ['Pending', 'Fulfilled', 'Cancelled'],
+    'ambulance_booking': ['Requested', 'Assigned', 'En-Route', 'Completed', 'Cancelled'],
+    'seat_booking': ['Booked', 'Checked-In', 'Checked-Out', 'Cancelled'],
+    'lab_booking': ['Booked', 'Sample-Collected', 'Processing', 'Completed', 'Cancelled'],
+    'medicine_order': ['Placed', 'Processing', 'Shipped', 'Delivered', 'Cancelled'],
+}
+
+
+def validate_status(model_name, status):
+    """Validate that a status value is valid for the given model. Returns (is_valid, error_message)."""
+    valid = VALID_STATUSES.get(model_name, [])
+    if status not in valid:
+        return False, f"Invalid status '{status}'. Valid options: {', '.join(valid)}"
+    return True, None
 
 
 def success_response(data, status=200):
@@ -76,7 +95,6 @@ def admin_dashboard_view(request):
             'confirmed': Appointment.objects.filter(status='Confirmed').count(),
             'completed': Appointment.objects.filter(status='Completed').count(),
             'cancelled': Appointment.objects.filter(status='Cancelled').count(),
-            'recent': Appointment.objects.count(),
         },
         'blood': {
             'donors': BloodDonor.objects.count(),
@@ -115,6 +133,41 @@ def admin_dashboard_view(request):
             'confirmed': SeatBooking.objects.filter(status='Checked-In').count(),
         },
     }
+
+    # Recent appointments (last 5)
+    recent_apts = list(
+        Appointment.objects.select_related('patient', 'doctor')
+        .order_by('-created_at')[:5]
+    )
+    stats['recent_appointments'] = [
+        {
+            'id': a.appointment_id,
+            'patient_name': (a.patient.user.full_name if a.patient and a.patient.user else 'Patient'),
+            'doctor_name': (a.doctor.user.full_name if a.doctor and a.doctor.user else 'Doctor'),
+            'date': _to_iso(a.appointment_date),
+            'time': _to_time(a.appointment_time),
+            'type': a.type,
+            'status': a.status,
+        }
+        for a in recent_apts
+    ]
+
+    # Recent blood requests (last 5)
+    recent_blood = list(
+        BloodRequest.objects.select_related('patient__user')
+        .order_by('-requested_at')[:5]
+    )
+    stats['recent_blood_requests'] = [
+        {
+            'id': b.request_id,
+            'patient_name': (b.patient.user.full_name if b.patient and b.patient.user else 'N/A'),
+            'blood_group': b.blood_group,
+            'units': b.units_needed,
+            'status': b.status,
+            'urgency': b.urgency,
+        }
+        for b in recent_blood
+    ]
 
     return success_response(stats)
 
@@ -494,6 +547,9 @@ def admin_blood_request_detail_view(request, request_id):
     elif request.method == 'PUT':
         data = parse_json(request)
         if 'status' in data:
+            valid, err = validate_status('blood_request', data['status'])
+            if not valid:
+                return error_response(err)
             blood_req.status = data['status']
         if 'notes' in data:
             blood_req.notes = data['notes']
@@ -608,6 +664,9 @@ def admin_medicine_order_detail_view(request, order_id):
     elif request.method == 'PUT':
         data = parse_json(request)
         if 'status' in data:
+            valid, err = validate_status('medicine_order', data['status'])
+            if not valid:
+                return error_response(err)
             order.status = data['status']
         order.save()
         return success_response(order.to_dict())
@@ -646,6 +705,9 @@ def admin_ambulance_booking_detail_view(request, booking_id):
     elif request.method == 'PUT':
         data = parse_json(request)
         if 'status' in data:
+            valid, err = validate_status('ambulance_booking', data['status'])
+            if not valid:
+                return error_response(err)
             booking.status = data['status']
         if 'vehicle_number' in data:
             booking.vehicle_number = data['vehicle_number']
@@ -692,6 +754,9 @@ def admin_appointment_detail_view(request, appointment_id):
     elif request.method == 'PUT':
         data = parse_json(request)
         if 'status' in data:
+            valid, err = validate_status('appointment', data['status'])
+            if not valid:
+                return error_response(err)
             appointment.status = data['status']
         if 'doctor_notes' in data:
             appointment.doctor_notes = data['doctor_notes']
@@ -734,6 +799,9 @@ def admin_seat_booking_detail_view(request, booking_id):
     elif request.method == 'PUT':
         data = parse_json(request)
         if 'status' in data:
+            valid, err = validate_status('seat_booking', data['status'])
+            if not valid:
+                return error_response(err)
             booking.status = data['status']
         booking.save()
         return success_response(booking.to_dict())
@@ -776,6 +844,9 @@ def admin_lab_booking_detail_view(request, booking_id):
     elif request.method == 'PUT':
         data = parse_json(request)
         if 'status' in data:
+            valid, err = validate_status('lab_booking', data['status'])
+            if not valid:
+                return error_response(err)
             booking.status = data['status']
         if 'result_url' in data:
             booking.result_url = data['result_url']
