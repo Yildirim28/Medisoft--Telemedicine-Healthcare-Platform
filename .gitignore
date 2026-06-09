@@ -17,6 +17,29 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 
+# Django migrations (keep __init__.py only)
+# backend/core/migrations/0*.py
+
 # IDEs
 .vscode/
 .idea/
+.kilo/
+
+# Node
+node_modules/
+dist/
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test scripts
+backend/test_*.py
+cookies.txt
+$null
+medisoft_project_document.txt
+CREATE TABLE users.docx
+backend/medisoft_db.sqlite3
+backend/api_tests.http

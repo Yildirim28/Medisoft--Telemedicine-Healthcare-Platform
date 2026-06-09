@@ -12,6 +12,8 @@ from .models import (
     SeatBooking, BloodDonor, BloodRequest, AmbulanceBooking,
     Medicine, MedicineOrder, LabBooking, Article, Payment
 )
+from .bkash_service import create_payment as bkash_create_payment, execute_payment as bkash_execute_payment, query_payment as bkash_query_payment, generate_tran_id
+from django.conf import settings
 
 def success_response(data, status=200):
     return JsonResponse({'success': True, 'data': data}, status=status)
@@ -184,7 +186,9 @@ def doctor_list_view(request):
     if specialization:
         doctors = doctors.filter(specialization__icontains=specialization)
     if city:
-        doctors = doctors.filter(user__patient_profile__city__icontains=city)  # check doctor's user city if patient profile exists or custom
+        # Note: Doctor model doesn't have a city field directly.
+        # Filter by doctors who have appointments at hospitals in the specified city
+        doctors = doctors.filter(appointments__hospital__city__icontains=city).distinct()
     if is_verified is not None:
         doctors = doctors.filter(is_verified=(is_verified.lower() == 'true'))
 
@@ -1012,3 +1016,279 @@ def payment_callback_view(request):
     pay.save()
 
     return success_response({"message": f"Payment updated to {status}.", "payment": pay.to_dict()})
+
+
+# ══════════════════════════════════════════════════════════════════════
+# bKash Payment Gateway Views
+# ══════════════════════════════════════════════════════════════════════
+
+# Default service prices (BDT) for auto-population
+SERVICE_PRICE_MAP = {
+    'Appointment': Decimal('500.00'),
+    'SeatBooking': Decimal('1500.00'),
+    'MedicineOrder': Decimal('0.00'),
+    'LabBooking': Decimal('800.00'),
+    'Ambulance': Decimal('1200.00'),
+}
+
+
+@csrf_exempt
+@login_required_api
+def bkash_init_view(request):
+    """
+    Initiate a bKash payment.
+    POST /payments/bkash/init/
+    Body: { service_type, service_id, amount, phone }
+    
+    Returns redirect_url to bKash payment page.
+    """
+    if request.method != 'POST':
+        return error_response("Only POST requests are allowed.", status=405)
+
+    user = request.user
+    data = parse_json(request)
+    service_type = data.get('service_type')
+    service_id = data.get('service_id', 0)
+    amount = data.get('amount')
+    phone = data.get('phone', '')
+
+    if not service_type:
+        return error_response("Missing service_type.")
+
+    # Validate service type against Payment model choices
+    valid_service_types = dict(Payment.SERVICE_CHOICES).keys()
+    if service_type not in valid_service_types:
+        return error_response(f"Invalid service_type. Choices: {list(valid_service_types)}")
+
+    # Auto-determine amount if not provided or zero
+    if not amount or float(amount) <= 0:
+        default_price = SERVICE_PRICE_MAP.get(service_type, Decimal('500.00'))
+        amount = default_price
+    else:
+        amount = Decimal(str(amount))
+
+    # Generate transaction ID
+    tran_id = generate_tran_id()
+
+    # Create payment record
+    pay = Payment.objects.create(
+        user=user,
+        service_type=service_type,
+        service_id=int(service_id) if service_id else 0,
+        amount=amount,
+        payment_method='bKash',
+        transaction_ref=tran_id,
+        status='Pending'
+    )
+
+    # Initiate bKash payment
+    result = bkash_create_payment(
+        amount=amount,
+        transaction_id=tran_id,
+        customer_phone=phone or user.phone,
+        payer_reference=phone or user.phone,
+    )
+
+    if result['success']:
+        return success_response({
+            'payment_id': pay.payment_id,
+            'paymentID': result.get('paymentID', ''),
+            'redirect_url': result.get('bkashURL', ''),
+            'tran_id': tran_id,
+            'amount': str(amount),
+        })
+    else:
+        pay.status = 'Failed'
+        pay.save()
+        return error_response(f"bKash error: {result.get('error', 'Unknown error')}")
+
+
+@csrf_exempt
+def bkash_success_view(request):
+    """
+    bKash success callback (redirect URL after successful payment).
+    GET /payments/bkash/success/?paymentID=xxx&status=xxx
+    """
+    payment_id = request.GET.get('paymentID', '')
+    status = request.GET.get('status', '')
+    tran_id = request.GET.get('tran_id', '')
+
+    # Try to find by paymentID or tran_id
+    pay = None
+    if payment_id:
+        try:
+            pay = Payment.objects.get(transaction_ref__icontains=payment_id)
+        except Payment.DoesNotExist:
+            pass
+    
+    if not pay and tran_id:
+        try:
+            pay = Payment.objects.get(transaction_ref=tran_id)
+        except Payment.DoesNotExist:
+            pass
+
+    if not pay:
+        return error_response("Payment not found.", status=404)
+
+    # If we have a paymentID, try to execute/verify
+    if payment_id:
+        try:
+            from .bkash_service import grant_token, query_payment
+            token_result = grant_token()
+            if token_result['success']:
+                query_result = bkash_query_payment(payment_id, token_result['id_token'])
+                if query_result['success']:
+                    pay.status = 'Success'
+                    pay.paid_at = timezone.now()
+                    pay.transaction_ref = payment_id
+                    pay.save()
+                    return success_response({
+                        'message': 'Payment successful!',
+                        'payment': pay.to_dict(),
+                    })
+        except Exception:
+            pass
+
+    # Fallback: if status says completed, mark success
+    if status in ['Completed', 'Successful', 'success']:
+        pay.status = 'Success'
+        pay.paid_at = timezone.now()
+        pay.save()
+        return success_response({
+            'message': 'Payment successful!',
+            'payment': pay.to_dict(),
+        })
+
+    return success_response({
+        'message': 'Payment pending verification.',
+        'payment': pay.to_dict(),
+    })
+
+
+@csrf_exempt
+def bkash_fail_view(request):
+    """
+    bKash fail callback (redirect URL after failed payment).
+    GET /payments/bkash/fail/?paymentID=xxx
+    """
+    payment_id = request.GET.get('paymentID', '')
+    tran_id = request.GET.get('tran_id', '')
+
+    pay = None
+    if tran_id:
+        try:
+            pay = Payment.objects.get(transaction_ref=tran_id)
+        except Payment.DoesNotExist:
+            pass
+    if not pay and payment_id:
+        try:
+            pay = Payment.objects.get(transaction_ref__icontains=payment_id)
+        except Payment.DoesNotExist:
+            pass
+
+    if pay:
+        pay.status = 'Failed'
+        pay.save()
+
+    return success_response({
+        'message': 'Payment failed.',
+        'status': 'Failed',
+    })
+
+
+@csrf_exempt
+def bkash_cancel_view(request):
+    """
+    bKash cancel callback (redirect URL when user cancels payment).
+    GET /payments/bkash/cancel/?paymentID=xxx
+    """
+    payment_id = request.GET.get('paymentID', '')
+    tran_id = request.GET.get('tran_id', '')
+
+    pay = None
+    if tran_id:
+        try:
+            pay = Payment.objects.get(transaction_ref=tran_id)
+        except Payment.DoesNotExist:
+            pass
+    if not pay and payment_id:
+        try:
+            pay = Payment.objects.get(transaction_ref__icontains=payment_id)
+        except Payment.DoesNotExist:
+            pass
+
+    if pay:
+        pay.status = 'Failed'
+        pay.save()
+
+    return success_response({
+        'message': 'Payment cancelled.',
+        'status': 'Cancelled',
+    })
+
+
+@csrf_exempt
+def bkash_ipn_view(request):
+    """
+    bKash IPN (Instant Payment Notification) callback.
+    POST /payments/bkash/ipn/
+    
+    bKash sends this POST request to notify the server about payment status.
+    """
+    data = parse_json(request)
+    payment_id = data.get('paymentID', '')
+    tran_id = data.get('tran_id', '')
+    status = data.get('status', '')
+    amount = data.get('amount', '')
+
+    # Find the payment record
+    pay = None
+    if tran_id:
+        try:
+            pay = Payment.objects.get(transaction_ref=tran_id)
+        except Payment.DoesNotExist:
+            pass
+    if not pay and payment_id:
+        try:
+            pay = Payment.objects.get(transaction_ref__icontains=payment_id)
+        except Payment.DoesNotExist:
+            pass
+
+    if not pay:
+        return error_response("Payment not found.", status=404)
+
+    # Verify with bKash API if paymentID provided
+    if payment_id:
+        try:
+            from .bkash_service import grant_token, query_payment
+            token_result = grant_token()
+            if token_result['success']:
+                query_result = query_payment(payment_id, token_result['id_token'])
+                if query_result['success']:
+                    pay.status = 'Success'
+                    pay.paid_at = timezone.now()
+                    pay.transaction_ref = payment_id
+                    pay.save()
+                    return success_response({'message': 'IPN processed. Payment validated.'})
+        except Exception:
+            pass
+
+    # Fallback: check status from IPN data
+    if status in ['Completed', 'Successful', 'VALID', 'VALIDATED']:
+        pay.status = 'Success'
+        pay.paid_at = timezone.now()
+        pay.save()
+        return success_response({'message': 'IPN processed. Payment confirmed.'})
+
+    return error_response("Unable to validate IPN.")
+
+
+@csrf_exempt
+@login_required_api
+def get_service_prices_view(request):
+    """
+    GET /payments/prices/
+    Returns the default prices for each service type.
+    """
+    prices = {k: str(v) for k, v in SERVICE_PRICE_MAP.items()}
+    return success_response(prices)

@@ -1,6 +1,24 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
+
+def _to_iso(value):
+    """Safely convert a date/datetime to ISO string, handling strings from MySQL."""
+    if value is None:
+        return None
+    if isinstance(value, str):
+        return value
+    return value.isoformat()
+
+
+def _to_time(value):
+    """Safely convert a time to HH:MM:SS string, handling strings from MySQL."""
+    if value is None:
+        return None
+    if isinstance(value, str):
+        return value
+    return value.strftime('%H:%M:%S')
+
 class UserManager(BaseUserManager):
     def create_user(self, email, full_name, phone, password=None, role='patient', **extra_fields):
         if not email:
@@ -65,7 +83,7 @@ class User(AbstractBaseUser):
             'role': self.role,
             'profile_photo': self.profile_photo,
             'is_active': self.is_active,
-            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'created_at': _to_iso(self.created_at),
         }
 
 class Patient(models.Model):
@@ -92,7 +110,7 @@ class Patient(models.Model):
         data = self.user.to_dict()
         data.update({
             'patient_id': self.patient_id,
-            'date_of_birth': self.date_of_birth.isoformat() if self.date_of_birth else None,
+            'date_of_birth': _to_iso(self.date_of_birth),
             'gender': self.gender,
             'blood_group': self.blood_group,
             'address': self.address,
@@ -128,8 +146,8 @@ class Doctor(models.Model):
             'experience_years': self.experience_years,
             'consultation_fee': f"{self.consultation_fee:.2f}",
             'available_days': self.available_days,
-            'available_from': self.available_from.strftime('%H:%M:%S') if self.available_from else None,
-            'available_to': self.available_to.strftime('%H:%M:%S') if self.available_to else None,
+            'available_from': _to_time(self.available_from),
+            'available_to': _to_time(self.available_to),
             'is_verified': self.is_verified,
         })
         return data
@@ -196,14 +214,14 @@ class Appointment(models.Model):
             'doctor_id': self.doctor_id,
             'doctor_name': self.doctor.user.full_name if self.doctor else None,
             'specialization': self.doctor.specialization if self.doctor else None,
-            'appointment_date': self.appointment_date.isoformat() if self.appointment_date else None,
-            'appointment_time': self.appointment_time.strftime('%H:%M:%S') if self.appointment_time else None,
+            'appointment_date': _to_iso(self.appointment_date),
+            'appointment_time': _to_time(self.appointment_time),
             'type': self.type,
             'reason': self.reason,
             'meeting_url': self.meeting_url,
             'doctor_notes': self.doctor_notes,
             'status': self.status,
-            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'created_at': _to_iso(self.created_at),
         }
 
 class Prescription(models.Model):
@@ -232,7 +250,7 @@ class Prescription(models.Model):
             'dosage': self.dosage,
             'duration_days': self.duration_days,
             'instructions': self.instructions,
-            'issued_at': self.issued_at.isoformat() if self.issued_at else None,
+            'issued_at': _to_iso(self.issued_at),
         }
 
 class SeatBooking(models.Model):
@@ -274,11 +292,11 @@ class SeatBooking(models.Model):
             'seat_type': self.seat_type,
             'seat_number': self.seat_number,
             'price_per_day': f"{self.price_per_day:.2f}",
-            'check_in_date': self.check_in_date.isoformat() if self.check_in_date else None,
-            'check_out_date': self.check_out_date.isoformat() if self.check_out_date else None,
+            'check_in_date': _to_iso(self.check_in_date),
+            'check_out_date': _to_iso(self.check_out_date),
             'total_amount': f"{self.total_amount:.2f}" if self.total_amount is not None else None,
             'status': self.status,
-            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'created_at': _to_iso(self.created_at),
         }
 
 class BloodDonor(models.Model):
@@ -302,7 +320,7 @@ class BloodDonor(models.Model):
             'phone': self.phone,
             'blood_group': self.blood_group,
             'city': self.city,
-            'last_donated_at': self.last_donated_at.isoformat() if self.last_donated_at else None,
+            'last_donated_at': _to_iso(self.last_donated_at),
             'is_available': self.is_available,
         }
 
@@ -341,7 +359,7 @@ class BloodRequest(models.Model):
             'city': self.city,
             'urgency': self.urgency,
             'status': self.status,
-            'requested_at': self.requested_at.isoformat() if self.requested_at else None,
+            'requested_at': _to_iso(self.requested_at),
             'notes': self.notes,
         }
 
@@ -381,7 +399,7 @@ class AmbulanceBooking(models.Model):
             'emergency_contact': self.emergency_contact,
             'status': self.status,
             'fare': f"{self.fare:.2f}" if self.fare is not None else None,
-            'requested_at': self.requested_at.isoformat() if self.requested_at else None,
+            'requested_at': _to_iso(self.requested_at),
         }
 
 class Medicine(models.Model):
@@ -447,7 +465,7 @@ class MedicineOrder(models.Model):
             'delivery_address': self.delivery_address,
             'prescription_id': self.prescription_id,
             'status': self.status,
-            'placed_at': self.placed_at.isoformat() if self.placed_at else None,
+            'placed_at': _to_iso(self.placed_at),
         }
 
 class LabBooking(models.Model):
@@ -483,11 +501,11 @@ class LabBooking(models.Model):
             'test_category': self.test_category,
             'lab_name': self.lab_name,
             'lab_address': self.lab_address,
-            'booked_date': self.booked_date.isoformat() if self.booked_date else None,
+            'booked_date': _to_iso(self.booked_date),
             'amount': f"{self.amount:.2f}",
             'status': self.status,
             'result_url': self.result_url,
-            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'created_at': _to_iso(self.created_at),
         }
 
 class Article(models.Model):
@@ -514,8 +532,8 @@ class Article(models.Model):
             'content': self.content,
             'thumbnail_url': self.thumbnail_url,
             'is_published': self.is_published,
-            'published_at': self.published_at.isoformat() if self.published_at else None,
-            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'published_at': _to_iso(self.published_at),
+            'created_at': _to_iso(self.created_at),
         }
 
 class Payment(models.Model):
@@ -564,6 +582,6 @@ class Payment(models.Model):
             'payment_method': self.payment_method,
             'transaction_ref': self.transaction_ref,
             'status': self.status,
-            'paid_at': self.paid_at.isoformat() if self.paid_at else None,
-            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'paid_at': _to_iso(self.paid_at),
+            'created_at': _to_iso(self.created_at),
         }
