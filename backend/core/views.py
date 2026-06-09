@@ -67,6 +67,8 @@ def register_view(request):
             profile_photo=data.get('profile_photo', '')
         )
 
+        ADMIN_SECRET_CODE = 'medisoft-admin-2024'
+
         if role == 'patient':
             Patient.objects.create(
                 user=user,
@@ -78,27 +80,11 @@ def register_view(request):
                 emergency_contact_name=data.get('emergency_contact_name'),
                 emergency_contact_phone=data.get('emergency_contact_phone')
             )
-        elif role == 'doctor':
-            specialization = data.get('specialization')
-            license_number = data.get('license_number')
-            consultation_fee = data.get('consultation_fee')
-
-            if not specialization or not license_number or not consultation_fee:
+        elif role == 'admin':
+            admin_code = data.get('admin_code', '')
+            if admin_code != ADMIN_SECRET_CODE:
                 user.delete()
-                return error_response("Missing doctor specialization, license_number, or consultation_fee.")
-
-            Doctor.objects.create(
-                user=user,
-                specialization=specialization,
-                license_number=license_number,
-                qualifications=data.get('qualifications', ''),
-                experience_years=int(data.get('experience_years', 0)),
-                consultation_fee=Decimal(str(consultation_fee)),
-                available_days=data.get('available_days', 'Saturday,Sunday,Monday,Tuesday,Wednesday,Thursday,Friday'),
-                available_from=data.get('available_from', '09:00:00'),
-                available_to=data.get('available_to', '17:00:00'),
-                is_verified=False
-            )
+                return error_response("Invalid admin secret code. Contact the system administrator to get the code.")
 
         return success_response({"message": "Registration successful.", "user": user.to_dict()}, status=201)
     except Exception as e:

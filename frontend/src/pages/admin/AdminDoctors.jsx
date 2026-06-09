@@ -5,7 +5,7 @@ export default function AdminDoctors() {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ email: '', full_name: '', phone: '', specialization: '', qualifications: '', experience_years: '' });
+  const [form, setForm] = useState({ email: '', full_name: '', phone: '', password: 'doctor123', specialization: '', qualifications: '', experience_years: '', license_number: '', consultation_fee: '500', available_days: 'Mon-Fri', available_from: '09:00', available_to: '17:00' });
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
 
@@ -25,7 +25,7 @@ export default function AdminDoctors() {
     createAdminDoctor(form)
       .then(function() {
         setShowForm(false);
-        setForm({ email: '', full_name: '', phone: '', specialization: '', qualifications: '', experience_years: '' });
+        setForm({ email: '', full_name: '', phone: '', password: 'doctor123', specialization: '', qualifications: '', experience_years: '', license_number: '', consultation_fee: '500', available_days: 'Mon-Fri', available_from: '09:00', available_to: '17:00' });
         loadDoctors();
       })
       .catch(function(e) {
@@ -55,11 +55,23 @@ export default function AdminDoctors() {
             <input type="email" placeholder="Email *" required value={form.email} onChange={function(e) { setForm(Object.assign({}, form, { email: e.target.value })); }} className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
             <input type="text" placeholder="Full Name *" required value={form.full_name} onChange={function(e) { setForm(Object.assign({}, form, { full_name: e.target.value })); }} className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
             <input type="text" placeholder="Phone *" required value={form.phone} onChange={function(e) { setForm(Object.assign({}, form, { phone: e.target.value })); }} className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
-            <input type="text" placeholder="Specialization" value={form.specialization} onChange={function(e) { setForm(Object.assign({}, form, { specialization: e.target.value })); }} className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
+            <input type="password" placeholder="Password (default: doctor123)" value={form.password} onChange={function(e) { setForm(Object.assign({}, form, { password: e.target.value })); }} className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
+            <input type="text" placeholder="Specialization *" value={form.specialization} onChange={function(e) { setForm(Object.assign({}, form, { specialization: e.target.value })); }} className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
             <input type="text" placeholder="Qualifications" value={form.qualifications} onChange={function(e) { setForm(Object.assign({}, form, { qualifications: e.target.value })); }} className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
-            <input type="number" placeholder="Experience Years" value={form.experience_years} onChange={function(e) { setForm(Object.assign({}, form, { experience_years: e.target.value })); }} className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
+            <input type="text" placeholder="License Number" value={form.license_number} onChange={function(e) { setForm(Object.assign({}, form, { license_number: e.target.value })); }} className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
+            <input type="number" placeholder="Experience (years)" value={form.experience_years} onChange={function(e) { setForm(Object.assign({}, form, { experience_years: e.target.value })); }} className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
+            <input type="number" step="0.01" placeholder="Consultation Fee (BDT)" value={form.consultation_fee} onChange={function(e) { setForm(Object.assign({}, form, { consultation_fee: e.target.value })); }} className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
+            <input type="text" placeholder="Available Days (e.g. Mon-Fri)" value={form.available_days} onChange={function(e) { setForm(Object.assign({}, form, { available_days: e.target.value })); }} className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
+            <div>
+              <label className="block text-xs text-gray-500 mb-1">Available From</label>
+              <input type="time" value={form.available_from} onChange={function(e) { setForm(Object.assign({}, form, { available_from: e.target.value })); }} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
+            </div>
+            <div>
+              <label className="block text-xs text-gray-500 mb-1">Available To</label>
+              <input type="time" value={form.available_to} onChange={function(e) { setForm(Object.assign({}, form, { available_to: e.target.value })); }} className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
+            </div>
             <div className="md:col-span-2">
-              <button type="submit" className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm font-medium">Create Doctor</button>
+              <button type="submit" className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm font-medium">Create Doctor Account</button>
             </div>
           </form>
         </div>

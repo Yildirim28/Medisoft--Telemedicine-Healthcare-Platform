@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 
-const ROLES = ['patient', 'doctor'];
+const ROLES = ['patient', 'admin'];
 
 export default function Register() {
   const { register } = useAuth();
@@ -13,7 +13,7 @@ export default function Register() {
   const [form, setForm] = useState({
     email: '', password: '', full_name: '', phone: '', role: 'patient',
     date_of_birth: '', gender: '', blood_group: '', address: '', city: '',
-    specialization: '', license_number: '', consultation_fee: '',
+    admin_code: '',
   });
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
@@ -110,7 +110,7 @@ export default function Register() {
                         </svg>
                       ) : (
                         <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                         </svg>
                       )}
                       {r.charAt(0).toUpperCase() + r.slice(1)}
@@ -163,19 +163,12 @@ export default function Register() {
                   </div>
                 </>
               )}
-              {form.role === 'doctor' && (
+              {form.role === 'admin' && (
                 <>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Specialization</label>
-                    <input type="text" name="specialization" required placeholder="e.g. Cardiology" className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-200 text-sm" value={form.specialization} onChange={handleChange} />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">License Number</label>
-                    <input type="text" name="license_number" required placeholder="Medical license #" className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-200 text-sm" value={form.license_number} onChange={handleChange} />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Consultation Fee (BDT)</label>
-                    <input type="number" step="0.01" name="consultation_fee" required placeholder="500" className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-200 text-sm" value={form.consultation_fee} onChange={handleChange} />
+                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Admin Secret Code</label>
+                    <input type="password" name="admin_code" required placeholder="Enter admin invite code" className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-200 text-sm" value={form.admin_code} onChange={handleChange} />
+                    <p className="text-xs text-gray-400 mt-1">Contact the system administrator to get the invite code.</p>
                   </div>
                 </>
               )}
