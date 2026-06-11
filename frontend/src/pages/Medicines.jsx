@@ -4,7 +4,7 @@ import { getMedicines, createMedicine, getMedicineOrders, createMedicineOrder, c
 import { useAuth } from '../context/AuthContext';
 
 const CATEGORY_ICONS = {
-  'Pain Relief': '💊',
+  'Pain qcure': '💊',
   'Antibiotics': '🦠',
   'Vitamins': '🌿',
   'Allergy': '🤧',
