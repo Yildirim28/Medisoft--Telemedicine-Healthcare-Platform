@@ -7,7 +7,7 @@ const SEAT_TYPES = [
   { value: 'General', icon: '🛏️', color: 'from-blue-100 to-blue-50' },
   { value: 'Private', icon: '🏠', color: 'from-purple-100 to-purple-50' },
   { value: 'ICU', icon: '❤️', color: 'from-red-100 to-red-50' },
-  { value: 'VIP', icon: '⭐', color: 'from-amber-100 to-amber-50' },
+  { value: 'vip', icon: '⭐', color: 'from-amber-100 to-amber-50' },
 ];
 
 export default function Hospitals() {
