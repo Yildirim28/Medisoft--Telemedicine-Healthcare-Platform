@@ -1,4 +1,4 @@
-# Medisoft — Project Explanation Document
+# Medisoft — Project Explanation Document for All
 
 > A unified healthcare service platform: doctor appointments, online
 > consultation, prescriptions, hospital seat booking, blood bank, ambulance,
