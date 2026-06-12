@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { getDoctors, createAppointment } from '../api';
 import { useAuth } from '../context/AuthContext';
+import { FadeIn, StaggerChildren } from '../components/AnimatedPage';
 
 const AVATAR_COLORS = [
   'from-blue-500 to-cyan-400',
@@ -64,33 +65,37 @@ export default function Doctors() {
     <Layout>
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
-        <div>
-          <h1 className="text-2xl font-bold text-gray-800">Find a Doctor</h1>
-          <p className="text-gray-500 mt-1">Book appointments with our experienced specialists</p>
-        </div>
+        <FadeIn delay={0}>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800">Find a Doctor</h1>
+            <p className="text-gray-500 mt-1">Book appointments with our experienced specialists</p>
+          </div>
+        </FadeIn>
 
         {/* Filter */}
-        <div className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex flex-col sm:flex-row gap-3">
-          <div className="relative flex-1">
-            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-              <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="8" />
-                <path d="M21 21l-4.35-4.35" />
-              </svg>
+        <FadeIn delay={100}>
+          <div className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex flex-col sm:flex-row gap-3 hover:shadow-md transition-shadow duration-300">
+            <div className="relative flex-1">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="M21 21l-4.35-4.35" />
+                </svg>
+              </div>
+              <input
+                type="text"
+                placeholder="Search by specialization..."
+                className="w-full border border-gray-200 rounded-xl pl-11 pr-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300"
+                value={spec}
+                onChange={(e) => setSpec(e.target.value)}
+              />
             </div>
-            <input
-              type="text"
-              placeholder="Search by specialization..."
-              className="w-full border border-gray-200 rounded-xl pl-11 pr-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-200 text-sm"
-              value={spec}
-              onChange={(e) => setSpec(e.target.value)}
-            />
           </div>
-        </div>
+        </FadeIn>
 
         {/* Success/Error message */}
         {msg && (
-          <div className={`p-4 rounded-xl text-sm flex items-center gap-2 ${msg.includes('success') ? 'bg-emerald-50 border border-emerald-100 text-emerald-700' : 'bg-red-50 border border-red-100 text-red-600'}`}>
+          <div className={`p-4 rounded-xl text-sm flex items-center gap-2 animate-bounce-in ${msg.includes('success') ? 'bg-emerald-50 border border-emerald-100 text-emerald-700' : 'bg-red-50 border border-red-100 text-red-600'}`}>
             <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
               {msg.includes('success') ? (
                 <>
@@ -127,9 +132,9 @@ export default function Doctors() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <StaggerChildren staggerDelay={100} className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {doctors.map((doc, index) => (
-            <div key={doc.doctor_id} className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden">
+            <div key={doc.doctor_id} className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 active:scale-[0.98] transition-all duration-300 overflow-hidden">
               {/* Card header */}
               <div className="p-6 pb-0">
                 <div className="flex items-start gap-4">
@@ -244,7 +249,7 @@ export default function Doctors() {
                         </div>
                         <button
                           onClick={() => handleBook(doc.doctor_id)}
-                          className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold py-2.5 rounded-xl hover:from-emerald-600 hover:to-teal-600 transition-all duration-300 shadow-md hover:shadow-lg text-sm flex items-center justify-center gap-2"
+                          className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold py-2.5 rounded-xl hover:from-emerald-600 hover:to-teal-600 active:scale-[0.97] transition-all duration-300 shadow-md hover:shadow-lg text-sm flex items-center justify-center gap-2"
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                             <polyline points="20 6 9 17 4 12" />
@@ -258,7 +263,7 @@ export default function Doctors() {
               </div>
             </div>
           ))}
-        </div>
+        </StaggerChildren>
       </div>
     </Layout>
   );

@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from decimal import Decimal, InvalidOperation
 
 
 def _to_iso(value):
@@ -138,13 +139,17 @@ class Doctor(models.Model):
 
     def to_dict(self):
         data = self.user.to_dict()
+        try:
+            fee = Decimal(str(self.consultation_fee)) if self.consultation_fee is not None else Decimal('0.00')
+        except (InvalidOperation, ValueError):
+            fee = Decimal('0.00')
         data.update({
             'doctor_id': self.doctor_id,
             'specialization': self.specialization,
             'license_number': self.license_number,
             'qualifications': self.qualifications,
             'experience_years': self.experience_years,
-            'consultation_fee': f"{self.consultation_fee:.2f}",
+            'consultation_fee': f"{fee:.2f}",
             'available_days': self.available_days,
             'available_from': _to_time(self.available_from),
             'available_to': _to_time(self.available_to),

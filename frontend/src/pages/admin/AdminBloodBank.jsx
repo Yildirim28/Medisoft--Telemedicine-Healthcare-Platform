@@ -6,6 +6,7 @@ import {
   getAdminBloodRequests,
   updateAdminBloodRequest,
 } from '../../api';
+import { FadeIn } from '../../components/AnimatedPage';
 
 var BLOOD_GROUPS = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 var REQUEST_STATUSES = ['Pending', 'Fulfilled', 'Cancelled'];
@@ -71,33 +72,37 @@ export default function AdminBloodBank() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Blood Bank</h1>
-        {tab === 'donors' && (
-          <button
-            onClick={function () { setShowForm(!showForm); }}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition text-sm font-medium"
-          >
-            {showForm ? 'Cancel' : '+ Add Donor'}
-          </button>
-        )}
-      </div>
+      <FadeIn delay={0}>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold text-gray-900">Blood Bank</h1>
+          {tab === 'donors' && (
+            <button
+              onClick={function () { setShowForm(!showForm); }}
+              className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition text-sm font-medium active:scale-[0.97]"
+            >
+              {showForm ? 'Cancel' : '+ Add Donor'}
+            </button>
+          )}
+        </div>
+      </FadeIn>
 
       {/* Tabs */}
-      <div className="flex gap-4 mb-6 border-b">
-        <button
-          onClick={function () { setTab('donors'); setSearch(''); setShowForm(false); }}
-          className={'pb-3 px-1 text-sm font-medium border-b-2 transition ' + (tab === 'donors' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700')}
-        >
-          Donors ({donors.length})
-        </button>
-        <button
-          onClick={function () { setTab('requests'); setSearch(''); setShowForm(false); }}
-          className={'pb-3 px-1 text-sm font-medium border-b-2 transition ' + (tab === 'requests' ? 'border-red-600 text-red-600' : 'border-transparent text-gray-500 hover:text-gray-700')}
-        >
-          Blood Requests ({requests.length})
-        </button>
-      </div>
+      <FadeIn delay={100}>
+        <div className="flex gap-4 mb-6 border-b">
+          <button
+            onClick={function () { setTab('donors'); setSearch(''); setShowForm(false); }}
+            className={'pb-3 px-1 text-sm font-medium border-b-2 transition active:scale-[0.97] ' + (tab === 'donors' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700')}
+          >
+            Donors ({donors.length})
+          </button>
+          <button
+            onClick={function () { setTab('requests'); setSearch(''); setShowForm(false); }}
+            className={'pb-3 px-1 text-sm font-medium border-b-2 transition active:scale-[0.97] ' + (tab === 'requests' ? 'border-red-600 text-red-600' : 'border-transparent text-gray-500 hover:text-gray-700')}
+          >
+            Blood Requests ({requests.length})
+          </button>
+        </div>
+      </FadeIn>
 
       {/* Search */}
       <div className="mb-4">
@@ -112,7 +117,8 @@ export default function AdminBloodBank() {
 
       {/* Add Donor Form */}
       {showForm && (
-        <form onSubmit={handleDonorSubmit} className="bg-white rounded-xl shadow p-6 mb-6 border">
+        <FadeIn delay={100}>
+        <form onSubmit={handleDonorSubmit} className="bg-white rounded-xl shadow p-6 mb-6 border animate-bounce-in">
           {error && <p className="text-red-600 text-sm mb-3">{error}</p>}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
@@ -157,10 +163,11 @@ export default function AdminBloodBank() {
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
             />
           </div>
-          <button type="submit" className="mt-4 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm font-medium">
+          <button type="submit" className="mt-4 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm font-medium active:scale-[0.97]">
             Add Donor
           </button>
         </form>
+        </FadeIn>
       )}
 
       {loading ? (
@@ -182,9 +189,9 @@ export default function AdminBloodBank() {
               {donors.length === 0 && (
                 <tr><td colSpan={6} className="px-4 py-8 text-center text-gray-400">No donors found</td></tr>
               )}
-              {donors.map(function (d) {
+              {donors.map(function (d, idx) {
                 return (
-                  <tr key={d.donor_id} className="border-b hover:bg-gray-50">
+                  <tr key={d.donor_id} className="border-b hover:bg-gray-50 animate-fadeInUp" style={{ animationDelay: (idx * 60) + 'ms', animationFillMode: 'forwards', opacity: 0 }}>
                     <td className="px-4 py-3 font-medium">{d.full_name}</td>
                     <td className="px-4 py-3">{d.phone}</td>
                     <td className="px-4 py-3">
@@ -193,7 +200,7 @@ export default function AdminBloodBank() {
                     <td className="px-4 py-3">{d.city || '-'}</td>
                     <td className="px-4 py-3">{d.last_donated_at || '-'}</td>
                     <td className="px-4 py-3">
-                      <button onClick={function () { handleDeleteDonor(d.donor_id); }} className="text-red-600 hover:text-red-800 text-xs font-medium">
+                      <button onClick={function () { handleDeleteDonor(d.donor_id); }} className="text-red-600 hover:text-red-800 text-xs font-medium active:scale-[0.97]">
                         Delete
                       </button>
                     </td>
@@ -221,10 +228,10 @@ export default function AdminBloodBank() {
               {requests.length === 0 && (
                 <tr><td colSpan={7} className="px-4 py-8 text-center text-gray-400">No blood requests found</td></tr>
               )}
-              {requests.map(function (r) {
+              {requests.map(function (r, idx) {
                 var statusColor = STATUS_COLORS[r.status] || 'bg-gray-100 text-gray-600';
                 return (
-                  <tr key={r.request_id} className="border-b hover:bg-gray-50">
+                  <tr key={r.request_id} className="border-b hover:bg-gray-50 animate-fadeInUp" style={{ animationDelay: (idx * 60) + 'ms', animationFillMode: 'forwards', opacity: 0 }}>
                     <td className="px-4 py-3 font-medium">{r.patient_name || r.user_name || '-'}</td>
                     <td className="px-4 py-3">
                       <span className="px-2 py-1 bg-red-100 text-red-700 rounded-full text-xs font-semibold">{r.blood_group}</span>

@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { getMedicines, createMedicine, getMedicineOrders, createMedicineOrder, cancelMedicineOrder } from '../api';
 import { useAuth } from '../context/AuthContext';
+import { FadeIn, StaggerChildren } from '../components/AnimatedPage';
 
 const CATEGORY_ICONS = {
   'Pain qcure': '💊',
   'Antibiotics': '🦠',
   'Vitamins': '🌿',
   'Allergy': '🤧',
-  'Digestive': '🫁',
+  'digestive': '🫁',
   'Heart': '❤️',
   'default': '💊',
 };
@@ -132,6 +133,7 @@ export default function Medicines() {
     <Layout>
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
+        <FadeIn delay={0}>
         <div className="bg-gradient-to-r from-emerald-500 via-green-600 to-teal-600 rounded-2xl p-8 text-white relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10" />
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-8 -mb-8" />
@@ -147,8 +149,10 @@ export default function Medicines() {
             </div>
           </div>
         </div>
+        </FadeIn>
 
         {/* Tabs & Cart */}
+        <FadeIn delay={100}>
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div className="flex gap-2">
             {[
@@ -158,7 +162,7 @@ export default function Medicines() {
               <button
                 key={key}
                 onClick={() => setTab(key)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 active:scale-[0.97] ${
                   tab === key
                     ? 'bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg shadow-emerald-200'
                     : 'bg-white text-gray-600 hover:bg-emerald-50 border border-gray-200'
@@ -180,10 +184,11 @@ export default function Medicines() {
             </div>
           )}
         </div>
+        </FadeIn>
 
         {/* Message */}
         {msg && (
-          <div className={`p-4 rounded-xl text-sm font-medium flex items-center gap-2 ${
+          <div className={`p-4 rounded-xl text-sm font-medium flex items-center gap-2 animate-bounce-in ${
             msg.includes('success')
               ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
               : 'bg-red-50 text-red-700 border border-red-200'
@@ -284,9 +289,10 @@ export default function Medicines() {
                     <p className="text-gray-500 mt-3 text-sm">Loading medicines...</p>
                   </div>
                 ) : (
+                  <StaggerChildren staggerDelay={80}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     {medicines.map((m) => (
-                      <div key={m.medicine_id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:-translate-y-1 transition-all duration-300 group">
+                      <div key={m.medicine_id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:-translate-y-1 transition-all duration-300 group active:scale-[0.98]">
                         <div className="flex items-start gap-3 mb-3">
                           <div className="w-12 h-12 bg-gradient-to-br from-emerald-100 to-green-100 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
                             {getMedicineIcon(m.category)}
@@ -319,7 +325,7 @@ export default function Medicines() {
                         )}
                         <button
                           onClick={() => addToCart(m)}
-                          className="w-full bg-gradient-to-r from-emerald-500 to-green-600 text-white py-2.5 rounded-xl text-sm font-medium hover:from-emerald-600 hover:to-green-700 transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+                          className="w-full bg-gradient-to-r from-emerald-500 to-green-600 text-white py-2.5 rounded-xl text-sm font-medium hover:from-emerald-600 hover:to-green-700 transition-all duration-200 shadow-md hover:shadow-lg flex items-center justify-center gap-2 active:scale-[0.97]"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -338,6 +344,7 @@ export default function Medicines() {
                       </div>
                     )}
                   </div>
+                  </StaggerChildren>
                 )}
               </div>
 
@@ -405,7 +412,7 @@ export default function Medicines() {
                           <span className="text-lg font-bold text-gray-800">Total: ৳{totalPrice}</span>
                           <button
                             onClick={placeOrder}
-                            className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-6 py-2.5 rounded-xl text-sm font-semibold hover:from-emerald-600 hover:to-green-700 transition-all duration-200 shadow-lg shadow-emerald-200 hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2"
+                            className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-6 py-2.5 rounded-xl text-sm font-semibold hover:from-emerald-600 hover:to-green-700 transition-all duration-200 shadow-lg shadow-emerald-200 hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2 active:scale-[0.97]"
                           >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -424,11 +431,12 @@ export default function Medicines() {
 
         {/* Orders Tab */}
         {tab === 'orders' && (
+          <StaggerChildren staggerDelay={80}>
           <div className="space-y-4">
             {orders.map((o) => {
               const statusStyle = ORDER_STATUS_STYLES[o.status] || ORDER_STATUS_STYLES.pending;
               return (
-                <div key={o.order_id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all duration-300">
+                <div key={o.order_id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all duration-300 active:scale-[0.99]">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-green-500 rounded-xl flex items-center justify-center text-white">
@@ -470,7 +478,7 @@ export default function Medicines() {
                       </span>
                       <button
                         onClick={() => handleCancelOrder(o.order_id)}
-                        className="text-xs font-medium text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 px-4 py-2 rounded-xl transition-all duration-200 border border-red-200 hover:border-red-300 flex items-center gap-1.5"
+                        className="text-xs font-medium text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 px-4 py-2 rounded-xl transition-all duration-200 border border-red-200 hover:border-red-300 flex items-center gap-1.5 active:scale-[0.97]"
                       >
                         <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -497,6 +505,7 @@ export default function Medicines() {
               </div>
             )}
           </div>
+          </StaggerChildren>
         )}
 
         {/* Cart Added Popup */}

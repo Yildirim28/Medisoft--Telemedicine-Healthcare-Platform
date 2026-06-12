@@ -102,13 +102,21 @@ export default function Layout({ children }) {
   const location = useLocation();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Track scroll position for navbar shadow
+  useState(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  });
 
   const isAdmin = user?.role === 'admin';
   const navItems = isAdmin ? adminNavItems : userNavItems;
 
   const handleLogout = async () => {
     await logout();
-    navigate('/login');
+    navigate('/');
   };
 
   const initials = user?.full_name
@@ -130,21 +138,21 @@ export default function Layout({ children }) {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Top Navbar */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+      <header className={`bg-white/95 backdrop-blur-xl border-b sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'border-gray-200 shadow-md' : 'border-gray-100 shadow-sm'}`}>
         <div className="flex items-center justify-between h-16 px-4 lg:px-6">
           <div className="flex items-center gap-3">
             <button
-              className="lg:hidden p-2 rounded-lg hover:bg-gray-100 text-gray-600 transition"
+              className="lg:hidden p-2 rounded-xl hover:bg-gray-100 text-gray-600 transition-all duration-200 active:scale-95"
               onClick={() => setSidebarOpen(!sidebarOpen)}
             >
               <MenuIcon />
             </button>
-            <Link to={logoLink} className="flex items-center gap-2">
-              <div className={'w-9 h-9 rounded-xl flex items-center justify-center shadow-md ' + logoBg}>
+            <Link to={logoLink} className="flex items-center gap-2.5 group">
+              <div className={`w-9 h-9 rounded-xl flex items-center justify-center shadow-md transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 ${logoBg}`}>
                 {isAdmin ? <LockIcon /> : <HeartIcon />}
               </div>
               <div className="flex flex-col">
-                <span className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent hidden sm:block">
+                <span className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent hidden sm:block transition-all duration-300 group-hover:tracking-wide">
                   Medisoft
                 </span>
                 {isAdmin && (
@@ -155,23 +163,23 @@ export default function Layout({ children }) {
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-3 mr-2">
+            <div className="hidden sm:flex items-center gap-3 mr-2 animate-fade-in">
               <div className="text-right">
                 <p className="text-sm font-semibold text-gray-800 leading-tight">{user?.full_name || 'User'}</p>
                 <p className="text-xs text-gray-500 capitalize flex items-center gap-1">
                   {isAdmin && (
-                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
                   )}
                   {user?.role || 'patient'}
                 </p>
               </div>
             </div>
-            <div className={'w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-md ' + logoBg}>
+            <div className={`w-9 h-9 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-md transition-all duration-300 hover:scale-110 hover:shadow-lg cursor-pointer ${logoBg}`}>
               {initials}
             </div>
             <button
               onClick={handleLogout}
-              className="ml-1 p-2 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-500 transition"
+              className="ml-1 p-2 rounded-xl hover:bg-red-50 text-gray-400 hover:text-red-500 transition-all duration-200 active:scale-95"
               title="Logout"
             >
               <LogoutIcon />
@@ -189,8 +197,10 @@ export default function Layout({ children }) {
         )}
 
         <aside className={
-          'fixed lg:sticky top-16 left-0 z-40 h-[calc(100vh-4rem)] w-64 bg-white border-r border-gray-200 transform transition-transform duration-200 ease-in-out flex flex-col overflow-y-auto '
-          + (sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0')
+          'fixed lg:sticky top-16 left-0 z-40 h-[calc(100vh-4rem)] w-64 bg-white/95 backdrop-blur-xl border-r border-gray-200 flex flex-col overflow-y-auto '
+          + (sidebarOpen
+            ? 'translate-x-0 transition-transform duration-300 ease-out-expo shadow-2xl lg:shadow-none'
+            : '-translate-x-full lg:translate-x-0 transition-transform duration-300 ease-out-expo')
         }>
           {isAdmin && (
             <div className="px-3 pt-3 pb-2">
@@ -201,23 +211,29 @@ export default function Layout({ children }) {
             </div>
           )}
           <nav className="flex-1 p-3 space-y-0.5">
-            {navItems.map((item) => {
+            {navItems.map((item, index) => {
               const active = isActive(item.path);
               const activeClass = isAdmin
-                ? 'bg-red-50 text-red-700 shadow-sm'
-                : 'bg-indigo-50 text-indigo-700 shadow-sm';
+                ? 'bg-red-50 text-red-700 shadow-sm border border-red-100'
+                : 'bg-indigo-50 text-indigo-700 shadow-sm border border-indigo-100';
               const itemClass = active
-                ? 'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ' + activeClass
-                : 'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 text-gray-600 hover:bg-gray-50 hover:text-gray-900';
+                ? 'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 scale-[1.02] ' + activeClass
+                : 'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 text-gray-600 hover:bg-gray-50 hover:text-gray-900 hover:scale-[1.01] hover:translate-x-0.5 active:scale-[0.98]';
               return (
                 <Link
                   key={item.path}
                   to={item.path}
                   onClick={() => setSidebarOpen(false)}
                   className={itemClass}
+                  style={{ animationDelay: `${index * 40}ms` }}
                 >
-                  <SidebarIcon d={item.icon} size={18} />
+                  <span className={`transition-transform duration-200 ${active ? 'scale-110' : ''}`}>
+                    <SidebarIcon d={item.icon} size={18} />
+                  </span>
                   {item.label}
+                  {active && (
+                    <span className="ml-auto w-1.5 h-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 animate-pulse" />
+                  )}
                 </Link>
               );
             })}
@@ -227,14 +243,14 @@ export default function Layout({ children }) {
             <Link
               to={isAdmin ? '/admin' : '/profile'}
               onClick={() => setSidebarOpen(false)}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200 hover:translate-x-0.5 active:scale-[0.98]"
             >
               {isAdmin ? <HomeIcon /> : <ProfileIcon />}
               {isAdmin ? 'Back to Dashboard' : 'Profile'}
             </Link>
             <button
               onClick={handleLogout}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 transition w-full"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 transition-all duration-200 w-full hover:translate-x-0.5 active:scale-[0.98]"
             >
               <LogoutIcon2 />
               Logout
@@ -243,7 +259,9 @@ export default function Layout({ children }) {
         </aside>
 
         <main className="flex-1 p-4 lg:p-8 min-h-[calc(100vh-4rem)]">
-          {children}
+          <div className="page-enter" key={location.pathname}>
+            {children}
+          </div>
         </main>
       </div>
     </div>

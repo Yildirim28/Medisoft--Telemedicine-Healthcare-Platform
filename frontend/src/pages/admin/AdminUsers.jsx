@@ -5,6 +5,7 @@ import {
   updateAdminUser,
   deleteAdminUser,
 } from '../../api';
+import { FadeIn } from '../../components/AnimatedPage';
 
 var ROLES = ['patient', 'doctor', 'admin'];
 
@@ -23,7 +24,7 @@ export default function AdminUsers() {
     if (search) params.search = search;
     if (roleFilter) params.role = roleFilter;
     getAdminUsers(params)
-      .then(function (data) { setUsers(data.results || data); })
+      .then(function (data) { setUsers(Array.isArray(data) ? data : (data.results || [])); })
       .catch(function (e) { console.error(e); })
       .finally(function () { setLoading(false); });
   };
@@ -59,11 +60,14 @@ export default function AdminUsers() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Users</h1>
-      </div>
+      <FadeIn delay={0}>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold text-gray-900">Users</h1>
+        </div>
+      </FadeIn>
 
-      <div className="flex flex-col md:flex-row gap-4 mb-4">
+      <FadeIn delay={100}>
+        <div className="flex flex-col md:flex-row gap-4 mb-4">
         <input
           type="text"
           placeholder="Search by name or email..."
@@ -82,11 +86,12 @@ export default function AdminUsers() {
           <option value="admin">Admins</option>
         </select>
       </div>
+      </FadeIn>
 
       {/* Edit Modal */}
       {editingUser && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md mx-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fadeIn">
+          <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md mx-4 animate-scaleIn">
             <h2 className="text-lg font-bold mb-4">Edit User</h2>
             {error && <p className="text-red-600 text-sm mb-3">{error}</p>}
             <div className="space-y-4">
@@ -126,10 +131,10 @@ export default function AdminUsers() {
               </div>
             </div>
             <div className="flex gap-3 mt-6">
-              <button onClick={handleUpdate} className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition text-sm font-medium">
+              <button onClick={handleUpdate} className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition text-sm font-medium active:scale-[0.97]">
                 Save Changes
               </button>
-              <button onClick={function () { setEditingUser(null); }} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition text-sm font-medium">
+              <button onClick={function () { setEditingUser(null); }} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition text-sm font-medium active:scale-[0.97]">
                 Cancel
               </button>
             </div>
@@ -156,14 +161,14 @@ export default function AdminUsers() {
               {users.length === 0 && (
                 <tr><td colSpan={6} className="px-4 py-8 text-center text-gray-400">No users found</td></tr>
               )}
-              {users.map(function (u) {
+              {users.map(function (u, idx) {
                 var roleColors = {
                   patient: 'bg-blue-100 text-blue-700',
                   doctor: 'bg-green-100 text-green-700',
                   admin: 'bg-purple-100 text-purple-700',
                 };
                 return (
-                  <tr key={u.user_id} className="border-b hover:bg-gray-50">
+                  <tr key={u.user_id} className="border-b hover:bg-gray-50 animate-fadeInUp" style={{ animationDelay: (idx * 60) + 'ms', animationFillMode: 'forwards', opacity: 0 }}>
                     <td className="px-4 py-3">{u.user_id}</td>
                     <td className="px-4 py-3 font-medium">{u.full_name}</td>
                     <td className="px-4 py-3">{u.email}</td>
@@ -175,9 +180,20 @@ export default function AdminUsers() {
                     </td>
                     <td className="px-4 py-3">
                       <div className="flex gap-2">
-                        <button onClick={function () { handleEdit(u); }} className="text-indigo-600 hover:text-indigo-800 text-xs font-medium">Edit</button>
+                        <button onClick={function () { handleEdit(u); }} className="text-indigo-600 hover:text-indigo-800 text-xs font-medium active:scale-[0.97]">Edit</button>
+                        <button
+                          onClick={function () {
+                            updateAdminUser(u.user_id, { is_active: !u.is_active }).then(loadUsers).catch(function (e) {
+                              console.error(e);
+                              alert(e.response?.data?.error || e.response?.data?.detail || 'Failed to update user');
+                            });
+                          }}
+                          className={u.is_active ? 'text-amber-600 hover:text-amber-800 text-xs font-medium active:scale-[0.97]' : 'text-green-600 hover:text-green-800 text-xs font-medium active:scale-[0.97]'}
+                        >
+                          {u.is_active ? 'Block' : 'Unblock'}
+                        </button>
                         {u.role !== 'admin' && (
-                          <button onClick={function () { handleDelete(u.user_id); }} className="text-red-600 hover:text-red-800 text-xs font-medium">Delete</button>
+                          <button onClick={function () { handleDelete(u.user_id); }} className="text-red-600 hover:text-red-800 text-xs font-medium active:scale-[0.97]">Delete</button>
                         )}
                       </div>
                     </td>

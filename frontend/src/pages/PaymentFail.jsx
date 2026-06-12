@@ -1,5 +1,6 @@
 import { useSearchParams, Link } from 'react-router-dom';
 import Layout from '../components/Layout';
+import { ScaleIn } from '../components/AnimatedPage';
 
 export default function PaymentFail() {
   const [searchParams] = useSearchParams();
@@ -7,8 +8,9 @@ export default function PaymentFail() {
   return (
     <Layout>
       <div className="max-w-lg mx-auto mt-12">
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 text-center space-y-4">
-          <div className="w-20 h-20 bg-red-100 rounded-3xl flex items-center justify-center mx-auto">
+        <ScaleIn delay={100}>
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 text-center space-y-4 animate-fadeIn">
+          <div className="w-20 h-20 bg-red-100 rounded-3xl flex items-center justify-center mx-auto animate-bounce-in">
             <svg className="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -27,7 +29,7 @@ export default function PaymentFail() {
 
           <Link
             to="/payments"
-            className="gradient-btn inline-flex items-center gap-2 mt-6"
+            className="gradient-btn inline-flex items-center gap-2 mt-6 active:scale-95"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -35,6 +37,7 @@ export default function PaymentFail() {
             Try Again
           </Link>
         </div>
+        </ScaleIn>
       </div>
     </Layout>
   );

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
+import { FadeIn } from '../components/AnimatedPage';
 import { createPayment, initBkashPayment } from '../api';
 import { useAuth } from '../context/AuthContext';
 
@@ -102,6 +103,7 @@ export default function Payments() {
     <Layout>
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Header */}
+        <FadeIn delay={0}>
         <div className="bg-gradient-to-r from-pink-500 via-rose-500 to-fuchsia-500 rounded-2xl p-8 text-white relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10" />
           <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-8 -mb-8" />
@@ -117,8 +119,10 @@ export default function Payments() {
             </div>
           </div>
         </div>
+        </FadeIn>
 
         {/* bKash Trust Badge */}
+        <FadeIn delay={100}>
         <div className="flex items-center justify-center gap-3 py-3 px-4 bg-white rounded-xl border border-gray-100 shadow-sm">
           <div className="flex items-center gap-2">
             <svg className="w-5 h-5 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -141,10 +145,12 @@ export default function Payments() {
             <span className="text-sm font-medium text-gray-700">bKash / Nagad / Card</span>
           </div>
         </div>
+        </FadeIn>
 
         {/* Message */}
         {msg && (
-          <div className={`p-4 rounded-xl text-sm font-medium flex items-center gap-2 ${
+          <FadeIn delay={50}>
+          <div className={`p-4 rounded-xl text-sm font-medium flex items-center gap-2 animate-bounce-in ${
             msg.includes('success') || msg.includes('Success')
               ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
               : 'bg-red-50 text-red-700 border border-red-200'
@@ -158,11 +164,13 @@ export default function Payments() {
             </svg>
             {msg}
           </div>
+          </FadeIn>
         )}
 
         {/* Payment Form */}
         {showForm && (
-          <form onSubmit={handleBkashPayment} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 space-y-6">
+          <FadeIn delay={150}>
+          <form onSubmit={handleBkashPayment} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 space-y-6 animate-bounce-in">
             <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
               <svg className="w-5 h-5 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
@@ -180,7 +188,7 @@ export default function Payments() {
                     key={s.value}
                     type="button"
                     onClick={() => setSelectedService(s.value)}
-                    className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all duration-200 ${
+                    className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all duration-200 animate-fadeInUp active:scale-[0.97] ${
                       selectedService === s.value
                         ? 'border-pink-500 bg-pink-50 shadow-md ring-2 ring-pink-200'
                         : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
@@ -303,7 +311,7 @@ export default function Payments() {
               <button
                 type="submit"
                 disabled={paying || !amount || parseFloat(amount) <= 0}
-                className={`gradient-btn flex-1 flex items-center justify-center gap-2 ${(paying || !amount || parseFloat(amount) <= 0) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`gradient-btn flex-1 flex items-center justify-center gap-2 active:scale-[0.97] ${(paying || !amount || parseFloat(amount) <= 0) ? 'opacity-50 cursor-not-allowed' : ''}`}
                 style={!paying && amount && parseFloat(amount) > 0 ? { background: 'linear-gradient(135deg, #e91e63, #ad1457)' } : {}}
               >
                 {paying ? (
@@ -326,16 +334,18 @@ export default function Payments() {
               <button
                 type="button"
                 onClick={() => { setShowForm(false); setMsg(''); }}
-                className="px-6 py-3 rounded-xl text-sm font-medium border border-gray-200 text-gray-600 hover:bg-gray-50 transition-all duration-200"
+                className="px-6 py-3 rounded-xl text-sm font-medium border border-gray-200 text-gray-600 hover:bg-gray-50 transition-all duration-200 active:scale-[0.97]"
               >
                 Cancel
               </button>
             </div>
           </form>
+          </FadeIn>
         )}
 
         {/* Info Card */}
         {!showForm && (
+          <FadeIn delay={150}>
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
             <div className="text-center max-w-md mx-auto">
               <div className="w-20 h-20 bg-gradient-to-br from-pink-100 to-rose-100 rounded-3xl flex items-center justify-center mx-auto mb-6">
@@ -350,8 +360,8 @@ export default function Payments() {
 
               {/* Service Type Cards with Prices */}
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
-                {SERVICE_TYPES.map((s) => (
-                  <div key={s.value} className="flex flex-col items-center gap-2 p-4 rounded-xl bg-gray-50 border border-gray-100 hover:shadow-md transition-all duration-200">
+                {SERVICE_TYPES.map((s, idx) => (
+                  <div key={s.value} className="flex flex-col items-center gap-2 p-4 rounded-xl bg-gray-50 border border-gray-100 hover:shadow-md transition-all duration-200 animate-fadeInUp" style={{ animationDelay: (idx * 80) + 'ms', animationFillMode: 'forwards', opacity: 0 }}>
                     <div className={`w-10 h-10 bg-gradient-to-br ${s.color} rounded-xl flex items-center justify-center text-white`}>
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={s.icon} />
@@ -370,7 +380,7 @@ export default function Payments() {
               {user?.role === 'patient' ? (
                 <button
                   onClick={() => { setShowForm(true); setMsg(''); }}
-                  className="gradient-btn inline-flex items-center gap-2"
+                  className="gradient-btn inline-flex items-center gap-2 active:scale-95"
                   style={{ background: 'linear-gradient(135deg, #e91e63, #ad1457)' }}
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -390,6 +400,7 @@ export default function Payments() {
               )}
             </div>
           </div>
+          </FadeIn>
         )}
       </div>
     </Layout>

@@ -26,7 +26,11 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    await logoutUser();
+    try {
+      await logoutUser();
+    } catch {
+      // Ignore API errors — always clear local state
+    }
     setUser(null);
   };
 

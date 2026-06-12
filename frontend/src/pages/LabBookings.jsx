@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { getLabBookings, createLabBooking } from '../api';
 import { useAuth } from '../context/AuthContext';
+import { FadeIn, StaggerChildren } from '../components/AnimatedPage';
 
 const TEST_TYPES = [
   { value: 'Blood Test', icon: '🩸', color: 'from-red-100 to-red-50' },
@@ -11,7 +12,7 @@ const TEST_TYPES = [
   { value: 'Urine Test', icon: '🧪', color: 'from-amber-100 to-amber-50' },
   { value: 'ECG', icon: '💓', color: 'from-pink-100 to-pink-50' },
   { value: 'Ultrasound', icon: '🔊', color: 'from-teal-100 to-teal-50' },
-  { value: 'COVID Test', icon: '🦠', color: 'from-orange-100 to-orange-50' },
+  { value: 'Covid Test', icon: '🦠', color: 'from-orange-100 to-orange-50' },
   { value: 'Other', icon: '🔬', color: 'from-gray-100 to-gray-50' },
 ];
 
@@ -64,6 +65,7 @@ export default function LabBookings() {
     <Layout>
       <div className="max-w-5xl mx-auto">
         {/* Header */}
+        <FadeIn delay={0}>
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center">
@@ -79,7 +81,7 @@ export default function LabBookings() {
           {user?.role === 'patient' && (
             <button
               onClick={() => setShowForm(!showForm)}
-              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 active:scale-[0.97] ${
                 showForm
                   ? 'bg-red-50 text-red-600 border border-red-200 hover:bg-red-100'
                   : 'bg-gradient-to-r from-indigo-500 to-blue-600 text-white shadow-md hover:shadow-lg'
@@ -96,10 +98,11 @@ export default function LabBookings() {
             </button>
           )}
         </div>
+        </FadeIn>
 
         {/* Message */}
         {msg && (
-          <div className={`p-4 rounded-xl mb-6 text-sm font-medium ${
+          <div className={`p-4 rounded-xl mb-6 text-sm font-medium animate-bounce-in ${
             msg.includes('success')
               ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
               : 'bg-red-50 text-red-600 border border-red-200'
@@ -145,7 +148,7 @@ export default function LabBookings() {
                 <input placeholder="Any special instructions..." className="input-modern" value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} />
               </div>
             </div>
-            <button type="submit" className="mt-4 gradient-btn inline-flex items-center gap-2">
+            <button type="submit" className="mt-4 gradient-btn inline-flex items-center gap-2 active:scale-[0.97]">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
@@ -174,11 +177,11 @@ export default function LabBookings() {
         )}
 
         {/* Bookings List */}
-        <div className="space-y-3">
+        <StaggerChildren staggerDelay={80}>
           {bookings.map((b) => {
             const st = statusStyle(b.status);
             return (
-              <div key={b.booking_id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition-all duration-300">
+              <div key={b.booking_id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition-all duration-300 active:scale-[0.99]">
                 <div className="flex items-start gap-4">
                   <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-100 to-blue-100 flex items-center justify-center flex-shrink-0 text-lg">
                     {getTestIcon(b.test_type)}
@@ -213,7 +216,7 @@ export default function LabBookings() {
               </div>
             );
           })}
-        </div>
+        </StaggerChildren>
       </div>
     </Layout>
   );

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getAdminHospitals, createAdminHospital, deleteAdminHospital } from '../../api';
+import { FadeIn } from '../../components/AnimatedPage';
 
 export default function AdminHospitals() {
   const [hospitals, setHospitals] = useState([]);
@@ -40,15 +41,18 @@ export default function AdminHospitals() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Hospitals</h1>
-        <button onClick={function() { setShowForm(!showForm); }} className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition text-sm font-medium">
-          {showForm ? 'Cancel' : '+ Add Hospital'}
-        </button>
-      </div>
+      <FadeIn delay={0}>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold text-gray-900">Hospitals</h1>
+          <button onClick={function() { setShowForm(!showForm); }} className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition text-sm font-medium active:scale-[0.97]">
+            {showForm ? 'Cancel' : '+ Add Hospital'}
+          </button>
+        </div>
+      </FadeIn>
 
       {showForm && (
-        <div className="bg-white rounded-xl border border-gray-200 p-5 mb-6 shadow-sm">
+        <FadeIn delay={100}>
+        <div className="bg-white rounded-xl border border-gray-200 p-5 mb-6 shadow-sm animate-bounce-in">
           <h2 className="text-lg font-semibold mb-4">Add New Hospital</h2>
           {error && <div className="bg-red-50 text-red-600 text-sm px-4 py-2 rounded-lg mb-4">{error}</div>}
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -59,15 +63,18 @@ export default function AdminHospitals() {
             <input type="email" placeholder="Email" value={form.email} onChange={function(e) { setForm(Object.assign({}, form, { email: e.target.value })); }} className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
             <input type="url" placeholder="Website" value={form.website} onChange={function(e) { setForm(Object.assign({}, form, { website: e.target.value })); }} className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
             <div className="md:col-span-2">
-              <button type="submit" className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm font-medium">Create Hospital</button>
+              <button type="submit" className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm font-medium active:scale-[0.97]">Create Hospital</button>
             </div>
           </form>
         </div>
+        </FadeIn>
       )}
 
-      <div className="mb-4">
-        <input type="text" placeholder="Search hospitals..." value={search} onChange={function(e) { setSearch(e.target.value); }} className="w-full md:w-80 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
-      </div>
+      <FadeIn delay={150}>
+        <div className="mb-4">
+          <input type="text" placeholder="Search hospitals..." value={search} onChange={function(e) { setSearch(e.target.value); }} className="w-full md:w-80 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
+        </div>
+      </FadeIn>
 
       {loading ? (
         <div className="flex items-center justify-center h-40"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div></div>
@@ -87,15 +94,15 @@ export default function AdminHospitals() {
               {hospitals.length === 0 && (
                 <tr><td colSpan="5" className="px-4 py-8 text-center text-gray-500">No hospitals found</td></tr>
               )}
-              {hospitals.map(function(h) {
+              {hospitals.map(function(h, idx) {
                 return (
-                  <tr key={h.hospital_id || h.id} className="hover:bg-gray-50 transition-colors">
+                  <tr key={h.hospital_id || h.id} className="hover:bg-gray-50 transition-colors animate-fadeInUp" style={{ animationDelay: (idx * 60) + 'ms', animationFillMode: 'forwards', opacity: 0 }}>
                     <td className="px-4 py-3 font-medium text-gray-900">{h.hospital_name || '-'}</td>
                     <td className="px-4 py-3 text-gray-600">{h.city || '-'}</td>
                     <td className="px-4 py-3 text-gray-600">{h.address || '-'}</td>
                     <td className="px-4 py-3 text-gray-600">{h.phone || '-'}</td>
                     <td className="px-4 py-3 text-right">
-                      <button onClick={function() { handleDelete(h.hospital_id || h.id); }} className="text-red-500 hover:text-red-700 text-xs font-medium">Delete</button>
+                      <button onClick={function() { handleDelete(h.hospital_id || h.id); }} className="text-red-500 hover:text-red-700 text-xs font-medium active:scale-[0.97]">Delete</button>
                     </td>
                   </tr>
                 );
