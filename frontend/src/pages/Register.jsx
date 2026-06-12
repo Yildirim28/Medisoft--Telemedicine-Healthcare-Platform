@@ -89,7 +89,7 @@ export default function Register() {
               <div className="space-y-4">
                 <FadeIn delay={300}>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Full Name</label>
-                  <input type="text" name="full_name" required placeholder="John Doe" className="w-full border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300 dark:text-gray-100" value={form.full_name} onChange={handleChange} />
+                  <input type="text" name="full_name" required placeholder="Shah Rukh Khan" className="w-full border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300 dark:text-gray-100" value={form.full_name} onChange={handleChange} />
                 </FadeIn>
                 <FadeIn delay={380}>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Email</label>
