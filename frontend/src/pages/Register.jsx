@@ -168,7 +168,7 @@ export default function Register() {
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1.5">Admin Secret Code</label>
                     <input type="password" name="admin_code" required placeholder="Enter admin invite code" className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-200 text-sm" value={form.admin_code} onChange={handleChange} />
-                    <p className="text-xs text-gray-400 mt-1">Contact the system administrator to get the invite code.</p>
+                    <p className="text-xs text-gray-400 mt-1">Contact the systems administrator to get the invite code.</p>
                   </div>
                 </>
               )}
