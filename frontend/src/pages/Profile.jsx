@@ -26,7 +26,7 @@ export default function Profile() {
     setMsg('');
     try {
       await updateProfile(form);
-      setMsg('Profile updated successfully!');
+      setMsg('Profile updated successfully');
       setEditing(false);
     } catch (err) {
       setMsg(err.message);
