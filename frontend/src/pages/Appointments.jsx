@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { getAppointments, updateAppointmentStatus, getMeetingUrl } from '../api';
 import { useAuth } from '../context/AuthContext';
+import { FadeIn, StaggerChildren } from '../components/AnimatedPage';
 
 const STATUS_STYLES = {
   pending: 'bg-amber-50 text-amber-700 border border-amber-200',
@@ -66,27 +67,30 @@ export default function Appointments() {
     <Layout>
       <div className="max-w-5xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Appointments</h1>
-              <p className="text-sm text-gray-500">{appointments.length} total appointments</p>
+        <FadeIn delay={0}>
+          <div className="mb-8">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">Appointments</h1>
+                <p className="text-sm text-gray-500">{appointments.length} total appointments</p>
+              </div>
             </div>
           </div>
-        </div>
+        </FadeIn>
 
         {/* Filter Tabs */}
-        <div className="flex flex-wrap gap-2 mb-6">
-          {filterTabs.map((tab) => (
-            <button
-              key={tab.value}
-              onClick={() => setFilter(tab.value)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+        <FadeIn delay={100}>
+          <div className="flex flex-wrap gap-2 mb-6">
+            {filterTabs.map((tab) => (
+              <button
+                key={tab.value}
+                onClick={() => setFilter(tab.value)}
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 active:scale-[0.97] ${
                 filter === tab.value
                   ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-md'
                   : 'bg-white text-gray-600 border border-gray-200 hover:border-indigo-200 hover:text-indigo-600'
@@ -99,6 +103,7 @@ export default function Appointments() {
             </button>
           ))}
         </div>
+        </FadeIn>
 
         {/* Loading */}
         {loading && (
@@ -123,7 +128,7 @@ export default function Appointments() {
         )}
 
         {/* Appointments List */}
-        <div className="space-y-3">
+        <StaggerChildren staggerDelay={80}>
           {filtered.map((apt) => {
             const status = apt.status?.toLowerCase() || 'pending';
             return (
@@ -183,7 +188,7 @@ export default function Appointments() {
                     {apt.status === 'confirmed' && apt.meeting_url && (
                       <button
                         onClick={() => handleMeetingUrl(apt.appointment_id)}
-                        className="inline-flex items-center gap-1.5 bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:from-indigo-600 hover:to-purple-700 transition-all duration-200 shadow-md hover:shadow-lg"
+                        className="inline-flex items-center gap-1.5 bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:from-indigo-600 hover:to-purple-700 transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.97]"
                       >
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -195,7 +200,7 @@ export default function Appointments() {
                       <>
                         <button
                           onClick={() => handleStatus(apt.appointment_id, 'confirmed')}
-                          className="inline-flex items-center gap-1.5 bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-emerald-600 transition-all duration-200 shadow-sm"
+                          className="inline-flex items-center gap-1.5 bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-emerald-600 transition-all duration-200 shadow-sm active:scale-[0.97]"
                         >
                           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -204,7 +209,7 @@ export default function Appointments() {
                         </button>
                         <button
                           onClick={() => handleStatus(apt.appointment_id, 'cancelled')}
-                          className="inline-flex items-center gap-1.5 bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded-xl text-sm font-medium hover:bg-red-100 transition-all duration-200"
+                          className="inline-flex items-center gap-1.5 bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded-xl text-sm font-medium hover:bg-red-100 transition-all duration-200 active:scale-[0.97]"
                         >
                           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -216,7 +221,7 @@ export default function Appointments() {
                     {user?.role === 'doctor' && apt.status === 'confirmed' && (
                       <button
                         onClick={() => handleStatus(apt.appointment_id, 'completed')}
-                        className="inline-flex items-center gap-1.5 bg-blue-500 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-600 transition-all duration-200 shadow-sm"
+                        className="inline-flex items-center gap-1.5 bg-blue-500 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-600 transition-all duration-200 shadow-sm active:scale-[0.97]"
                       >
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -227,7 +232,7 @@ export default function Appointments() {
                     {user?.role === 'patient' && apt.status === 'pending' && (
                       <button
                         onClick={() => handleStatus(apt.appointment_id, 'cancelled')}
-                        className="inline-flex items-center gap-1.5 bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded-xl text-sm font-medium hover:bg-red-100 transition-all duration-200"
+                        className="inline-flex items-center gap-1.5 bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded-xl text-sm font-medium hover:bg-red-100 transition-all duration-200 active:scale-[0.97]"
                       >
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -240,7 +245,7 @@ export default function Appointments() {
               </div>
             );
           })}
-        </div>
+        </StaggerChildren>
       </div>
     </Layout>
   );

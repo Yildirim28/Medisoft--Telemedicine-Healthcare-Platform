@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { searchDonors, registerDonor, getBloodRequests, createBloodRequest } from '../api';
 import { useAuth } from '../context/AuthContext';
+import { FadeIn, StaggerChildren } from '../components/AnimatedPage';
 
 const BLOOD_GROUPS = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 
@@ -84,48 +85,52 @@ export default function BloodBank() {
     <Layout>
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Header */}
-        <div className="bg-gradient-to-r from-red-500 via-red-600 to-rose-600 rounded-2xl p-8 text-white relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10" />
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-8 -mb-8" />
-          <div className="relative flex items-center gap-4">
-            <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl">
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold">Blood Bank</h1>
-              <p className="text-red-100 mt-1">Find donors, register to donate, or request blood</p>
+        <FadeIn delay={0}>
+          <div className="bg-gradient-to-r from-red-500 via-red-600 to-rose-600 rounded-2xl p-8 text-white relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10" />
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-8 -mb-8" />
+            <div className="relative flex items-center gap-4">
+              <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl">
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold">Blood Bank</h1>
+                <p className="text-red-100 mt-1">Find donors, register to donate, or request blood</p>
+              </div>
             </div>
           </div>
-        </div>
+        </FadeIn>
 
         {/* Tabs */}
-        <div className="flex gap-2">
-          {[
-            { key: 'donors', label: 'Find Donors', icon: 'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z' },
-            { key: 'requests', label: 'Blood Requests', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2' },
-          ].map(({ key, label, icon }) => (
-            <button
-              key={key}
-              onClick={() => setTab(key)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
-                tab === key
-                  ? 'bg-gradient-to-r from-red-500 to-rose-600 text-white shadow-lg shadow-red-200'
-                  : 'bg-white text-gray-600 hover:bg-red-50 border border-gray-200'
-              }`}
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={icon} />
-              </svg>
-              {label}
-            </button>
-          ))}
-        </div>
+        <FadeIn delay={100}>
+          <div className="flex gap-2">
+            {[
+              { key: 'donors', label: 'Find Donors', icon: 'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z' },
+              { key: 'requests', label: 'Blood Requests', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2' },
+            ].map(({ key, label, icon }) => (
+              <button
+                key={key}
+                onClick={() => setTab(key)}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 active:scale-[0.97] ${
+                  tab === key
+                    ? 'bg-gradient-to-r from-red-500 to-rose-600 text-white shadow-lg shadow-red-200'
+                    : 'bg-white text-gray-600 hover:bg-red-50 border border-gray-200'
+                }`}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={icon} />
+                </svg>
+                {label}
+              </button>
+            ))}
+          </div>
+        </FadeIn>
 
         {/* Message */}
         {msg && (
-          <div className={`p-4 rounded-xl text-sm font-medium flex items-center gap-2 ${
+          <div className={`p-4 rounded-xl text-sm font-medium flex items-center gap-2 animate-bounce-in ${
             msg.includes('success') || msg.includes('successfully')
               ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
               : 'bg-red-50 text-red-700 border border-red-200'
@@ -181,7 +186,7 @@ export default function BloodBank() {
                     />
                   </div>
                 </div>
-                <button onClick={handleSearch} className="gradient-btn flex items-center gap-2">
+                <button onClick={handleSearch} className="gradient-btn flex items-center gap-2 active:scale-[0.97]">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
@@ -189,7 +194,7 @@ export default function BloodBank() {
                 </button>
                 <button
                   onClick={() => setShowRegister(!showRegister)}
-                  className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                  className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition-all duration-300 active:scale-[0.97] ${
                     showRegister
                       ? 'bg-gray-200 text-gray-700'
                       : 'bg-gradient-to-r from-emerald-500 to-green-600 text-white shadow-lg shadow-emerald-200 hover:shadow-xl hover:-translate-y-0.5'
@@ -237,7 +242,7 @@ export default function BloodBank() {
                     </label>
                   </div>
                 </div>
-                <button type="submit" className="mt-4 gradient-btn bg-gradient-to-r from-emerald-500 to-green-600 flex items-center gap-2">
+                <button type="submit" className="mt-4 gradient-btn bg-gradient-to-r from-emerald-500 to-green-600 flex items-center gap-2 active:scale-[0.97]">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
@@ -253,9 +258,9 @@ export default function BloodBank() {
                 <p className="text-gray-500 mt-3 text-sm">Searching donors...</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              <StaggerChildren staggerDelay={100} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {donors.map((d) => (
-                  <div key={d.donor_id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:-translate-y-1 transition-all duration-300">
+                  <div key={d.donor_id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:-translate-y-1 active:scale-[0.98] transition-all duration-300">
                     <div className="flex items-start gap-4">
                       <div className="w-14 h-14 bg-gradient-to-br from-red-400 to-rose-500 rounded-2xl flex items-center justify-center text-white font-bold text-lg flex-shrink-0 shadow-lg shadow-red-200">
                         {d.blood_group}
@@ -295,7 +300,7 @@ export default function BloodBank() {
                     <p className="text-gray-400 text-sm mt-1">Try a different search or register as a donor</p>
                   </div>
                 )}
-              </div>
+              </StaggerChildren>
             )}
           </div>
         )}
@@ -306,7 +311,7 @@ export default function BloodBank() {
             {user?.role === 'patient' && (
               <button
                 onClick={() => setShowRequest(!showRequest)}
-                className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
+                className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition-all duration-300 active:scale-[0.97] ${
                   showRequest
                     ? 'bg-gray-200 text-gray-700'
                     : 'bg-gradient-to-r from-red-500 to-rose-600 text-white shadow-lg shadow-red-200 hover:shadow-xl hover:-translate-y-0.5'
@@ -356,7 +361,7 @@ export default function BloodBank() {
                     <textarea className="input-modern" placeholder="Additional notes for the blood request" rows={2} value={rForm.notes} onChange={(e) => setRForm({ ...rForm, notes: e.target.value })} />
                   </div>
                 </div>
-                <button type="submit" className="mt-4 gradient-btn bg-gradient-to-r from-red-500 to-rose-600 flex items-center gap-2">
+                <button type="submit" className="mt-4 gradient-btn bg-gradient-to-r from-red-500 to-rose-600 flex items-center gap-2 active:scale-[0.97]">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                   </svg>
@@ -365,11 +370,11 @@ export default function BloodBank() {
               </form>
             )}
 
-            <div className="space-y-4">
+            <StaggerChildren staggerDelay={100} className="space-y-4">
               {requests.map((r) => {
                 const urgency = r.urgency?.toLowerCase() || 'normal';
                 return (
-                  <div key={r.request_id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all duration-300">
+                  <div key={r.request_id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md active:scale-[0.99] transition-all duration-300">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                       <div className="flex items-start gap-4">
                         <div className="w-14 h-14 bg-gradient-to-br from-red-400 to-rose-500 rounded-2xl flex items-center justify-center text-white font-bold text-lg flex-shrink-0 shadow-lg shadow-red-200">
@@ -421,7 +426,7 @@ export default function BloodBank() {
                   <p className="text-gray-400 text-sm mt-1">Blood requests will appear here</p>
                 </div>
               )}
-            </div>
+            </StaggerChildren>
           </div>
         )}
       </div>

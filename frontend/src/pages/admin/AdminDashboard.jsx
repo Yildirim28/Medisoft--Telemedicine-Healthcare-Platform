@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getAdminDashboard } from '../../api';
+import { FadeIn, StaggerChildren, CountUpNumber } from '../../components/AnimatedPage';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState(null);
@@ -35,12 +36,14 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Admin Dashboard</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <FadeIn delay={0}>
+        <h1 className="text-2xl font-bold text-gray-900 mb-6">Admin Dashboard</h1>
+      </FadeIn>
+      <StaggerChildren staggerDelay={80} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {cards.map((card) => (
-          <div key={card.label} className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow">
+          <div key={card.label} className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md hover:-translate-y-1 active:scale-[0.98] transition-all duration-300 cursor-default">
             <div className="flex items-center gap-3">
-              <div className={'w-10 h-10 rounded-lg bg-gradient-to-br ' + card.color + ' flex items-center justify-center'}>
+              <div className={'w-10 h-10 rounded-lg bg-gradient-to-br ' + card.color + ' flex items-center justify-center group-hover:rotate-3 transition-transform duration-300'}>
                 <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                   <path d={card.icon} />
                 </svg>
@@ -52,11 +55,11 @@ export default function AdminDashboard() {
             </div>
           </div>
         ))}
-      </div>
+      </StaggerChildren>
 
       {/* Recent Activity */}
       <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+        <FadeIn delay={300} className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow duration-300">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Recent Appointments</h2>
           {stats.recent_appointments && stats.recent_appointments.length > 0 ? (
             <div className="space-y-3">
@@ -77,9 +80,9 @@ export default function AdminDashboard() {
           ) : (
             <p className="text-sm text-gray-500">No recent appointments</p>
           )}
-        </div>
+        </FadeIn>
 
-        <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+        <FadeIn delay={450} className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow duration-300">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Recent Blood Requests</h2>
           {stats.recent_blood_requests && stats.recent_blood_requests.length > 0 ? (
             <div className="space-y-3">
@@ -100,7 +103,7 @@ export default function AdminDashboard() {
           ) : (
             <p className="text-sm text-gray-500">No recent blood requests</p>
           )}
-        </div>
+        </FadeIn>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { getAmbulanceBookings, createAmbulanceBooking, updateAmbulanceStatus } from '../api';
 import { useAuth } from '../context/AuthContext';
+import { FadeIn, StaggerChildren } from '../components/AnimatedPage';
 
 const STATUS_STYLES = {
   pending: { bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-200', dot: 'bg-amber-400' },
@@ -60,6 +61,7 @@ export default function Ambulance() {
     <Layout>
       <div className="max-w-5xl mx-auto">
         {/* Header */}
+        <FadeIn delay={0}>
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-500 to-rose-600 flex items-center justify-center">
@@ -75,7 +77,7 @@ export default function Ambulance() {
           {user?.role === 'patient' && (
             <button
               onClick={() => setShowForm(!showForm)}
-              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 active:scale-[0.97] ${
                 showForm
                   ? 'bg-red-50 text-red-600 border border-red-200 hover:bg-red-100'
                   : 'bg-gradient-to-r from-red-500 to-rose-600 text-white shadow-md hover:shadow-lg'
@@ -92,10 +94,11 @@ export default function Ambulance() {
             </button>
           )}
         </div>
+        </FadeIn>
 
         {/* Message */}
         {msg && (
-          <div className={`p-4 rounded-xl mb-6 text-sm font-medium ${
+          <div className={`p-4 rounded-xl mb-6 text-sm font-medium animate-bounce-in ${
             msg.includes('success')
               ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
               : 'bg-red-50 text-red-600 border border-red-200'
@@ -148,7 +151,7 @@ export default function Ambulance() {
                 <textarea placeholder="Any special instructions..." className="input-modern" rows={2} value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} />
               </div>
             </div>
-            <button type="submit" className="mt-4 gradient-btn bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 inline-flex items-center gap-2">
+            <button type="submit" className="mt-4 gradient-btn bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 inline-flex items-center gap-2 active:scale-[0.97]">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
@@ -177,11 +180,11 @@ export default function Ambulance() {
         )}
 
         {/* Bookings List */}
-        <div className="space-y-3">
+        <StaggerChildren staggerDelay={80}>
           {bookings.map((b) => {
             const st = statusStyle(b.status);
             return (
-              <div key={b.booking_id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition-all duration-300">
+              <div key={b.booking_id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition-all duration-300 active:scale-[0.99]">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                   <div className="flex items-start gap-4 flex-1">
                     <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-red-100 to-rose-100 flex items-center justify-center flex-shrink-0">
@@ -228,7 +231,7 @@ export default function Ambulance() {
                       <>
                         <button
                           onClick={() => handleStatus(b.booking_id, 'assigned')}
-                          className="inline-flex items-center gap-1.5 bg-blue-500 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-600 transition-all duration-200 shadow-sm"
+                          className="inline-flex items-center gap-1.5 bg-blue-500 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-600 transition-all duration-200 shadow-sm active:scale-[0.97]"
                         >
                           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -237,7 +240,7 @@ export default function Ambulance() {
                         </button>
                         <button
                           onClick={() => handleStatus(b.booking_id, 'cancelled')}
-                          className="inline-flex items-center gap-1.5 bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded-xl text-sm font-medium hover:bg-red-100 transition-all duration-200"
+                          className="inline-flex items-center gap-1.5 bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded-xl text-sm font-medium hover:bg-red-100 transition-all duration-200 active:scale-[0.97]"
                         >
                           Cancel
                         </button>
@@ -246,7 +249,7 @@ export default function Ambulance() {
                     {user?.role !== 'patient' && b.status === 'assigned' && (
                       <button
                         onClick={() => handleStatus(b.booking_id, 'completed')}
-                        className="inline-flex items-center gap-1.5 bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-emerald-600 transition-all duration-200 shadow-sm"
+                        className="inline-flex items-center gap-1.5 bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-emerald-600 transition-all duration-200 shadow-sm active:scale-[0.97]"
                       >
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -259,7 +262,7 @@ export default function Ambulance() {
               </div>
             );
           })}
-        </div>
+        </StaggerChildren>
       </div>
     </Layout>
   );

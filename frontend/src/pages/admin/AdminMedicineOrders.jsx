@@ -3,6 +3,7 @@ import {
   getAdminMedicineOrders,
   updateAdminMedicineOrder,
 } from '../../api';
+import { FadeIn } from '../../components/AnimatedPage';
 
 export default function AdminMedicineOrders() {
   var [orders, setOrders] = useState([]);
@@ -40,11 +41,14 @@ export default function AdminMedicineOrders() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Medicine Orders</h1>
-      </div>
+      <FadeIn delay={0}>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold text-gray-900">Medicine Orders</h1>
+        </div>
+      </FadeIn>
 
-      <div className="flex flex-col md:flex-row gap-4 mb-4">
+      <FadeIn delay={100}>
+        <div className="flex flex-col md:flex-row gap-4 mb-4">
         <select
           value={statusFilter}
           onChange={function (e) { setStatusFilter(e.target.value); }}
@@ -58,6 +62,7 @@ export default function AdminMedicineOrders() {
           <option value="Cancelled">Cancelled</option>
         </select>
       </div>
+      </FadeIn>
 
       {loading ? (
         <div className="flex items-center justify-center h-40">
@@ -83,9 +88,9 @@ export default function AdminMedicineOrders() {
               {orders.length === 0 && (
                 <tr><td colSpan={9} className="px-4 py-8 text-center text-gray-400">No medicine orders found</td></tr>
               )}
-              {orders.map(function (o) {
+              {orders.map(function (o, idx) {
                 return (
-                  <tr key={o.order_id} className="border-b hover:bg-gray-50">
+                  <tr key={o.order_id} className="border-b hover:bg-gray-50 animate-fadeInUp" style={{ animationDelay: (idx * 60) + 'ms', animationFillMode: 'forwards', opacity: 0 }}>
                     <td className="px-4 py-3">#{o.order_id}</td>
                     <td className="px-4 py-3 font-medium">{o.patient_name || '-'}</td>
                     <td className="px-4 py-3">{o.medicine_name || '-'}</td>

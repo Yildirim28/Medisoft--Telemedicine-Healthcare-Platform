@@ -3,6 +3,7 @@ import {
   getAdminAppointments,
   updateAdminAppointment,
 } from '../../api';
+import { FadeIn } from '../../components/AnimatedPage';
 
 export default function AdminAppointments() {
   var [appointments, setAppointments] = useState([]);
@@ -34,11 +35,14 @@ export default function AdminAppointments() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Appointments</h1>
-      </div>
+      <FadeIn delay={0}>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold text-gray-900">Appointments</h1>
+        </div>
+      </FadeIn>
 
-      <div className="flex flex-col md:flex-row gap-4 mb-4">
+      <FadeIn delay={100}>
+        <div className="flex flex-col md:flex-row gap-4 mb-4">
         <input
           type="text"
           placeholder="Search by patient or doctor..."
@@ -58,6 +62,7 @@ export default function AdminAppointments() {
           <option value="Cancelled">Cancelled</option>
         </select>
       </div>
+      </FadeIn>
 
       {loading ? (
         <p className="text-gray-500">Loading...</p>
@@ -79,7 +84,7 @@ export default function AdminAppointments() {
               {appointments.length === 0 && (
                 <tr><td colSpan={7} className="px-4 py-8 text-center text-gray-400">No appointments found</td></tr>
               )}
-              {appointments.map(function (a) {
+              {appointments.map(function (a, idx) {
                 var statusColors = {
                   Pending: 'bg-yellow-100 text-yellow-700',
                   Confirmed: 'bg-blue-100 text-blue-700',
@@ -87,7 +92,7 @@ export default function AdminAppointments() {
                   Cancelled: 'bg-gray-100 text-gray-600',
                 };
                 return (
-                  <tr key={a.appointment_id} className="border-b hover:bg-gray-50">
+                  <tr key={a.appointment_id} className="border-b hover:bg-gray-50 animate-fadeInUp" style={{ animationDelay: (idx * 60) + 'ms', animationFillMode: 'forwards', opacity: 0 }}>
                     <td className="px-4 py-3">#{a.appointment_id}</td>
                     <td className="px-4 py-3 font-medium">{a.patient_name || a.user_name || '-'}</td>
                     <td className="px-4 py-3">{a.doctor_name || '-'}</td>

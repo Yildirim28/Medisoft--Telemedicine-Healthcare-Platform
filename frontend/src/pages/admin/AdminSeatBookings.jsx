@@ -3,6 +3,7 @@ import {
   getAdminSeatBookings,
   updateAdminSeatBooking,
 } from '../../api';
+import { FadeIn } from '../../components/AnimatedPage';
 
 export default function AdminSeatBookings() {
   var [bookings, setBookings] = useState([]);
@@ -34,11 +35,14 @@ export default function AdminSeatBookings() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Seat Bookings</h1>
-      </div>
+      <FadeIn delay={0}>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold text-gray-900">Seat Bookings</h1>
+        </div>
+      </FadeIn>
 
-      <div className="flex flex-col md:flex-row gap-4 mb-4">
+      <FadeIn delay={100}>
+        <div className="flex flex-col md:flex-row gap-4 mb-4">
         <input
           type="text"
           placeholder="Search by patient or seat..."
@@ -58,6 +62,7 @@ export default function AdminSeatBookings() {
           <option value="Cancelled">Cancelled</option>
         </select>
       </div>
+      </FadeIn>
 
       {loading ? (
         <p className="text-gray-500">Loading...</p>
@@ -80,7 +85,7 @@ export default function AdminSeatBookings() {
               {bookings.length === 0 && (
                 <tr><td colSpan={8} className="px-4 py-8 text-center text-gray-400">No seat bookings found</td></tr>
               )}
-              {bookings.map(function (b) {
+              {bookings.map(function (b, idx) {
                 var statusColors = {
                   Booked: 'bg-yellow-100 text-yellow-700',
                   'Checked-In': 'bg-blue-100 text-blue-700',
@@ -88,7 +93,7 @@ export default function AdminSeatBookings() {
                   Cancelled: 'bg-gray-100 text-gray-600',
                 };
                 return (
-                  <tr key={b.booking_id} className="border-b hover:bg-gray-50">
+                  <tr key={b.booking_id} className="border-b hover:bg-gray-50 animate-fadeInUp" style={{ animationDelay: (idx * 60) + 'ms', animationFillMode: 'forwards', opacity: 0 }}>
                     <td className="px-4 py-3">#{b.booking_id}</td>
                     <td className="px-4 py-3 font-medium">{b.user_name || '-'}</td>
                     <td className="px-4 py-3">

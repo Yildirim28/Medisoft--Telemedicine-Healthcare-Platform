@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import Layout from '../components/Layout';
+import { FadeIn, ScaleIn } from '../components/AnimatedPage';
 
 export default function PaymentSuccess() {
   const [searchParams] = useSearchParams();
@@ -22,9 +23,10 @@ export default function PaymentSuccess() {
   return (
     <Layout>
       <div className="max-w-lg mx-auto mt-12">
+        <ScaleIn delay={100}>
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 text-center">
           {status === 'verifying' ? (
-            <div className="space-y-4">
+            <div className="space-y-4 animate-fadeIn">
               <div className="w-20 h-20 bg-yellow-100 rounded-3xl flex items-center justify-center mx-auto animate-pulse">
                 <svg className="w-10 h-10 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -34,8 +36,8 @@ export default function PaymentSuccess() {
               <p className="text-gray-500">Please wait while we confirm your bKash payment.</p>
             </div>
           ) : (
-            <div className="space-y-4">
-              <div className="w-20 h-20 bg-emerald-100 rounded-3xl flex items-center justify-center mx-auto">
+            <div className="space-y-4 animate-fadeIn">
+              <div className="w-20 h-20 bg-emerald-100 rounded-3xl flex items-center justify-center mx-auto animate-bounce-in">
                 <svg className="w-10 h-10 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
@@ -54,7 +56,7 @@ export default function PaymentSuccess() {
 
               <Link
                 to="/payments"
-                className="gradient-btn inline-flex items-center gap-2 mt-6"
+                className="gradient-btn inline-flex items-center gap-2 mt-6 active:scale-95"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -64,6 +66,7 @@ export default function PaymentSuccess() {
             </div>
           )}
         </div>
+        </ScaleIn>
       </div>
     </Layout>
   );

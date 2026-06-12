@@ -5,6 +5,7 @@ import {
   updateAdminArticle,
   deleteAdminArticle,
 } from '../../api';
+import { FadeIn } from '../../components/AnimatedPage';
 
 export default function AdminArticles() {
   var [articles, setArticles] = useState([]);
@@ -65,30 +66,35 @@ export default function AdminArticles() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Articles</h1>
-        <button
-          onClick={function () { resetForm(); setShowForm(!showForm); }}
-          className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition text-sm font-medium"
-        >
-          {showForm ? 'Cancel' : '+ Add Article'}
-        </button>
-      </div>
+      <FadeIn delay={0}>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold text-gray-900">Articles</h1>
+          <button
+            onClick={function () { resetForm(); setShowForm(!showForm); }}
+            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition text-sm font-medium active:scale-[0.97]"
+          >
+            {showForm ? 'Cancel' : '+ Add Article'}
+          </button>
+        </div>
+      </FadeIn>
 
       {/* Search */}
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Search articles..."
-          value={search}
-          onChange={function (e) { setSearch(e.target.value); }}
-          className="w-full md:w-80 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-        />
-      </div>
+      <FadeIn delay={100}>
+        <div className="mb-4">
+          <input
+            type="text"
+            placeholder="Search articles..."
+            value={search}
+            onChange={function (e) { setSearch(e.target.value); }}
+            className="w-full md:w-80 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          />
+        </div>
+      </FadeIn>
 
       {/* Add/Edit Form */}
       {showForm && (
-        <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow p-6 mb-6 border">
+        <FadeIn delay={100}>
+        <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow p-6 mb-6 border animate-bounce-in">
           {error && <p className="text-red-600 text-sm mb-3">{error}</p>}
           <div className="space-y-4">
             <input
@@ -122,10 +128,11 @@ export default function AdminArticles() {
               required
             />
           </div>
-          <button type="submit" className="mt-4 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm font-medium">
+          <button type="submit" className="mt-4 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition text-sm font-medium active:scale-[0.97]">
             {editingArticle ? 'Update Article' : 'Add Article'}
           </button>
         </form>
+        </FadeIn>
       )}
 
       {loading ? (
@@ -147,9 +154,9 @@ export default function AdminArticles() {
               {articles.length === 0 && (
                 <tr><td colSpan={6} className="px-4 py-8 text-center text-gray-400">No articles found</td></tr>
               )}
-              {articles.map(function (a) {
+              {articles.map(function (a, idx) {
                 return (
-                  <tr key={a.article_id} className="border-b hover:bg-gray-50">
+                  <tr key={a.article_id} className="border-b hover:bg-gray-50 animate-fadeInUp" style={{ animationDelay: (idx * 60) + 'ms', animationFillMode: 'forwards', opacity: 0 }}>
                     <td className="px-4 py-3">{a.article_id}</td>
                     <td className="px-4 py-3 font-medium">{a.title}</td>
                     <td className="px-4 py-3">
@@ -161,8 +168,8 @@ export default function AdminArticles() {
                     <td className="px-4 py-3">{a.created_at ? new Date(a.created_at).toLocaleDateString() : '-'}</td>
                     <td className="px-4 py-3">
                       <div className="flex gap-2">
-                        <button onClick={function () { handleEdit(a); }} className="text-indigo-600 hover:text-indigo-800 text-xs font-medium">Edit</button>
-                        <button onClick={function () { handleDelete(a.article_id); }} className="text-red-600 hover:text-red-800 text-xs font-medium">Delete</button>
+                        <button onClick={function () { handleEdit(a); }} className="text-indigo-600 hover:text-indigo-800 text-xs font-medium active:scale-[0.97]">Edit</button>
+                        <button onClick={function () { handleDelete(a.article_id); }} className="text-red-600 hover:text-red-800 text-xs font-medium active:scale-[0.97]">Delete</button>
                       </div>
                     </td>
                   </tr>

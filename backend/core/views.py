@@ -1,4 +1,5 @@
 import json
+import functools
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login, logout
@@ -28,6 +29,7 @@ def parse_json(request):
         return {}
 
 def login_required_api(view_func):
+    @functools.wraps(view_func)
     def _wrapped_view(request, *args, **kwargs):
         if not request.user.is_authenticated:
             return error_response("Authentication required. Please log in.", status=401)
@@ -67,7 +69,7 @@ def register_view(request):
             profile_photo=data.get('profile_photo', '')
         )
 
-        ADMIN_SECRET_CODE = 'medisoft-admin-2024'
+        ADMIN_SECRET_CODE = 'medisoft-admin-2026'
 
         if role == 'patient':
             Patient.objects.create(

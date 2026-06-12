@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Layout from '../components/Layout';
 import { useAuth } from '../context/AuthContext';
 import { updateProfile } from '../api';
+import { FadeIn, StaggerChildren } from '../components/AnimatedPage';
 
 const ROLE_COLORS = {
   patient: { bg: 'bg-blue-100', text: 'text-blue-700', border: 'border-blue-200', gradient: 'from-blue-400 to-indigo-500' },
@@ -50,28 +51,30 @@ export default function Profile() {
     <Layout>
       <div className="max-w-3xl mx-auto space-y-6">
         {/* Profile Header */}
-        <div className="bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-500 rounded-2xl p-8 text-white relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10" />
-          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-8 -mb-8" />
-          <div className="relative flex items-center gap-6">
-            {/* Avatar */}
-            <div className={`w-20 h-20 bg-gradient-to-br ${roleStyle.gradient} rounded-2xl flex items-center justify-center text-white text-2xl font-bold shadow-lg border-2 border-white/30`}>
-              {user.full_name?.charAt(0)?.toUpperCase() || 'U'}
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold">{user.full_name}</h1>
-              <p className="text-indigo-100 mt-1">{user.email}</p>
-              <span className={`inline-flex items-center gap-1.5 mt-2 text-xs font-medium px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm`}>
-                <span className="w-1.5 h-1.5 bg-white rounded-full" />
-                {user.role?.charAt(0).toUpperCase() + user.role?.slice(1)}
-              </span>
+        <FadeIn delay={0}>
+          <div className="bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-500 rounded-2xl p-8 text-white relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10" />
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full -ml-8 -mb-8" />
+            <div className="relative flex items-center gap-6">
+              {/* Avatar */}
+              <div className={`w-20 h-20 bg-gradient-to-br ${roleStyle.gradient} rounded-2xl flex items-center justify-center text-white text-2xl font-bold shadow-lg border-2 border-white/30`}>
+                {user.full_name?.charAt(0)?.toUpperCase() || 'U'}
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold">{user.full_name}</h1>
+                <p className="text-indigo-100 mt-1">{user.email}</p>
+                <span className={`inline-flex items-center gap-1.5 mt-2 text-xs font-medium px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm`}>
+                  <span className="w-1.5 h-1.5 bg-white rounded-full" />
+                  {user.role?.charAt(0).toUpperCase() + user.role?.slice(1)}
+                </span>
+              </div>
             </div>
           </div>
-        </div>
+        </FadeIn>
 
         {/* Message */}
         {msg && (
-          <div className={`p-4 rounded-xl text-sm font-medium flex items-center gap-2 ${
+          <div className={`p-4 rounded-xl text-sm font-medium flex items-center gap-2 animate-bounce-in ${
             msg.includes('success')
               ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
               : 'bg-red-50 text-red-700 border border-red-200'
@@ -109,7 +112,27 @@ export default function Profile() {
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FadeIn delay={200}>
+                <div className="flex items-center justify-between mb-8">
+                  <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                    <svg className="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    Personal Information
+                  </h2>
+                  <button
+                    onClick={() => setEditing(true)}
+                    className="gradient-btn-sm flex items-center gap-2 active:scale-[0.97] transition-all duration-200"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                    Edit
+                  </button>
+                </div>
+              </FadeIn>
+
+              <StaggerChildren staggerDelay={80} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[
                   { label: 'Full Name', value: user.full_name, icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' },
                   { label: 'Email', value: user.email, icon: 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z' },
@@ -130,7 +153,7 @@ export default function Profile() {
                     </div>
                   </div>
                 ))}
-              </div>
+              </StaggerChildren>
 
               {/* Doctor Details */}
               {user.role === 'doctor' && user.doctor_profile && (

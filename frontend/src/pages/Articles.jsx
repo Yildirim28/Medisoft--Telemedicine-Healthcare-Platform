@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { getArticles, getArticle, createArticle } from '../api';
 import { useAuth } from '../context/AuthContext';
+import { FadeIn, StaggerChildren } from '../components/AnimatedPage';
 
 const CATEGORY_STYLES = {
   general: 'from-gray-100 to-gray-50 text-gray-700 border-gray-200',
@@ -69,16 +70,19 @@ export default function Articles() {
     return (
       <Layout>
         <div className="max-w-3xl mx-auto">
+          <FadeIn delay={0}>
           <button
             onClick={() => setSelected(null)}
-            className="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-700 mb-6 font-medium text-sm transition-colors"
+            className="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-700 mb-6 font-medium text-sm transition-colors active:scale-[0.97]"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             Back to Articles
           </button>
+          </FadeIn>
 
+          <FadeIn delay={100}>
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             {/* Article Header */}
             <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 border-b border-gray-100">
@@ -129,6 +133,7 @@ export default function Articles() {
               )}
             </div>
           </div>
+          </FadeIn>
         </div>
       </Layout>
     );
@@ -139,6 +144,7 @@ export default function Articles() {
     <Layout>
       <div className="max-w-5xl mx-auto">
         {/* Header */}
+        <FadeIn delay={0}>
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
@@ -154,7 +160,7 @@ export default function Articles() {
           {user?.role !== 'patient' && (
             <button
               onClick={() => setShowAdd(!showAdd)}
-              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 active:scale-[0.97] ${
                 showAdd
                   ? 'bg-red-50 text-red-600 border border-red-200 hover:bg-red-100'
                   : 'bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-md hover:shadow-lg'
@@ -171,10 +177,11 @@ export default function Articles() {
             </button>
           )}
         </div>
+        </FadeIn>
 
         {/* Message */}
         {msg && (
-          <div className="p-4 rounded-xl mb-6 text-sm font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <div className="p-4 rounded-xl mb-6 text-sm font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 animate-bounce-in">
             <div className="flex items-center gap-2">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -210,7 +217,7 @@ export default function Articles() {
                 <input placeholder="e.g. health, tips, prevention" className="input-modern" value={form.tags} onChange={(e) => setForm({ ...form, tags: e.target.value })} />
               </div>
             </div>
-            <button type="submit" className="mt-4 gradient-btn bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 inline-flex items-center gap-2">
+            <button type="submit" className="mt-4 gradient-btn bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 inline-flex items-center gap-2 active:scale-[0.97]">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
               </svg>
@@ -239,6 +246,7 @@ export default function Articles() {
         )}
 
         {/* Articles Grid */}
+        <StaggerChildren staggerDelay={80}>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {articles.map((a) => {
             const catStyle = CATEGORY_STYLES[a.category] || CATEGORY_STYLES.general;
@@ -247,7 +255,7 @@ export default function Articles() {
               <div
                 key={a.article_id}
                 onClick={() => openArticle(a.article_id)}
-                className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 cursor-pointer hover:shadow-lg hover:border-purple-100 transition-all duration-300 hover:-translate-y-1 group"
+                className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 cursor-pointer hover:shadow-lg hover:border-purple-100 transition-all duration-300 hover:-translate-y-1 group active:scale-[0.98]"
               >
                 <div className="flex items-center gap-2 mb-3">
                   <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border bg-gradient-to-r ${catStyle}`}>
@@ -274,6 +282,7 @@ export default function Articles() {
             );
           })}
         </div>
+        </StaggerChildren>
       </div>
     </Layout>
   );

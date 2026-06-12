@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { getHospitals, createHospital, getSeatBookings, createSeatBooking, updateSeatBookingStatus } from '../api';
 import { useAuth } from '../context/AuthContext';
+import { FadeIn, StaggerChildren } from '../components/AnimatedPage';
 
 const SEAT_TYPES = [
   { value: 'General', icon: '🛏️', color: 'from-blue-100 to-blue-50' },
@@ -70,25 +71,27 @@ export default function Hospitals() {
     <Layout>
       <div className="max-w-5xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
-              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Hospitals & Seats</h1>
-              <p className="text-sm text-gray-500">{hospitals.length} hospitals available</p>
+        <FadeIn delay={0}>
+          <div className="mb-8">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+                <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">Hospitals & Seats</h1>
+                <p className="text-sm text-gray-500">{hospitals.length} hospitals available</p>
+              </div>
             </div>
           </div>
-        </div>
+        </FadeIn>
 
         {/* Tabs */}
         <div className="flex gap-2 mb-6">
           <button
             onClick={() => setTab('list')}
-            className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+            className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 active:scale-[0.97] ${
               tab === 'list'
                 ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-md'
                 : 'bg-white text-gray-600 border border-gray-200 hover:border-emerald-200 hover:text-emerald-600'
@@ -101,7 +104,7 @@ export default function Hospitals() {
           </button>
           <button
             onClick={() => setTab('bookings')}
-            className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+            className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 active:scale-[0.97] ${
               tab === 'bookings'
                 ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-md'
                 : 'bg-white text-gray-600 border border-gray-200 hover:border-emerald-200 hover:text-emerald-600'
@@ -116,7 +119,7 @@ export default function Hospitals() {
 
         {/* Success/Error Message */}
         {msg && (
-          <div className={`p-4 rounded-xl mb-6 text-sm font-medium ${
+          <div className={`p-4 rounded-xl mb-6 text-sm font-medium animate-bounce-in ${
             msg.includes('success')
               ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
               : 'bg-red-50 text-red-600 border border-red-200'

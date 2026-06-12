@@ -1,4 +1,6 @@
 import json
+import functools
+from decimal import Decimal, InvalidOperation
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q, Count, Sum
@@ -48,6 +50,7 @@ def parse_json(request):
 
 def admin_required_api(view_func):
     """Decorator that requires admin role."""
+    @functools.wraps(view_func)
     def _wrapped_view(request, *args, **kwargs):
         if not request.user.is_authenticated:
             return error_response("Authentication required.", status=401)
@@ -182,7 +185,7 @@ def admin_users_view(request):
     if request.method == 'GET':
         role_filter = request.GET.get('role', '')
         search = request.GET.get('search', '')
-        users = User.objects.all().order_by('-created_at')
+        users = User.objects.all().order_by('user_id')
         if role_filter:
             users = users.filter(role=role_filter)
         if search:
@@ -318,23 +321,39 @@ def admin_doctors_view(request):
         if User.objects.filter(email=email).exists():
             return error_response("A user with this email already exists.")
 
-        user = User.objects.create_user(
-            email=email, full_name=full_name, phone=phone,
-            password=password, role='doctor'
-        )
+        if User.objects.filter(phone=phone).exists():
+            return error_response("A user with this phone number already exists.")
 
-        doctor = Doctor.objects.create(
-            user=user,
-            specialization=data.get('specialization', 'General'),
-            license_number=data.get('license_number', f"LIC-{user.user_id}"),
-            qualifications=data.get('qualifications', ''),
-            experience_years=data.get('experience_years', 0),
-            consultation_fee=data.get('consultation_fee', 500),
-            available_days=data.get('available_days', 'Mon-Fri'),
-            available_from=data.get('available_from', '09:00'),
-            available_to=data.get('available_to', '17:00'),
-        )
-        return success_response(doctor.to_dict(), status=201)
+        license_number = data.get('license_number', '') or f"LIC-{timezone.now().timestamp()}"
+        if Doctor.objects.filter(license_number=license_number).exists():
+            return error_response("A doctor with this license number already exists.")
+
+        try:
+            user = User.objects.create_user(
+                email=email, full_name=full_name, phone=phone,
+                password=password, role='doctor'
+            )
+
+            try:
+                fee = Decimal(str(data.get('consultation_fee', 500) or 500))
+            except (InvalidOperation, ValueError):
+                fee = Decimal('500.00')
+
+            doctor = Doctor.objects.create(
+                user=user,
+                specialization=data.get('specialization', 'General'),
+                license_number=license_number,
+                qualifications=data.get('qualifications', ''),
+                experience_years=int(data.get('experience_years', 0) or 0),
+                consultation_fee=fee,
+                available_days=data.get('available_days', 'Mon-Fri'),
+                available_from=data.get('available_from', '09:00') or '09:00',
+                available_to=data.get('available_to', '17:00') or '17:00',
+                is_verified=bool(data.get('is_verified', False)),
+            )
+            return success_response(doctor.to_dict(), status=201)
+        except Exception as e:
+            return error_response(f"Failed to create doctor: {str(e)}")
 
     return error_response("Method not allowed.", status=405)
 
@@ -353,10 +372,23 @@ def admin_doctor_detail_view(request, doctor_id):
     elif request.method == 'PUT':
         data = parse_json(request)
         for field in ['specialization', 'qualifications', 'license_number', 'experience_years',
-                       'consultation_fee', 'available_days', 'available_from',
+                       'available_days', 'available_from',
                        'available_to']:
             if field in data:
-                setattr(doctor, field, data[field])
+                if field == 'experience_years':
+                    setattr(doctor, field, int(data[field] or 0))
+                else:
+                    setattr(doctor, field, data[field])
+
+        if 'consultation_fee' in data:
+            try:
+                doctor.consultation_fee = Decimal(str(data['consultation_fee'] or 500))
+            except (InvalidOperation, ValueError):
+                pass
+
+        if 'is_verified' in data:
+            doctor.is_verified = bool(data['is_verified'])
+
         doctor.save()
 
         # Also update user info if provided
