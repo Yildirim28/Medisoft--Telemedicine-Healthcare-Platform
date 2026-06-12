@@ -1,5 +1,7 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ScrollReveal, FadeIn, StaggerChildren, CountUpNumber } from '../components/AnimatedPage';
+import { getLandingStats } from '../api';
 
 const services = [
   {
@@ -68,12 +70,6 @@ const services = [
   },
 ];
 
-const stats = [
-  { value: '50+', label: 'Verified Doctors' },
-  { value: '50+', label: 'Partner Hospitals' },
-  { value: '100+', label: 'Happy Patients' },
-  { value: '24', label: 'Emergency Service' },
-];
 
 const testimonials = [
   {
@@ -153,6 +149,33 @@ function ServiceIcon({ d }) {
 }
 
 export default function Landing() {
+  const [stats, setStats] = useState([
+    { value: '0', label: 'Verified Doctors' },
+    { value: '0', label: 'Partner Hospitals' },
+    { value: '0', label: 'Happy Patients' },
+    { value: '0', label: 'Emergency Service' },
+  ]);
+
+  useEffect(() => {
+    let cancelled = false;
+    getLandingStats()
+      .then((res) => {
+        const data = res?.data || res;
+        if (!cancelled && data) {
+          setStats([
+            { value: String(data.doctors ?? 0) + '+', label: 'Verified Doctors' },
+            { value: String(data.hospitals ?? 0) + '+', label: 'Partner Hospitals' },
+            { value: String(data.patients ?? 0) + '+', label: 'Happy Patients' },
+            { value: String(data.services ?? 24), label: 'Emergency Service' },
+          ]);
+        }
+      })
+      .catch(() => {
+        /* keep fallback stats */
+      });
+    return () => { cancelled = true; };
+  }, []);
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
       {/* Navigation */}

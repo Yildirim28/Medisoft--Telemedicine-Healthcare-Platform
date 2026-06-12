@@ -47,6 +47,7 @@ urlpatterns = [
     path('payments/bkash/ipn/', views.bkash_ipn_view, name='bkash_ipn'),
     path('payments/prices/', views.get_service_prices_view, name='service_prices'),
     path('dashboard-stats/', views.dashboard_stats_view, name='dashboard_stats'),
+    path('landing-stats/', views.landing_stats_view, name='landing_stats'),
 ]
 
 # ══════════════════════════════════════════════════════════════════════

@@ -127,6 +127,9 @@ export const getServicePrices = () =>
 export const getDashboardStats = () =>
   api.get('/dashboard-stats/').then((r) => r.data);
 
+export const getLandingStats = () =>
+  api.get('/landing-stats/').then((r) => r.data);
+
 export const initBkashPayment = (data) =>
   api.post('/payments/bkash/init/', data).then((r) => r.data);
 

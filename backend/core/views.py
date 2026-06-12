@@ -1353,3 +1353,24 @@ def dashboard_stats_view(request):
         'hospitals': hospitals_count,
         'patients': patients_count,
     })
+
+
+@csrf_exempt
+def landing_stats_view(request):
+    """
+    GET /landing-stats/
+    Public endpoint for landing page stats — no auth required.
+    """
+    if request.method != 'GET':
+        return error_response("Only GET requests are allowed.", status=405)
+
+    doctors_count = Doctor.objects.count()
+    hospitals_count = Hospital.objects.count()
+    patients_count = User.objects.filter(role='patient').count()
+
+    return success_response({
+        'doctors': doctors_count,
+        'hospitals': hospitals_count,
+        'patients': patients_count,
+        'services': 24,
+    })
