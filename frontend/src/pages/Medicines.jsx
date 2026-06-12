@@ -8,7 +8,7 @@ const CATEGORY_ICONS = {
   'Antibiotics': '🦠',
   'Vitamins': '🌿',
   'Allergy': '🤧',
-  'Digestive': '🫁',
+  'digestive': '🫁',
   'Heart': '❤️',
   'default': '💊',
 };
