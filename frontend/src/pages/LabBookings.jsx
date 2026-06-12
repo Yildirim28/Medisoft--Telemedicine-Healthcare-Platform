@@ -12,7 +12,7 @@ const TEST_TYPES = [
   { value: 'Urine Test', icon: '🧪', color: 'from-amber-100 to-amber-50' },
   { value: 'ECG', icon: '💓', color: 'from-pink-100 to-pink-50' },
   { value: 'Ultrasound', icon: '🔊', color: 'from-teal-100 to-teal-50' },
-  { value: 'COVID Test', icon: '🦠', color: 'from-orange-100 to-orange-50' },
+  { value: 'Covid Test', icon: '🦠', color: 'from-orange-100 to-orange-50' },
   { value: 'Other', icon: '🔬', color: 'from-gray-100 to-gray-50' },
 ];
 
