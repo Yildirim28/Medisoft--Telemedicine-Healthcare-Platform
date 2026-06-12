@@ -34,7 +34,7 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50 p-4 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4 relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 translate-x-1/2 -translate-y-1/2 animate-float" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 -translate-x-1/2 translate-y-1/2 animate-float" style={{ animationDelay: '1.5s' }} />
@@ -42,7 +42,7 @@ export default function Register() {
       <div className="w-full max-w-lg relative z-10">
         {/* Back to Home */}
         <FadeIn delay={0}>
-          <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-indigo-600 transition mb-6 active:scale-95">
+          <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition mb-6 active:scale-95">
             <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
               <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
@@ -64,18 +64,18 @@ export default function Register() {
 
         {/* Card */}
         <FadeIn delay={200}>
-          <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-white/20 p-8 hover:shadow-2xl transition-shadow duration-300">
-            <h2 className="text-xl font-bold text-gray-800 mb-1">Create Account</h2>
-            <p className="text-sm text-gray-500 mb-6">Join our healthcare community</p>
+          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-3xl shadow-xl border border-white/20 dark:border-gray-700/50 p-8 hover:shadow-2xl transition-shadow duration-300">
+            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-1">Create Account</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">Join our healthcare community</p>
 
             {/* Step indicator */}
             <div className="flex items-center gap-2 mb-6">
-              <div className={`flex-1 h-1.5 rounded-full ${step >= 1 ? 'bg-gradient-to-r from-indigo-500 to-purple-600' : 'bg-gray-200'} transition-all duration-500 ease-out`} />
-              <div className={`flex-1 h-1.5 rounded-full ${step >= 2 ? 'bg-gradient-to-r from-indigo-500 to-purple-600' : 'bg-gray-200'} transition-all duration-500 ease-out`} />
+              <div className={`flex-1 h-1.5 rounded-full ${step >= 1 ? 'bg-gradient-to-r from-indigo-500 to-purple-600' : 'bg-gray-200 dark:bg-gray-600'} transition-all duration-500 ease-out`} />
+              <div className={`flex-1 h-1.5 rounded-full ${step >= 2 ? 'bg-gradient-to-r from-indigo-500 to-purple-600' : 'bg-gray-200 dark:bg-gray-600'} transition-all duration-500 ease-out`} />
             </div>
 
             {error && (
-              <div className="bg-red-50 border border-red-100 text-red-600 p-3 rounded-xl mb-5 text-sm flex items-center gap-2 animate-bounce-in">
+              <div className="bg-red-50 dark:bg-red-900/30 border border-red-100 dark:border-red-800 text-red-600 dark:text-red-400 p-3 rounded-xl mb-5 text-sm flex items-center gap-2 animate-bounce-in">
                 <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="10" />
                   <line x1="15" y1="9" x2="9" y2="15" />
@@ -88,23 +88,23 @@ export default function Register() {
             {step === 1 && (
               <div className="space-y-4">
                 <FadeIn delay={300}>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Full Name</label>
-                  <input type="text" name="full_name" required placeholder="John Doe" className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300" value={form.full_name} onChange={handleChange} />
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Full Name</label>
+                  <input type="text" name="full_name" required placeholder="John Doe" className="w-full border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300 dark:text-gray-100" value={form.full_name} onChange={handleChange} />
                 </FadeIn>
                 <FadeIn delay={380}>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
-                  <input type="email" name="email" required placeholder="you@example.com" className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300" value={form.email} onChange={handleChange} />
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Email</label>
+                  <input type="email" name="email" required placeholder="you@example.com" className="w-full border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300 dark:text-gray-100" value={form.email} onChange={handleChange} />
                 </FadeIn>
                 <FadeIn delay={460}>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Phone</label>
-                  <input type="text" name="phone" required placeholder="+880 1XXX-XXXXXX" className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300" value={form.phone} onChange={handleChange} />
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Phone</label>
+                  <input type="text" name="phone" required placeholder="+880 1XXX-XXXXXX" className="w-full border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300 dark:text-gray-100" value={form.phone} onChange={handleChange} />
                 </FadeIn>
                 <FadeIn delay={540}>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
-                  <input type="password" name="password" required placeholder="Min 6 characters" className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300" value={form.password} onChange={handleChange} />
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Password</label>
+                  <input type="password" name="password" required placeholder="Min 6 characters" className="w-full border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300 dark:text-gray-100" value={form.password} onChange={handleChange} />
                 </FadeIn>
                 <FadeIn delay={620}>
-                  <label className="block text-sm font-medium text-gray-700 mb-1.5">I am a</label>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">I am a</label>
                   <div className="grid grid-cols-2 gap-3">
                     {ROLES.map((r) => (
                       <button
@@ -113,8 +113,8 @@ export default function Register() {
                         onClick={() => setForm({ ...form, role: r })}
                         className={`flex items-center justify-center gap-2 py-3 rounded-xl border-2 text-sm font-medium transition-all duration-200 active:scale-[0.97] ${
                           form.role === r
-                            ? 'border-indigo-500 bg-indigo-50 text-indigo-700 shadow-md'
-                            : 'border-gray-200 bg-gray-50 text-gray-600 hover:border-gray-300'
+                            ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 shadow-md'
+                            : 'border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-500'
                         }`}
                       >
                         {r === 'patient' ? (
@@ -151,13 +151,13 @@ export default function Register() {
                 {form.role === 'patient' && (
                   <>
                     <FadeIn delay={200}>
-                      <label className="block text-sm font-medium text-gray-700 mb-1.5">Date of Birth</label>
-                      <input type="date" name="date_of_birth" className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300" value={form.date_of_birth} onChange={handleChange} />
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Date of Birth</label>
+                      <input type="date" name="date_of_birth" className="w-full border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300 dark:text-gray-100" value={form.date_of_birth} onChange={handleChange} />
                     </FadeIn>
                     <FadeIn delay={300} className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Gender</label>
-                        <select name="gender" className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300" value={form.gender} onChange={handleChange}>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Gender</label>
+                        <select name="gender" className="w-full border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300 dark:text-gray-100" value={form.gender} onChange={handleChange}>
                           <option value="">Select</option>
                           <option value="Male">Male</option>
                           <option value="Female">Female</option>
@@ -165,33 +165,33 @@ export default function Register() {
                         </select>
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1.5">Blood Group</label>
-                        <input type="text" name="blood_group" placeholder="A+" className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300" value={form.blood_group} onChange={handleChange} />
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Blood Group</label>
+                        <input type="text" name="blood_group" placeholder="A+" className="w-full border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300 dark:text-gray-100" value={form.blood_group} onChange={handleChange} />
                       </div>
                     </FadeIn>
                     <FadeIn delay={400}>
-                      <label className="block text-sm font-medium text-gray-700 mb-1.5">Address</label>
-                      <input type="text" name="address" placeholder="Street address" className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300" value={form.address} onChange={handleChange} />
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Address</label>
+                      <input type="text" name="address" placeholder="Street address" className="w-full border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300 dark:text-gray-100" value={form.address} onChange={handleChange} />
                     </FadeIn>
                     <FadeIn delay={500}>
-                      <label className="block text-sm font-medium text-gray-700 mb-1.5">City</label>
-                      <input type="text" name="city" placeholder="Dhaka" className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300" value={form.city} onChange={handleChange} />
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">City</label>
+                      <input type="text" name="city" placeholder="Dhaka" className="w-full border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300 dark:text-gray-100" value={form.city} onChange={handleChange} />
                     </FadeIn>
                   </>
                 )}
                 {form.role === 'admin' && (
                   <>
                     <FadeIn delay={200}>
-                      <label className="block text-sm font-medium text-gray-700 mb-1.5">Admin Secret Code</label>
-                      <input type="password" name="admin_code" required placeholder="Enter admin invite code" className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300" value={form.admin_code} onChange={handleChange} />
-                      <p className="text-xs text-gray-400 mt-1">Contact the system administrator to get the invite code.</p>
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Admin Secret Code</label>
+                      <input type="password" name="admin_code" required placeholder="Enter admin invite code" className="w-full border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300 dark:text-gray-100" value={form.admin_code} onChange={handleChange} />
+                      <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Contact the system administrator to get the invite code.</p>
                     </FadeIn>
                   </>
                 )}
                 <FadeIn delay={600} className="flex gap-3 mt-4">
                   <button
                     onClick={() => setStep(1)}
-                    className="flex-1 border-2 border-gray-200 text-gray-600 py-3 rounded-xl hover:bg-gray-50 transition-all duration-200 font-medium text-sm flex items-center justify-center gap-2 active:scale-[0.97]"
+                    className="flex-1 border-2 border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 py-3 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 font-medium text-sm flex items-center justify-center gap-2 active:scale-[0.97]"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                       <path d="M19 12H5M12 19l-7-7 7-7" />
@@ -220,7 +220,7 @@ export default function Register() {
             )}
 
             <FadeIn delay={800} className="mt-6 text-center">
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
                 Already have an account?{' '}
                 <Link to="/login" className="text-indigo-600 font-semibold hover:text-indigo-700 transition">
                   Sign in

@@ -73,7 +73,7 @@ export default function Articles() {
           <FadeIn delay={0}>
           <button
             onClick={() => setSelected(null)}
-            className="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-700 mb-6 font-medium text-sm transition-colors active:scale-[0.97]"
+            className="inline-flex items-center gap-2 text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 mb-6 font-medium text-sm transition-colors active:scale-[0.97]"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -83,17 +83,17 @@ export default function Articles() {
           </FadeIn>
 
           <FadeIn delay={100}>
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm overflow-hidden">
             {/* Article Header */}
-            <div className="bg-gradient-to-br from-indigo-50 to-purple-50 p-8 border-b border-gray-100">
+            <div className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/30 dark:to-purple-900/30 p-8 border-b border-gray-100 dark:border-gray-700">
               <div className="flex items-center gap-2 mb-3">
                 <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full border bg-gradient-to-r ${catStyle}`}>
                   <span>{catIcon}</span>
                   {selected.category?.replace('-', ' ')}
                 </span>
               </div>
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">{selected.title}</h1>
-              <div className="flex items-center gap-3 text-sm text-gray-500">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">{selected.title}</h1>
+              <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
                 <span className="inline-flex items-center gap-1.5">
                   <div className="w-6 h-6 rounded-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center">
                     <span className="text-xs text-white font-medium">
@@ -102,7 +102,7 @@ export default function Articles() {
                   </div>
                   {selected.author_name || selected.author?.full_name || 'Admin'}
                 </span>
-                <span className="text-gray-300">|</span>
+                <span className="text-gray-300 dark:text-gray-600">|</span>
                 <span className="inline-flex items-center gap-1">
                   <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -114,17 +114,17 @@ export default function Articles() {
 
             {/* Article Content */}
             <div className="p-8">
-              <div className="prose max-w-none text-gray-700 leading-relaxed" style={{ whiteSpace: 'pre-wrap' }}>
+              <div className="prose max-w-none text-gray-700 dark:text-gray-300 leading-relaxed" style={{ whiteSpace: 'pre-wrap' }}>
                 {selected.content}
               </div>
 
               {/* Tags */}
               {selected.tags && (
-                <div className="mt-8 pt-6 border-t border-gray-100">
-                  <p className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">Tags</p>
+                <div className="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700">
+                  <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Tags</p>
                   <div className="flex flex-wrap gap-2">
                     {selected.tags.split(',').map((tag) => (
-                      <span key={tag} className="bg-gray-100 text-gray-600 text-xs font-medium px-3 py-1 rounded-full">
+                      <span key={tag} className="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs font-medium px-3 py-1 rounded-full">
                         {tag.trim()}
                       </span>
                     ))}
@@ -153,8 +153,8 @@ export default function Articles() {
               </svg>
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Health Tips & Articles</h1>
-              <p className="text-sm text-gray-500">{articles.length} articles available</p>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Health Tips & Articles</h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{articles.length} articles available</p>
             </div>
           </div>
           {user?.role !== 'patient' && (
@@ -162,7 +162,7 @@ export default function Articles() {
               onClick={() => setShowAdd(!showAdd)}
               className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 active:scale-[0.97] ${
                 showAdd
-                  ? 'bg-red-50 text-red-600 border border-red-200 hover:bg-red-100'
+                  ? 'bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-700 hover:bg-red-100 dark:hover:bg-red-900/50'
                   : 'bg-gradient-to-r from-purple-500 to-pink-600 text-white shadow-md hover:shadow-lg'
               }`}
             >
@@ -181,7 +181,7 @@ export default function Articles() {
 
         {/* Message */}
         {msg && (
-          <div className="p-4 rounded-xl mb-6 text-sm font-medium bg-emerald-50 text-emerald-700 border border-emerald-200 animate-bounce-in">
+          <div className="p-4 rounded-xl mb-6 text-sm font-medium bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-700 animate-bounce-in">
             <div className="flex items-center gap-2">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -193,15 +193,15 @@ export default function Articles() {
 
         {/* Write Article Form */}
         {showAdd && (
-          <form onSubmit={handleCreate} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Write a New Article</h3>
+          <form onSubmit={handleCreate} className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6 mb-6">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Write a New Article</h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Title</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Title</label>
                 <input placeholder="e.g. 10 Tips for a Healthy Heart" className="input-modern" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} required />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Category</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Category</label>
                 <select className="input-modern" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>
                   {categories.map((c) => (
                     <option key={c} value={c}>{CATEGORY_ICONS[c]} {c.replace('-', ' ')}</option>
@@ -209,11 +209,11 @@ export default function Articles() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Content</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Content</label>
                 <textarea placeholder="Write your article content here..." className="input-modern" rows={10} value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} required />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Tags (comma-separated)</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Tags (comma-separated)</label>
                 <input placeholder="e.g. health, tips, prevention" className="input-modern" value={form.tags} onChange={(e) => setForm({ ...form, tags: e.target.value })} />
               </div>
             </div>
@@ -235,13 +235,13 @@ export default function Articles() {
 
         {/* Empty State */}
         {!loading && articles.length === 0 && (
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center">
-            <div className="w-16 h-16 bg-purple-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-12 text-center">
+            <div className="w-16 h-16 bg-purple-50 dark:bg-purple-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <svg className="w-8 h-8 text-purple-400 dark:text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
               </svg>
             </div>
-            <p className="text-gray-500 font-medium">No articles yet</p>
+            <p className="text-gray-500 dark:text-gray-400 font-medium">No articles yet</p>
           </div>
         )}
 
@@ -255,7 +255,7 @@ export default function Articles() {
               <div
                 key={a.article_id}
                 onClick={() => openArticle(a.article_id)}
-                className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 cursor-pointer hover:shadow-lg hover:border-purple-100 transition-all duration-300 hover:-translate-y-1 group active:scale-[0.98]"
+                className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6 cursor-pointer hover:shadow-lg hover:border-purple-100 dark:hover:border-purple-700 transition-all duration-300 hover:-translate-y-1 group active:scale-[0.98]"
               >
                 <div className="flex items-center gap-2 mb-3">
                   <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border bg-gradient-to-r ${catStyle}`}>
@@ -263,12 +263,12 @@ export default function Articles() {
                     {a.category?.replace('-', ' ')}
                   </span>
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">{a.title}</h3>
-                <p className="text-sm text-gray-500 line-clamp-3 mb-3">
+                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">{a.title}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-3 mb-3">
                   {a.content?.substring(0, 150)}...
                 </p>
-                <div className="flex items-center justify-between pt-3 border-t border-gray-50">
-                  <span className="text-xs text-gray-400 inline-flex items-center gap-1">
+                <div className="flex items-center justify-between pt-3 border-t border-gray-50 dark:border-gray-700">
+                  <span className="text-xs text-gray-400 dark:text-gray-500 inline-flex items-center gap-1">
                     <div className="w-5 h-5 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center">
                       <span className="text-[10px] text-white font-medium">
                         {(a.author_name || 'A').charAt(0)}
@@ -276,7 +276,7 @@ export default function Articles() {
                     </div>
                     {a.author_name || 'Admin'}
                   </span>
-                  <span className="text-xs text-gray-400">{new Date(a.created_at).toLocaleDateString()}</span>
+                  <span className="text-xs text-gray-400 dark:text-gray-500">{new Date(a.created_at).toLocaleDateString()}</span>
                 </div>
               </div>
             );

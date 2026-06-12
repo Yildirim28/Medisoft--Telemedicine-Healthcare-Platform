@@ -67,14 +67,14 @@ export default function Doctors() {
         {/* Header */}
         <FadeIn delay={0}>
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">Find a Doctor</h1>
-            <p className="text-gray-500 mt-1">Book appointments with our experienced specialists</p>
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Find a Doctor</h1>
+            <p className="text-gray-500 dark:text-gray-400 mt-1">Book appointments with our experienced specialists</p>
           </div>
         </FadeIn>
 
         {/* Filter */}
         <FadeIn delay={100}>
-          <div className="bg-white rounded-2xl p-4 border border-gray-100 shadow-sm flex flex-col sm:flex-row gap-3 hover:shadow-md transition-shadow duration-300">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-4 border border-gray-100 dark:border-gray-700 shadow-sm flex flex-col sm:flex-row gap-3 hover:shadow-md transition-shadow duration-300">
             <div className="relative flex-1">
               <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                 <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
@@ -85,7 +85,7 @@ export default function Doctors() {
               <input
                 type="text"
                 placeholder="Search by specialization..."
-                className="w-full border border-gray-200 rounded-xl pl-11 pr-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300"
+                className="w-full border border-gray-200 dark:border-gray-600 rounded-xl pl-11 pr-4 py-3 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300 dark:text-gray-100"
                 value={spec}
                 onChange={(e) => setSpec(e.target.value)}
               />
@@ -95,7 +95,7 @@ export default function Doctors() {
 
         {/* Success/Error message */}
         {msg && (
-          <div className={`p-4 rounded-xl text-sm flex items-center gap-2 animate-bounce-in ${msg.includes('success') ? 'bg-emerald-50 border border-emerald-100 text-emerald-700' : 'bg-red-50 border border-red-100 text-red-600'}`}>
+          <div className={`p-4 rounded-xl text-sm flex items-center gap-2 animate-bounce-in ${msg.includes('success') ? 'bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-100 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400' : 'bg-red-50 dark:bg-red-900/30 border border-red-100 dark:border-red-800 text-red-600 dark:text-red-400'}`}>
             <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
               {msg.includes('success') ? (
                 <>
@@ -123,27 +123,27 @@ export default function Doctors() {
 
         {/* Doctor cards */}
         {!loading && doctors.length === 0 && (
-          <div className="text-center py-16 bg-white rounded-2xl border border-gray-100">
+          <div className="text-center py-16 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700">
             <svg xmlns="http://www.w3.org/2000/svg" width={48} height={48} viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className="mx-auto mb-4">
               <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
-            <p className="text-gray-400 text-lg font-medium">No doctors found</p>
-            <p className="text-gray-400 text-sm mt-1">Try adjusting your search filter</p>
+            <p className="text-gray-400 dark:text-gray-500 text-lg font-medium">No doctors found</p>
+            <p className="text-gray-400 dark:text-gray-500 text-sm mt-1">Try adjusting your search filter</p>
           </div>
         )}
 
         <StaggerChildren staggerDelay={100} className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {doctors.map((doc, index) => (
-            <div key={doc.doctor_id} className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 active:scale-[0.98] transition-all duration-300 overflow-hidden">
+            <div key={doc.doctor_id} className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-lg hover:-translate-y-1 active:scale-[0.98] transition-all duration-300 overflow-hidden">
               {/* Card header */}
               <div className="p-6 pb-0">
                 <div className="flex items-start gap-4">
                   <DoctorAvatar name={doc.full_name} index={index} />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <h3 className="font-bold text-lg text-gray-800 truncate">{doc.full_name}</h3>
+                      <h3 className="font-bold text-lg text-gray-800 dark:text-gray-100 truncate">{doc.full_name}</h3>
                       {doc.is_verified && (
-                        <span className="inline-flex items-center gap-1 bg-emerald-50 text-emerald-700 text-xs font-medium px-2 py-0.5 rounded-full flex-shrink-0">
+                        <span className="inline-flex items-center gap-1 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-xs font-medium px-2 py-0.5 rounded-full flex-shrink-0">
                           <svg xmlns="http://www.w3.org/2000/svg" width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
                             <polyline points="20 6 9 17 4 12" />
                           </svg>
@@ -152,21 +152,21 @@ export default function Doctors() {
                       )}
                     </div>
                     <p className="text-indigo-600 text-sm font-medium mt-0.5">{doc.specialization}</p>
-                    <p className="text-gray-400 text-xs mt-1">{doc.experience_years} years experience</p>
+                    <p className="text-gray-400 dark:text-gray-500 text-xs mt-1">{doc.experience_years} years experience</p>
                   </div>
                 </div>
               </div>
 
               {/* Info pills */}
               <div className="px-6 pt-4 flex flex-wrap gap-2">
-                <span className="inline-flex items-center gap-1.5 bg-gray-50 text-gray-600 text-xs font-medium px-3 py-1.5 rounded-full border border-gray-100">
+                <span className="inline-flex items-center gap-1.5 bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs font-medium px-3 py-1.5 rounded-full border border-gray-100 dark:border-gray-600">
                   <svg xmlns="http://www.w3.org/2000/svg" width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                     <line x1="12" y1="1" x2="12" y2="23" />
                     <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
                   </svg>
                   ৳{doc.consultation_fee}
                 </span>
-                <span className="inline-flex items-center gap-1.5 bg-gray-50 text-gray-600 text-xs font-medium px-3 py-1.5 rounded-full border border-gray-100">
+                <span className="inline-flex items-center gap-1.5 bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs font-medium px-3 py-1.5 rounded-full border border-gray-100 dark:border-gray-600">
                   <svg xmlns="http://www.w3.org/2000/svg" width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                     <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
                     <line x1="16" y1="2" x2="16" y2="6" />
@@ -175,7 +175,7 @@ export default function Doctors() {
                   </svg>
                   {doc.available_days}
                 </span>
-                <span className="inline-flex items-center gap-1.5 bg-gray-50 text-gray-600 text-xs font-medium px-3 py-1.5 rounded-full border border-gray-100">
+                <span className="inline-flex items-center gap-1.5 bg-gray-50 dark:bg-gray-700 text-gray-600 dark:text-gray-400 text-xs font-medium px-3 py-1.5 rounded-full border border-gray-100 dark:border-gray-600">
                   <svg xmlns="http://www.w3.org/2000/svg" width={12} height={12} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                     <circle cx="12" cy="12" r="10" />
                     <polyline points="12 6 12 12 16 14" />
@@ -192,7 +192,7 @@ export default function Doctors() {
                       onClick={() => setShowBook(showBook === doc.doctor_id ? null : doc.doctor_id)}
                       className={`w-full py-3 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2 ${
                         showBook === doc.doctor_id
-                          ? 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                          ? 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
                           : 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-md hover:shadow-lg hover:-translate-y-0.5'
                       }`}
                     >
@@ -214,23 +214,23 @@ export default function Doctors() {
                     </button>
 
                     {showBook === doc.doctor_id && (
-                      <div className="mt-4 space-y-3 bg-gray-50 rounded-xl p-4 border border-gray-100">
+                      <div className="mt-4 space-y-3 bg-gray-50 dark:bg-gray-700 rounded-xl p-4 border border-gray-100 dark:border-gray-600">
                         <div className="grid grid-cols-2 gap-3">
                           <div>
-                            <label className="block text-xs font-medium text-gray-600 mb-1">Date</label>
+                            <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Date</label>
                             <input
                               type="date"
-                              className="w-full border border-gray-200 rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-indigo-400 outline-none text-sm"
+                              className="w-full border border-gray-200 dark:border-gray-600 rounded-lg px-3 py-2 bg-white dark:bg-gray-600 focus:ring-2 focus:ring-indigo-400 outline-none text-sm dark:text-gray-100"
                               value={form.appointment_date}
                               onChange={(e) => setForm({ ...form, appointment_date: e.target.value })}
                               required
                             />
                           </div>
                           <div>
-                            <label className="block text-xs font-medium text-gray-600 mb-1">Time</label>
+                            <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Time</label>
                             <input
                               type="time"
-                              className="w-full border border-gray-200 rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-indigo-400 outline-none text-sm"
+                              className="w-full border border-gray-200 dark:border-gray-600 rounded-lg px-3 py-2 bg-white dark:bg-gray-600 focus:ring-2 focus:ring-indigo-400 outline-none text-sm dark:text-gray-100"
                               value={form.appointment_time}
                               onChange={(e) => setForm({ ...form, appointment_time: e.target.value })}
                               required
@@ -238,10 +238,10 @@ export default function Doctors() {
                           </div>
                         </div>
                         <div>
-                          <label className="block text-xs font-medium text-gray-600 mb-1">Reason (optional)</label>
+                          <label className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Reason (optional)</label>
                           <textarea
                             placeholder="Describe your symptoms..."
-                            className="w-full border border-gray-200 rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-indigo-400 outline-none text-sm resize-none"
+                            className="w-full border border-gray-200 dark:border-gray-600 rounded-lg px-3 py-2 bg-white dark:bg-gray-600 focus:ring-2 focus:ring-indigo-400 outline-none text-sm resize-none dark:text-gray-100"
                             rows={2}
                             value={form.reason}
                             onChange={(e) => setForm({ ...form, reason: e.target.value })}

@@ -147,14 +147,14 @@ export default function Dashboard() {
             { label: 'Services', value: '24/7', icon: 'M13 10V3L4 14h7v7l9-11h-7z', color: 'text-orange-600 bg-orange-50' },
             { label: 'Patients', value: String(stats.patients), icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z', color: 'text-pink-600 bg-pink-50' },
           ].map((stat) => (
-            <div key={stat.label} className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 active:scale-[0.98]">
+            <div key={stat.label} className="bg-white dark:bg-gray-800 rounded-2xl p-5 border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 active:scale-[0.98]">
               <div className={`inline-flex items-center justify-center w-10 h-10 rounded-xl ${stat.color} mb-3 group-hover:scale-110 transition-transform duration-300`}>
                 <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                   <path d={stat.icon} />
                 </svg>
               </div>
-              <p className="text-2xl font-bold text-gray-800">{stat.value}</p>
-              <p className="text-sm text-gray-500">{stat.label}</p>
+              <p className="text-2xl font-bold text-gray-800 dark:text-gray-100">{stat.value}</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">{stat.label}</p>
             </div>
           ))}
         </StaggerChildren>
@@ -162,22 +162,22 @@ export default function Dashboard() {
         {/* Services grid */}
         <div>
           <FadeIn delay={300}>
-            <h2 className="text-lg font-bold text-gray-800 mb-4">Our Services</h2>
+            <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4">Our Services</h2>
           </FadeIn>
           <StaggerChildren staggerDelay={80} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {features.map((card) => (
               <Link
                 key={card.link}
                 to={card.link}
-                className="group bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-lg hover:border-indigo-100 transition-all duration-300 hover:-translate-y-1 active:scale-[0.98]"
+                className="group bg-white dark:bg-gray-800 rounded-2xl p-5 border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-lg hover:border-indigo-100 dark:hover:border-indigo-700 transition-all duration-300 hover:-translate-y-1 active:scale-[0.98]"
               >
                 <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br ${card.color} mb-4 shadow-md group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300`}>
                   <svg xmlns="http://www.w3.org/2000/svg" width={22} height={22} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                     <path d={card.icon} />
                   </svg>
                 </div>
-                <h3 className="font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors duration-200">{card.title}</h3>
-                <p className="text-sm text-gray-500 mt-1 leading-relaxed">{card.desc}</p>
+                <h3 className="font-semibold text-gray-800 dark:text-gray-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-200">{card.title}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">{card.desc}</p>
                 <div className="mt-3 flex items-center gap-1 text-indigo-600 text-sm font-medium opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-0 group-hover:translate-x-1">
                   Explore
                   <svg xmlns="http://www.w3.org/2000/svg" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">

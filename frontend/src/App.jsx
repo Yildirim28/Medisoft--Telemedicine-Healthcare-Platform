@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 
 import Landing from './pages/Landing';
 import Login from './pages/Login';
@@ -34,14 +35,14 @@ import AdminSeatBookings from './pages/admin/AdminSeatBookings';
 
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
-  if (loading) return <div className="min-h-screen flex items-center justify-center text-gray-500">Loading...</div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center text-gray-500 dark:text-gray-400">Loading...</div>;
   if (!user) return <Navigate to="/" replace />;
   return children;
 }
 
 function AdminRoute({ children }) {
   const { user, loading } = useAuth();
-  if (loading) return <div className="min-h-screen flex items-center justify-center text-gray-500">Loading...</div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center text-gray-500 dark:text-gray-400">Loading...</div>;
   if (!user) return <Navigate to="/" replace />;
   if (user.role !== 'admin') return <Navigate to="/dashboard" replace />;
   return children;
@@ -49,7 +50,7 @@ function AdminRoute({ children }) {
 
 function PublicRoute({ children }) {
   const { user, loading } = useAuth();
-  if (loading) return <div className="min-h-screen flex items-center justify-center text-gray-500">Loading...</div>;
+  if (loading) return <div className="min-h-screen flex items-center justify-center text-gray-500 dark:text-gray-400">Loading...</div>;
   if (user) return <Navigate to="/dashboard" replace />;
   return children;
 }
@@ -99,9 +100,11 @@ function AppRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <AppRoutes />
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <AppRoutes />
+        </AuthProvider>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }

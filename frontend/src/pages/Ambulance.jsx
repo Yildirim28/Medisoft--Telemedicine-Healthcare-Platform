@@ -70,8 +70,8 @@ export default function Ambulance() {
               </svg>
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Ambulance Services</h1>
-              <p className="text-sm text-gray-500">Emergency medical transport</p>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Ambulance Services</h1>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Emergency medical transport</p>
             </div>
           </div>
           {user?.role === 'patient' && (
@@ -100,8 +100,8 @@ export default function Ambulance() {
         {msg && (
           <div className={`p-4 rounded-xl mb-6 text-sm font-medium animate-bounce-in ${
             msg.includes('success')
-              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-              : 'bg-red-50 text-red-600 border border-red-200'
+              ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800'
+              : 'bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800'
           }`}>
             <div className="flex items-center gap-2">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -114,8 +114,8 @@ export default function Ambulance() {
 
         {/* Booking Form */}
         {showForm && (
-          <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+          <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6 mb-6">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
               <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
@@ -123,31 +123,31 @@ export default function Ambulance() {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Patient Name</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Patient Name</label>
                 <input placeholder="e.g. John Doe" className="input-modern" value={form.patient_name} onChange={(e) => setForm({ ...form, patient_name: e.target.value })} required />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Patient Phone</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Patient Phone</label>
                 <input placeholder="e.g. 01XXXXXXXXX" className="input-modern" value={form.patient_phone} onChange={(e) => setForm({ ...form, patient_phone: e.target.value })} required />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Pickup Address</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Pickup Address</label>
                 <input placeholder="e.g. 123 Main Street" className="input-modern" value={form.pickup_address} onChange={(e) => setForm({ ...form, pickup_address: e.target.value })} required />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Dropoff Address</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Dropoff Address</label>
                 <input placeholder="e.g. City Hospital" className="input-modern" value={form.dropoff_address} onChange={(e) => setForm({ ...form, dropoff_address: e.target.value })} required />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">City</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">City</label>
                 <input placeholder="e.g. Dhaka" className="input-modern" value={form.pickup_city} onChange={(e) => setForm({ ...form, pickup_city: e.target.value })} required />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Pickup Time</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Pickup Time</label>
                 <input type="datetime-local" className="input-modern" value={form.pickup_time} onChange={(e) => setForm({ ...form, pickup_time: e.target.value })} />
               </div>
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Notes (optional)</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Notes (optional)</label>
                 <textarea placeholder="Any special instructions..." className="input-modern" rows={2} value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} />
               </div>
             </div>
@@ -169,13 +169,13 @@ export default function Ambulance() {
 
         {/* Empty State */}
         {!loading && bookings.length === 0 && (
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center">
-            <div className="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-12 text-center">
+            <div className="w-16 h-16 bg-red-50 dark:bg-red-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <svg className="w-8 h-8 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
             </div>
-            <p className="text-gray-500 font-medium">No ambulance bookings yet</p>
+            <p className="text-gray-500 dark:text-gray-400 font-medium">No ambulance bookings yet</p>
           </div>
         )}
 
@@ -184,7 +184,7 @@ export default function Ambulance() {
           {bookings.map((b) => {
             const st = statusStyle(b.status);
             return (
-              <div key={b.booking_id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition-all duration-300 active:scale-[0.99]">
+              <div key={b.booking_id} className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-5 hover:shadow-md transition-all duration-300 active:scale-[0.99]">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                   <div className="flex items-start gap-4 flex-1">
                     <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-red-100 to-rose-100 flex items-center justify-center flex-shrink-0">
@@ -194,20 +194,20 @@ export default function Ambulance() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-semibold text-gray-900">{b.patient_name}</h3>
+                        <h3 className="font-semibold text-gray-900 dark:text-gray-100">{b.patient_name}</h3>
                         <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-0.5 rounded-full ${st.bg} ${st.text} border ${st.border}`}>
                           <span className={`w-1.5 h-1.5 rounded-full ${st.dot}`}></span>
                           {b.status}
                         </span>
                       </div>
-                      <div className="flex items-center gap-1.5 text-sm text-gray-500">
+                      <div className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400">
                         <svg className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                         From: {b.pickup_address}, {b.pickup_city}
                       </div>
-                      <div className="flex items-center gap-1.5 text-sm text-gray-500 mt-0.5">
+                      <div className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 mt-0.5">
                         <svg className="w-3.5 h-3.5 text-red-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -215,7 +215,7 @@ export default function Ambulance() {
                         To: {b.dropoff_address}
                       </div>
                       {b.pickup_time && (
-                        <p className="text-xs text-gray-400 mt-1">
+                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
                           <svg className="w-3 h-3 inline mr-1 -mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
@@ -240,7 +240,7 @@ export default function Ambulance() {
                         </button>
                         <button
                           onClick={() => handleStatus(b.booking_id, 'cancelled')}
-                          className="inline-flex items-center gap-1.5 bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded-xl text-sm font-medium hover:bg-red-100 transition-all duration-200 active:scale-[0.97]"
+                          className="inline-flex items-center gap-1.5 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 px-4 py-2 rounded-xl text-sm font-medium hover:bg-red-100 dark:hover:bg-red-900/50 transition-all duration-200 active:scale-[0.97]"
                         >
                           Cancel
                         </button>

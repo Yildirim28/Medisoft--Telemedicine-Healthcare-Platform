@@ -130,6 +130,10 @@ body {
   animation: shimmer 1.5s infinite;
   border-radius: 0.75rem;
 }
+.dark .skeleton {
+  background: linear-gradient(90deg, #374151 25%, #4b5563 50%, #374151 75%);
+  background-size: 200% 100%;
+}
 
 /* Tab underline animation */
 .tab-indicator {
@@ -181,6 +185,12 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #9ca3af;
 }
+.dark ::-webkit-scrollbar-thumb {
+  background: #4b5563;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
 
 /* Card press effect */
 .card-press {
@@ -193,7 +203,7 @@ body {
 
 @layer components {
   .glass-card {
-    @apply bg-white/80 backdrop-blur-lg border border-white/20 shadow-xl rounded-2xl;
+    @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg border border-white/20 dark:border-gray-700/50 shadow-xl rounded-2xl;
   }
   .gradient-btn {
     @apply bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold py-3 px-6 rounded-xl hover:from-indigo-600 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-0.5;
@@ -202,12 +212,12 @@ body {
     @apply bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium py-2 px-4 rounded-xl hover:from-indigo-600 hover:to-purple-700 transition-all duration-200 shadow-md hover:shadow-lg text-sm;
   }
   .input-modern {
-    @apply w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-200 text-sm;
+    @apply w-full border border-gray-200 dark:border-gray-600 rounded-xl px-4 py-3 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-200 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500;
   }
   .label-modern {
-    @apply block text-sm font-medium text-gray-700 mb-1.5;
+    @apply block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5;
   }
   .card-hover {
-    @apply bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-lg hover:border-indigo-100 transition-all duration-300 hover:-translate-y-1;
+    @apply bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 hover:shadow-lg hover:border-indigo-100 dark:hover:border-indigo-800 transition-all duration-300 hover:-translate-y-1;
   }
 }

@@ -27,7 +27,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50 p-4 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4 relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-indigo-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 -translate-x-1/2 -translate-y-1/2 animate-float" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 translate-x-1/2 translate-y-1/2 animate-float" style={{ animationDelay: '1.5s' }} />
@@ -35,7 +35,7 @@ export default function Login() {
       <div className="w-full max-w-md relative z-10">
         {/* Back to Home */}
         <FadeIn delay={0}>
-          <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-indigo-600 transition mb-6 active:scale-95">
+          <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition mb-6 active:scale-95">
             <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
               <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
@@ -54,18 +54,18 @@ export default function Login() {
             <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
               Medisoft
             </h1>
-            <p className="text-gray-500 mt-1 text-sm">Hospital Management System</p>
+            <p className="text-gray-500 dark:text-gray-400 mt-1 text-sm">Hospital Management System</p>
           </div>
         </FadeIn>
 
         {/* Card */}
         <FadeIn delay={250}>
-          <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-white/20 p-8 hover:shadow-2xl transition-shadow duration-300">
-            <h2 className="text-xl font-bold text-gray-800 mb-1">Welcome back</h2>
-            <p className="text-sm text-gray-500 mb-6">Sign in to your account to continue</p>
+          <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-3xl shadow-xl border border-white/20 dark:border-gray-700/50 p-8 hover:shadow-2xl transition-shadow duration-300">
+            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-1">Welcome back</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">Sign in to your account to continue</p>
 
             {error && (
-              <div className="bg-red-50 border border-red-100 text-red-600 p-3 rounded-xl mb-5 text-sm flex items-center gap-2 animate-bounce-in">
+              <div className="bg-red-50 dark:bg-red-900/30 border border-red-100 dark:border-red-800 text-red-600 dark:text-red-400 p-3 rounded-xl mb-5 text-sm flex items-center gap-2 animate-bounce-in">
                 <svg xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="10" />
                   <line x1="15" y1="9" x2="9" y2="15" />
@@ -77,7 +77,7 @@ export default function Login() {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <FadeIn delay={350}>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Email address</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Email address</label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                     <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
@@ -90,7 +90,7 @@ export default function Login() {
                     name="email"
                     required
                     placeholder="you@example.com"
-                    className="w-full border border-gray-200 rounded-xl pl-11 pr-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300"
+                    className="w-full border border-gray-200 dark:border-gray-600 rounded-xl pl-11 pr-4 py-3 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300 dark:hover:border-gray-500 dark:text-gray-100"
                     value={form.email}
                     onChange={handleChange}
                   />
@@ -98,7 +98,7 @@ export default function Login() {
               </FadeIn>
 
               <FadeIn delay={450}>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Password</label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                     <svg xmlns="http://www.w3.org/2000/svg" width={18} height={18} viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
@@ -111,7 +111,7 @@ export default function Login() {
                     name="password"
                     required
                     placeholder="Enter your password"
-                    className="w-full border border-gray-200 rounded-xl pl-11 pr-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300"
+                    className="w-full border border-gray-200 dark:border-gray-600 rounded-xl pl-11 pr-4 py-3 bg-gray-50 dark:bg-gray-700 focus:bg-white dark:focus:bg-gray-600 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition-all duration-300 text-sm hover:border-gray-300 dark:hover:border-gray-500 dark:text-gray-100"
                     value={form.password}
                     onChange={handleChange}
                   />
@@ -145,7 +145,7 @@ export default function Login() {
             </form>
 
             <FadeIn delay={650} className="mt-6 text-center">
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
                 Don't have an account?{' '}
                 <Link to="/register" className="text-indigo-600 font-semibold hover:text-indigo-700 transition">
                   Create one
@@ -157,7 +157,7 @@ export default function Login() {
 
         {/* Footer */}
         <FadeIn delay={400}>
-          <p className="text-center text-xs text-gray-400 mt-6">
+          <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-6">
             Trusted by healthcare professionals worldwide
           </p>
         </FadeIn>

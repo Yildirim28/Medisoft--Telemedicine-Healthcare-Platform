@@ -37,7 +37,7 @@ export default function AdminAmbulance() {
     <div>
       <FadeIn delay={0}>
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Ambulance Bookings</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Ambulance Bookings</h1>
         </div>
       </FadeIn>
 
@@ -48,12 +48,12 @@ export default function AdminAmbulance() {
           placeholder="Search by name or phone..."
           value={search}
           onChange={function (e) { setSearch(e.target.value); }}
-          className="w-full md:w-80 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          className="w-full md:w-80 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
         />
         <select
           value={statusFilter}
           onChange={function (e) { setStatusFilter(e.target.value); }}
-          className="w-full md:w-48 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+          className="w-full md:w-48 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
         >
           <option value="">All Status</option>
           <option value="Requested">Requested</option>
@@ -66,25 +66,25 @@ export default function AdminAmbulance() {
       </FadeIn>
 
       {loading ? (
-        <p className="text-gray-500">Loading...</p>
+        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
       ) : (
-        <div className="bg-white rounded-xl shadow border overflow-x-auto">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow border dark:border-gray-700 overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b">
+            <thead className="bg-gray-50 dark:bg-gray-700 border-b dark:border-gray-600">
               <tr>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">ID</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Patient</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Phone</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Pickup Location</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Destination</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Scheduled</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Status</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Actions</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">ID</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">Patient</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">Phone</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">Pickup Location</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">Destination</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">Scheduled</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">Status</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">Actions</th>
               </tr>
             </thead>
             <tbody>
               {bookings.length === 0 && (
-                <tr><td colSpan={8} className="px-4 py-8 text-center text-gray-400">No bookings found</td></tr>
+                <tr><td colSpan={8} className="px-4 py-8 text-center text-gray-400 dark:text-gray-500">No bookings found</td></tr>
               )}
               {bookings.map(function (b, idx) {
                 var statusColors = {
@@ -95,7 +95,7 @@ export default function AdminAmbulance() {
                   Cancelled: 'bg-gray-100 text-gray-600',
                 };
                 return (
-                  <tr key={b.booking_id} className="border-b hover:bg-gray-50 animate-fadeInUp" style={{ animationDelay: (idx * 60) + 'ms', animationFillMode: 'forwards', opacity: 0 }}>
+                  <tr key={b.booking_id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 animate-fadeInUp" style={{ animationDelay: (idx * 60) + 'ms', animationFillMode: 'forwards', opacity: 0 }}>
                     <td className="px-4 py-3">#{b.booking_id}</td>
                     <td className="px-4 py-3 font-medium">{b.user_name || '-'}</td>
                     <td className="px-4 py-3">{b.phone || '-'}</td>
@@ -111,7 +111,7 @@ export default function AdminAmbulance() {
                       <select
                         value={b.status}
                         onChange={function (e) { handleStatus(b.booking_id, e.target.value); }}
-                        className="text-xs border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-indigo-500"
+                        className="text-xs border border-gray-300 dark:border-gray-600 rounded px-2 py-1 focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                       >
                         <option value="Requested">Requested</option>
                         <option value="Assigned">Assigned</option>

@@ -41,7 +41,7 @@ export default function Profile() {
       <Layout>
         <div className="text-center py-12">
           <div className="inline-block w-8 h-8 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin" />
-          <p className="text-gray-500 mt-3 text-sm">Loading profile...</p>
+          <p className="text-gray-500 dark:text-gray-400 mt-3 text-sm">Loading profile...</p>
         </div>
       </Layout>
     );
@@ -76,8 +76,8 @@ export default function Profile() {
         {msg && (
           <div className={`p-4 rounded-xl text-sm font-medium flex items-center gap-2 animate-bounce-in ${
             msg.includes('success')
-              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-              : 'bg-red-50 text-red-700 border border-red-200'
+              ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-700'
+              : 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-700'
           }`}>
             <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {msg.includes('success') ? (
@@ -91,11 +91,11 @@ export default function Profile() {
         )}
 
         {/* Profile Card */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
           {!editing ? (
             <div className="p-8">
               <div className="flex items-center justify-between mb-8">
-                <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
                   <svg className="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
@@ -114,7 +114,7 @@ export default function Profile() {
 
               <FadeIn delay={200}>
                 <div className="flex items-center justify-between mb-8">
-                  <h2 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                  <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 flex items-center gap-2">
                     <svg className="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
@@ -141,15 +141,15 @@ export default function Profile() {
                   { label: 'Role', value: user.role?.charAt(0).toUpperCase() + user.role?.slice(1), icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z' },
                   { label: 'Joined', value: user.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A', icon: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z' },
                 ].map((field, idx) => (
-                  <div key={idx} className="flex items-start gap-3 p-4 bg-gray-50 rounded-xl">
-                    <div className="w-9 h-9 bg-white rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm">
-                      <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div key={idx} className="flex items-start gap-3 p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
+                    <div className="w-9 h-9 bg-white dark:bg-gray-800 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm">
+                      <svg className="w-4 h-4 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={field.icon} />
                       </svg>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500 uppercase tracking-wide">{field.label}</p>
-                      <p className="text-gray-800 font-medium mt-0.5">{field.value}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">{field.label}</p>
+                      <p className="text-gray-800 dark:text-gray-100 font-medium mt-0.5">{field.value}</p>
                     </div>
                   </div>
                 ))}
@@ -157,8 +157,8 @@ export default function Profile() {
 
               {/* Doctor Details */}
               {user.role === 'doctor' && user.doctor_profile && (
-                <div className="mt-8 pt-8 border-t border-gray-100">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <div className="mt-8 pt-8 border-t border-gray-100 dark:border-gray-700">
+                  <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
                     <div className="w-8 h-8 bg-gradient-to-br from-emerald-400 to-green-500 rounded-lg flex items-center justify-center">
                       <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -175,10 +175,10 @@ export default function Profile() {
                       { label: 'Available Days', value: user.doctor_profile.available_days || 'N/A' },
                       { label: 'Available Time', value: `${user.doctor_profile.available_from || 'N/A'} - ${user.doctor_profile.available_to || 'N/A'}` },
                     ].map((field, idx) => (
-                      <div key={idx} className="flex items-start gap-3 p-4 bg-emerald-50 rounded-xl border border-emerald-100">
+                      <div key={idx} className="flex items-start gap-3 p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800">
                         <div>
-                          <p className="text-xs text-emerald-600 uppercase tracking-wide font-medium">{field.label}</p>
-                          <p className="text-gray-800 font-medium mt-0.5">{field.value}</p>
+                          <p className="text-xs text-emerald-600 dark:text-emerald-400 uppercase tracking-wide font-medium">{field.label}</p>
+                          <p className="text-gray-800 dark:text-gray-100 font-medium mt-0.5">{field.value}</p>
                         </div>
                       </div>
                     ))}
@@ -188,8 +188,8 @@ export default function Profile() {
 
               {/* Patient Details */}
               {user.role === 'patient' && user.patient_profile && (
-                <div className="mt-8 pt-8 border-t border-gray-100">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <div className="mt-8 pt-8 border-t border-gray-100 dark:border-gray-700">
+                  <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4 flex items-center gap-2">
                     <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-lg flex items-center justify-center">
                       <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -205,10 +205,10 @@ export default function Profile() {
                       { label: 'Address', value: user.patient_profile.address || 'N/A' },
                       { label: 'City', value: user.patient_profile.city || 'N/A' },
                     ].map((field, idx) => (
-                      <div key={idx} className="flex items-start gap-3 p-4 bg-blue-50 rounded-xl border border-blue-100">
+                      <div key={idx} className="flex items-start gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800">
                         <div>
-                          <p className="text-xs text-blue-600 uppercase tracking-wide font-medium">{field.label}</p>
-                          <p className="text-gray-800 font-medium mt-0.5">{field.value}</p>
+                          <p className="text-xs text-blue-600 dark:text-blue-400 uppercase tracking-wide font-medium">{field.label}</p>
+                          <p className="text-gray-800 dark:text-gray-100 font-medium mt-0.5">{field.value}</p>
                         </div>
                       </div>
                     ))}
@@ -218,7 +218,7 @@ export default function Profile() {
             </div>
           ) : (
             <div className="p-8">
-              <h2 className="text-lg font-semibold text-gray-800 mb-6 flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-6 flex items-center gap-2">
                 <svg className="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>
@@ -268,7 +268,7 @@ export default function Profile() {
                   <button
                     type="button"
                     onClick={() => setEditing(false)}
-                    className="px-6 py-3 rounded-xl text-sm font-medium border border-gray-200 text-gray-600 hover:bg-gray-50 transition-all duration-200"
+                    className="px-6 py-3 rounded-xl text-sm font-medium border border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200"
                   >
                     Cancel
                   </button>

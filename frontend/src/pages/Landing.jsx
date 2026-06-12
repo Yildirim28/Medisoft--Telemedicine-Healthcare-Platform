@@ -95,14 +95,14 @@ const testimonials = [
 
 function ServiceCard({ icon, title, description, color, bg, iconBg }) {
   return (
-    <div className="group relative bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl border border-gray-100 hover:border-transparent transition-all duration-300 hover:-translate-y-1 active:scale-[0.98]">
+    <div className="group relative bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm hover:shadow-xl border border-gray-100 dark:border-gray-700 hover:border-transparent transition-all duration-300 hover:-translate-y-1 active:scale-[0.98]">
       <div className={'w-14 h-14 rounded-xl flex items-center justify-center mb-4 shadow-md ' + iconBg + ' group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300'}>
         <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
           <path d={icon} />
         </svg>
       </div>
-      <h3 className="text-lg font-bold text-gray-800 mb-2 group-hover:text-indigo-600 transition-colors">{title}</h3>
-      <p className="text-sm text-gray-500 leading-relaxed">{description}</p>
+      <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{title}</h3>
+      <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{description}</p>
     </div>
   );
 }
@@ -115,14 +115,14 @@ function StatCard({ value, label }) {
       <div className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300 inline-block">
         {numericValue > 0 ? <CountUpNumber target={numericValue} duration={1800} /> : null}{suffix}
       </div>
-      <div className="text-sm text-gray-500 mt-1 font-medium">{label}</div>
+      <div className="text-sm text-gray-500 dark:text-gray-400 mt-1 font-medium">{label}</div>
     </div>
   );
 }
 
 function TestimonialCard({ name, role, text }) {
   return (
-    <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 active:scale-[0.98]">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 active:scale-[0.98]">
       <div className="flex items-center gap-1 mb-3">
         {[...Array(5)].map((_, i) => (
           <svg key={i} xmlns="http://www.w3.org/2000/svg" width={16} height={16} viewBox="0 0 24 24" fill="#facc15" stroke="#facc15" strokeWidth={1}>
@@ -130,14 +130,14 @@ function TestimonialCard({ name, role, text }) {
           </svg>
         ))}
       </div>
-      <p className="text-sm text-gray-600 leading-relaxed mb-4">"{text}"</p>
+      <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4">"{text}"</p>
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-sm font-bold">
           {name.split(' ').map(n => n[0]).join('')}
         </div>
         <div>
-          <p className="text-sm font-semibold text-gray-800">{name}</p>
-          <p className="text-xs text-gray-500">{role}</p>
+          <p className="text-sm font-semibold text-gray-800 dark:text-gray-100">{name}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">{role}</p>
         </div>
       </div>
     </div>
@@ -154,9 +154,9 @@ function ServiceIcon({ d }) {
 
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-900">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100 shadow-sm animate-fade-in-down">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100 dark:border-gray-800 shadow-sm animate-fade-in-down">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <Link to="/" className="flex items-center gap-2">
@@ -173,7 +173,7 @@ export default function Landing() {
             <div className="flex items-center gap-3">
               <Link
                 to="/login"
-                className="px-5 py-2.5 text-sm font-semibold text-indigo-600 hover:text-indigo-700 transition rounded-xl hover:bg-indigo-50 active:scale-95"
+                className="px-5 py-2.5 text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition rounded-xl hover:bg-indigo-50 dark:hover:bg-gray-800 active:scale-95"
               >
                 Sign In
               </Link>
@@ -196,7 +196,7 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-3xl mx-auto">
             <FadeIn delay={100}>
-              <div className="inline-flex items-center gap-2 bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-semibold px-4 py-2 rounded-full mb-6">
+              <div className="inline-flex items-center gap-2 bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-100 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300 text-xs font-semibold px-4 py-2 rounded-full mb-6">
                 <svg xmlns="http://www.w3.org/2000/svg" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                   <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
                   <polyline points="22 4 12 14.01 9 11.01" />
@@ -206,7 +206,7 @@ export default function Landing() {
             </FadeIn>
 
             <FadeIn delay={250}>
-              <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
+              <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 dark:text-gray-50 leading-tight mb-6">
                 Your Health,{' '}
                 <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                   Our Priority
@@ -215,7 +215,7 @@ export default function Landing() {
             </FadeIn>
 
             <FadeIn delay={400}>
-              <p className="text-lg md:text-xl text-gray-500 leading-relaxed mb-10 max-w-2xl mx-auto">
+              <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 leading-relaxed mb-10 max-w-2xl mx-auto">
                 Medisoft is a comprehensive hospital management platform that connects patients with verified doctors,
                 hospitals, and healthcare services — all from one place.
               </p>
@@ -234,7 +234,7 @@ export default function Landing() {
                 </Link>
                 <Link
                   to="/login"
-                  className="w-full sm:w-auto px-8 py-4 text-base font-semibold text-gray-700 bg-white border-2 border-gray-200 rounded-2xl hover:border-indigo-300 hover:text-indigo-600 transition-all flex items-center justify-center gap-2 active:scale-95"
+                  className="w-full sm:w-auto px-8 py-4 text-base font-semibold text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-600 rounded-2xl hover:border-indigo-300 hover:text-indigo-600 transition-all flex items-center justify-center gap-2 active:scale-95"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                     <path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4M10 17l5-5-5-5M15 12H3" />
@@ -248,7 +248,7 @@ export default function Landing() {
       </section>
 
       {/* Stats */}
-      <section className="py-12 border-y border-gray-100 bg-gray-50/50">
+      <section className="py-12 border-y border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal direction="up">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -265,11 +265,11 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal direction="up">
             <div className="text-center mb-14">
-              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
+              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-50 mb-4">
                 Comprehensive Healthcare{' '}
                 <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Services</span>
               </h2>
-              <p className="text-gray-500 text-lg max-w-2xl mx-auto">
+              <p className="text-gray-500 dark:text-gray-400 text-lg max-w-2xl mx-auto">
                 Everything you need for your healthcare journey, from finding the right doctor to managing your health records.
               </p>
             </div>
@@ -284,15 +284,15 @@ export default function Landing() {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal direction="up">
             <div className="text-center mb-14">
-              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
+              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-50 mb-4">
                 How It{' '}
                 <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Works</span>
               </h2>
-              <p className="text-gray-500 text-lg max-w-2xl mx-auto">
+              <p className="text-gray-500 dark:text-gray-400 text-lg max-w-2xl mx-auto">
                 Getting started with Medisoft is simple. Follow these three easy steps.
               </p>
             </div>
@@ -319,12 +319,12 @@ export default function Landing() {
                 color: 'from-pink-500 to-pink-600',
               },
             ].map((item, i) => (
-              <div key={i} className="relative bg-white rounded-2xl p-8 shadow-sm border border-gray-100 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300 active:scale-[0.98]">
+              <div key={i} className="relative bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-sm border border-gray-100 dark:border-gray-700 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300 active:scale-[0.98]">
                 <div className={'w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5 text-white text-xl font-extrabold bg-gradient-to-br ' + item.color + ' shadow-lg'}>
                   {item.step}
                 </div>
-                <h3 className="text-lg font-bold text-gray-800 mb-2">{item.title}</h3>
-                <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
+                <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-2">{item.title}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </StaggerChildren>
@@ -336,11 +336,11 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <ScrollReveal direction="up">
             <div className="text-center mb-14">
-              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
+              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-50 mb-4">
                 What People{' '}
                 <span className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">Say</span>
               </h2>
-              <p className="text-gray-500 text-lg max-w-2xl mx-auto">
+              <p className="text-gray-500 dark:text-gray-400 text-lg max-w-2xl mx-auto">
                 Trusted by doctors, patients, and healthcare professionals across the country.
               </p>
             </div>

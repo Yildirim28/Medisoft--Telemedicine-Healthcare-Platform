@@ -80,8 +80,8 @@ export default function Hospitals() {
                 </svg>
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Hospitals & Seats</h1>
-                <p className="text-sm text-gray-500">{hospitals.length} hospitals available</p>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Hospitals & Seats</h1>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{hospitals.length} hospitals available</p>
               </div>
             </div>
           </div>
@@ -94,8 +94,8 @@ export default function Hospitals() {
             className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 active:scale-[0.97] ${
               tab === 'list'
                 ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-md'
-                : 'bg-white text-gray-600 border border-gray-200 hover:border-emerald-200 hover:text-emerald-600'
-            }`}
+                : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700 hover:border-emerald-200 hover:text-emerald-600 dark:hover:border-emerald-700 dark:hover:text-emerald-400'
+              }`}
           >
             <svg className="w-4 h-4 inline mr-1.5 -mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -107,8 +107,8 @@ export default function Hospitals() {
             className={`px-5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 active:scale-[0.97] ${
               tab === 'bookings'
                 ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-md'
-                : 'bg-white text-gray-600 border border-gray-200 hover:border-emerald-200 hover:text-emerald-600'
-            }`}
+                : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700 hover:border-emerald-200 hover:text-emerald-600 dark:hover:border-emerald-700 dark:hover:text-emerald-400'
+              }`}
           >
             <svg className="w-4 h-4 inline mr-1.5 -mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -121,8 +121,8 @@ export default function Hospitals() {
         {msg && (
           <div className={`p-4 rounded-xl mb-6 text-sm font-medium animate-bounce-in ${
             msg.includes('success')
-              ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-              : 'bg-red-50 text-red-600 border border-red-200'
+              ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800'
+              : 'bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800'
           }`}>
             <div className="flex items-center gap-2">
               {msg.includes('success') ? (
@@ -166,11 +166,11 @@ export default function Hospitals() {
 
             {/* Add Hospital Form */}
             {showAdd && (
-              <form onSubmit={handleAddHospital} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Add New Hospital</h3>
+              <form onSubmit={handleAddHospital} className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6 mb-6">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Add New Hospital</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Hospital Name</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Hospital Name</label>
                     <input
                       placeholder="e.g. City General Hospital"
                       className="input-modern"
@@ -180,7 +180,7 @@ export default function Hospitals() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Address</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Address</label>
                     <input
                       placeholder="e.g. 123 Health Street"
                       className="input-modern"
@@ -190,7 +190,7 @@ export default function Hospitals() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">City</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">City</label>
                     <input
                       placeholder="e.g. Dhaka"
                       className="input-modern"
@@ -200,7 +200,7 @@ export default function Hospitals() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Phone</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Phone</label>
                     <input
                       placeholder="e.g. 01XXXXXXXXX"
                       className="input-modern"
@@ -210,7 +210,7 @@ export default function Hospitals() {
                     />
                   </div>
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1.5">Email (optional)</label>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Email (optional)</label>
                     <input
                       type="email"
                       placeholder="e.g. hospital@example.com"
@@ -240,7 +240,7 @@ export default function Hospitals() {
             {!loading && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {hospitals.map((h) => (
-                  <div key={h.hospital_id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md hover:border-emerald-100 transition-all duration-300">
+                  <div key={h.hospital_id} className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6 hover:shadow-md hover:border-emerald-100 transition-all duration-300">
                     <div className="flex items-start gap-4">
                       <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-100 to-teal-100 flex items-center justify-center flex-shrink-0">
                         <svg className="w-6 h-6 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -248,15 +248,15 @@ export default function Hospitals() {
                         </svg>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-gray-900 text-lg">{h.name}</h3>
-                        <p className="text-sm text-gray-500 mt-1">
+                        <h3 className="font-semibold text-gray-900 dark:text-gray-100 text-lg">{h.name}</h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
                           <svg className="w-3.5 h-3.5 inline mr-1 -mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                           </svg>
                           {h.address}, {h.city}
                         </p>
-                        <div className="flex items-center gap-3 mt-2 text-sm text-gray-500">
+                        <div className="flex items-center gap-3 mt-2 text-sm text-gray-500 dark:text-gray-400">
                           <span className="inline-flex items-center gap-1">
                             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -277,7 +277,7 @@ export default function Hospitals() {
 
                     {/* Book Seat Button & Form */}
                     {user?.role === 'patient' && (
-                      <div className="mt-4 pt-4 border-t border-gray-100">
+                      <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700">
                         <button
                           onClick={() => setShowBook(showBook === h.hospital_id ? null : h.hospital_id)}
                           className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
@@ -297,8 +297,8 @@ export default function Hospitals() {
                         </button>
 
                         {showBook === h.hospital_id && (
-                          <form onSubmit={handleBookSeat} className="mt-4 bg-gray-50 rounded-xl p-4 space-y-3">
-                            <label className="block text-sm font-medium text-gray-700">Select Seat Type</label>
+                          <form onSubmit={handleBookSeat} className="mt-4 bg-gray-50 dark:bg-gray-700 rounded-xl p-4 space-y-3">
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Select Seat Type</label>
                             <div className="grid grid-cols-2 gap-2">
                               {SEAT_TYPES.map((st) => (
                                 <button
@@ -308,7 +308,7 @@ export default function Hospitals() {
                                   className={`p-3 rounded-xl border-2 text-sm font-medium transition-all duration-200 text-left ${
                                     sForm.seat_type === st.value
                                       ? 'border-emerald-400 bg-emerald-50 text-emerald-700'
-                                      : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
+                                      : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-500'
                                   }`}
                                 >
                                   <span className="text-lg mr-2">{st.icon}</span>
@@ -317,7 +317,7 @@ export default function Hospitals() {
                               ))}
                             </div>
                             <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-1">Check-in Date *</label>
+                              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Check-in Date *</label>
                               <input
                                 type="date"
                                 className="input-modern"
@@ -327,7 +327,7 @@ export default function Hospitals() {
                               />
                             </div>
                             <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-1">Check-out Date (optional)</label>
+                              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Check-out Date (optional)</label>
                               <input
                                 type="date"
                                 className="input-modern"
@@ -336,7 +336,7 @@ export default function Hospitals() {
                               />
                             </div>
                             <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-1">Price Per Day (BDT) *</label>
+                              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Price Per Day (BDT) *</label>
                               <input
                                 type="number"
                                 min="0"
@@ -367,13 +367,13 @@ export default function Hospitals() {
             )}
 
             {!loading && hospitals.length === 0 && (
-              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center">
-                <div className="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-12 text-center">
+                <div className="w-16 h-16 bg-emerald-50 dark:bg-emerald-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <svg className="w-8 h-8 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                   </svg>
                 </div>
-                <p className="text-gray-500 font-medium">No hospitals found</p>
+                <p className="text-gray-500 dark:text-gray-400 font-medium">No hospitals found</p>
               </div>
             )}
           </>
@@ -385,7 +385,7 @@ export default function Hospitals() {
             {seatBookings.map((sb) => {
               const status = sb.status?.toLowerCase() || 'pending';
               return (
-                <div key={sb.booking_id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition-all duration-300">
+                <div key={sb.booking_id} className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-5 hover:shadow-md transition-all duration-300">
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div className="flex items-start gap-4">
                       <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-100 to-teal-100 flex items-center justify-center flex-shrink-0">
@@ -394,10 +394,10 @@ export default function Hospitals() {
                         </svg>
                       </div>
                       <div>
-                        <p className="font-semibold text-gray-900">{sb.hospital_name || `Hospital #${sb.hospital_id}`}</p>
-                        <p className="text-sm text-gray-500 mt-1">
-                          Seat: <span className="font-medium text-gray-700">{sb.seat_type}</span>
-                          <span className="mx-1.5 text-gray-300">|</span>
+                        <p className="font-semibold text-gray-900 dark:text-gray-100">{sb.hospital_name || `Hospital #${sb.hospital_id}`}</p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                          Seat: <span className="font-medium text-gray-700 dark:text-gray-300">{sb.seat_type}</span>
+                          <span className="mx-1.5 text-gray-300 dark:text-gray-600">|</span>
                           <span className={`inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full ${
                             status === 'confirmed' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                               : status === 'cancelled' ? 'bg-red-50 text-red-600 border border-red-200'
@@ -425,7 +425,7 @@ export default function Hospitals() {
                           </button>
                           <button
                             onClick={() => handleSeatStatus(sb.booking_id, 'cancelled')}
-                            className="inline-flex items-center gap-1.5 bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded-xl text-sm font-medium hover:bg-red-100 transition-all duration-200"
+                            className="inline-flex items-center gap-1.5 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 px-4 py-2 rounded-xl text-sm font-medium hover:bg-red-100 dark:hover:bg-red-900/50 transition-all duration-200"
                           >
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -440,13 +440,13 @@ export default function Hospitals() {
               );
             })}
             {seatBookings.length === 0 && (
-              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center">
-                <div className="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-12 text-center">
+                <div className="w-16 h-16 bg-emerald-50 dark:bg-emerald-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <svg className="w-8 h-8 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                   </svg>
                 </div>
-                <p className="text-gray-500 font-medium">No seat bookings yet</p>
+                <p className="text-gray-500 dark:text-gray-400 font-medium">No seat bookings yet</p>
               </div>
             )}
           </div>

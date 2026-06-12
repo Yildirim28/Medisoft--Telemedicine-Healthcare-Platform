@@ -9,20 +9,20 @@ export default function PaymentFail() {
     <Layout>
       <div className="max-w-lg mx-auto mt-12">
         <ScaleIn delay={100}>
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 text-center space-y-4 animate-fadeIn">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-10 text-center space-y-4 animate-fadeIn">
           <div className="w-20 h-20 bg-red-100 rounded-3xl flex items-center justify-center mx-auto animate-bounce-in">
             <svg className="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-gray-800">Payment Failed</h1>
-          <p className="text-gray-500">
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Payment Failed</h1>
+          <p className="text-gray-500 dark:text-gray-400">
             Your payment could not be processed. Please try again.
             If the issue persists, contact our support team.
           </p>
 
-          <div className="bg-red-50 rounded-xl p-4 border border-red-100 mt-4">
-            <p className="text-sm text-red-700">
+          <div className="bg-red-50 dark:bg-red-900/30 rounded-xl p-4 border border-red-100 dark:border-red-800 mt-4">
+            <p className="text-sm text-red-700 dark:text-red-300">
               Payment ID: <span className="font-mono font-semibold">{searchParams.get('paymentID') || searchParams.get('payment_id') || searchParams.get('tran_id') || 'N/A'}</span>
             </p>
           </div>

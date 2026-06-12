@@ -24,7 +24,7 @@ export default function PaymentSuccess() {
     <Layout>
       <div className="max-w-lg mx-auto mt-12">
         <ScaleIn delay={100}>
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-10 text-center">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 p-10 text-center">
           {status === 'verifying' ? (
             <div className="space-y-4 animate-fadeIn">
               <div className="w-20 h-20 bg-yellow-100 rounded-3xl flex items-center justify-center mx-auto animate-pulse">
@@ -32,8 +32,8 @@ export default function PaymentSuccess() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h1 className="text-2xl font-bold text-gray-800">Verifying Payment...</h1>
-              <p className="text-gray-500">Please wait while we confirm your bKash payment.</p>
+              <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Verifying Payment...</h1>
+              <p className="text-gray-500 dark:text-gray-400">Please wait while we confirm your bKash payment.</p>
             </div>
           ) : (
             <div className="space-y-4 animate-fadeIn">
@@ -42,14 +42,14 @@ export default function PaymentSuccess() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h1 className="text-2xl font-bold text-gray-800">Payment Successful!</h1>
-              <p className="text-gray-500">
+              <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Payment Successful!</h1>
+              <p className="text-gray-500 dark:text-gray-400">
                 Your payment has been processed successfully through bKash.
                 Thank you for using Medisoft!
               </p>
 
-              <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-100 mt-4">
-                <p className="text-sm text-emerald-700">
+              <div className="bg-emerald-50 dark:bg-emerald-900/30 rounded-xl p-4 border border-emerald-100 dark:border-emerald-800 mt-4">
+                <p className="text-sm text-emerald-700 dark:text-emerald-300">
                   Payment ID: <span className="font-mono font-semibold">{searchParams.get('paymentID') || searchParams.get('payment_id') || 'N/A'}</span>
                 </p>
               </div>

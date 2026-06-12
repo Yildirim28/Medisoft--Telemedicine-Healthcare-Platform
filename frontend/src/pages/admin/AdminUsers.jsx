@@ -62,7 +62,7 @@ export default function AdminUsers() {
     <div>
       <FadeIn delay={0}>
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-gray-900">Users</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Users</h1>
         </div>
       </FadeIn>
 
@@ -73,12 +73,12 @@ export default function AdminUsers() {
           placeholder="Search by name or email..."
           value={search}
           onChange={function (e) { setSearch(e.target.value); }}
-          className="w-full md:w-80 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          className="w-full md:w-80 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500"
         />
         <select
           value={roleFilter}
           onChange={function (e) { setRoleFilter(e.target.value); }}
-          className="w-full md:w-48 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+          className="w-full md:w-48 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
         >
           <option value="">All Roles</option>
           <option value="patient">Patients</option>
@@ -91,38 +91,38 @@ export default function AdminUsers() {
       {/* Edit Modal */}
       {editingUser && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fadeIn">
-          <div className="bg-white rounded-xl shadow-lg p-6 w-full max-w-md mx-4 animate-scaleIn">
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 w-full max-w-md mx-4 animate-scaleIn">
             <h2 className="text-lg font-bold mb-4">Edit User</h2>
             {error && <p className="text-red-600 text-sm mb-3">{error}</p>}
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <p className="text-gray-500 text-sm">{editingUser.email}</p>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                <p className="text-gray-500 dark:text-gray-400 text-sm">{editingUser.email}</p>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
                 <input
                   type="text"
                   value={editForm.full_name}
                   onChange={function (e) { setEditForm(Object.assign({}, editForm, { full_name: e.target.value })); }}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone</label>
                 <input
                   type="text"
                   value={editForm.phone}
                   onChange={function (e) { setEditForm(Object.assign({}, editForm, { phone: e.target.value })); }}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Role</label>
                 <select
                   value={editForm.role}
                   onChange={function (e) { setEditForm(Object.assign({}, editForm, { role: e.target.value })); }}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 >
                   {ROLES.map(function (r) {
                     return <option key={r} value={r}>{r.charAt(0).toUpperCase() + r.slice(1)}</option>;
@@ -134,7 +134,7 @@ export default function AdminUsers() {
               <button onClick={handleUpdate} className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition text-sm font-medium active:scale-[0.97]">
                 Save Changes
               </button>
-              <button onClick={function () { setEditingUser(null); }} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition text-sm font-medium active:scale-[0.97]">
+              <button onClick={function () { setEditingUser(null); }} className="px-4 py-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition text-sm font-medium active:scale-[0.97]">
                 Cancel
               </button>
             </div>
@@ -143,23 +143,23 @@ export default function AdminUsers() {
       )}
 
       {loading ? (
-        <p className="text-gray-500">Loading...</p>
+        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
       ) : (
-        <div className="bg-white rounded-xl shadow border overflow-x-auto">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow border dark:border-gray-700 overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b">
+            <thead className="bg-gray-50 dark:bg-gray-700 border-b dark:border-gray-600">
               <tr>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">ID</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Name</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Email</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Phone</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Role</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Actions</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">ID</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">Name</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">Email</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">Phone</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">Role</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600 dark:text-gray-400">Actions</th>
               </tr>
             </thead>
             <tbody>
               {users.length === 0 && (
-                <tr><td colSpan={6} className="px-4 py-8 text-center text-gray-400">No users found</td></tr>
+                <tr><td colSpan={6} className="px-4 py-8 text-center text-gray-400 dark:text-gray-500">No users found</td></tr>
               )}
               {users.map(function (u, idx) {
                 var roleColors = {
@@ -168,7 +168,7 @@ export default function AdminUsers() {
                   admin: 'bg-purple-100 text-purple-700',
                 };
                 return (
-                  <tr key={u.user_id} className="border-b hover:bg-gray-50 animate-fadeInUp" style={{ animationDelay: (idx * 60) + 'ms', animationFillMode: 'forwards', opacity: 0 }}>
+                  <tr key={u.user_id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 animate-fadeInUp" style={{ animationDelay: (idx * 60) + 'ms', animationFillMode: 'forwards', opacity: 0 }}>
                     <td className="px-4 py-3">{u.user_id}</td>
                     <td className="px-4 py-3 font-medium">{u.full_name}</td>
                     <td className="px-4 py-3">{u.email}</td>

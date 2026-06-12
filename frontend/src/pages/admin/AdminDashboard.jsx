@@ -18,7 +18,7 @@ export default function AdminDashboard() {
   }
 
   if (!stats) {
-    return <div className="text-center text-gray-500 py-10">Failed to load dashboard data</div>;
+    return <div className="text-center text-gray-500 dark:text-gray-400 py-10">Failed to load dashboard data</div>;
   }
 
   var u = stats || {};
@@ -37,11 +37,11 @@ export default function AdminDashboard() {
   return (
     <div>
       <FadeIn delay={0}>
-        <h1 className="text-2xl font-bold text-gray-900 mb-6">Admin Dashboard</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Admin Dashboard</h1>
       </FadeIn>
       <StaggerChildren staggerDelay={80} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {cards.map((card) => (
-          <div key={card.label} className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md hover:-translate-y-1 active:scale-[0.98] transition-all duration-300 cursor-default">
+          <div key={card.label} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 shadow-sm hover:shadow-md hover:-translate-y-1 active:scale-[0.98] transition-all duration-300 cursor-default">
             <div className="flex items-center gap-3">
               <div className={'w-10 h-10 rounded-lg bg-gradient-to-br ' + card.color + ' flex items-center justify-center group-hover:rotate-3 transition-transform duration-300'}>
                 <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
@@ -49,8 +49,8 @@ export default function AdminDashboard() {
                 </svg>
               </div>
               <div>
-                <p className="text-2xl font-bold text-gray-900">{card.value}</p>
-                <p className="text-sm text-gray-500">{card.label}</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{card.value}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{card.label}</p>
               </div>
             </div>
           </div>
@@ -59,18 +59,18 @@ export default function AdminDashboard() {
 
       {/* Recent Activity */}
       <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <FadeIn delay={300} className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow duration-300">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Recent Appointments</h2>
+        <FadeIn delay={300} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 shadow-sm hover:shadow-md transition-shadow duration-300">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Recent Appointments</h2>
           {stats.recent_appointments && stats.recent_appointments.length > 0 ? (
             <div className="space-y-3">
               {stats.recent_appointments.map(function(apt, i) {
                 return (
-                  <div key={i} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+                  <div key={i} className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-0">
                     <div>
-                      <p className="text-sm font-medium text-gray-800">{apt.patient_name || 'Patient'}</p>
-                      <p className="text-xs text-gray-500">{apt.doctor_name || 'Doctor'} - {apt.date || 'N/A'}</p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-gray-200">{apt.patient_name || 'Patient'}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">{apt.doctor_name || 'Doctor'} - {apt.date || 'N/A'}</p>
                     </div>
-                    <span className={'text-xs px-2 py-1 rounded-full ' + (apt.status === 'Confirmed' ? 'bg-green-100 text-green-700' : apt.status === 'Pending' ? 'bg-yellow-100 text-yellow-700' : 'bg-gray-100 text-gray-600')}>
+                    <span className={'text-xs px-2 py-1 rounded-full ' + (apt.status === 'Confirmed' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : apt.status === 'Pending' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400' : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400')}>
                       {apt.status || 'Pending'}
                     </span>
                   </div>
@@ -78,22 +78,22 @@ export default function AdminDashboard() {
               })}
             </div>
           ) : (
-            <p className="text-sm text-gray-500">No recent appointments</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">No recent appointments</p>
           )}
         </FadeIn>
 
-        <FadeIn delay={450} className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow duration-300">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Recent Blood Requests</h2>
+        <FadeIn delay={450} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 shadow-sm hover:shadow-md transition-shadow duration-300">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Recent Blood Requests</h2>
           {stats.recent_blood_requests && stats.recent_blood_requests.length > 0 ? (
             <div className="space-y-3">
               {stats.recent_blood_requests.map(function(req, i) {
                 return (
-                  <div key={i} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+                  <div key={i} className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-0">
                     <div>
-                      <p className="text-sm font-medium text-gray-800">{req.patient_name || 'Patient'}</p>
-                      <p className="text-xs text-gray-500">Blood Group: {req.blood_group || 'N/A'}</p>
+                      <p className="text-sm font-medium text-gray-800 dark:text-gray-200">{req.patient_name || 'Patient'}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Blood Group: {req.blood_group || 'N/A'}</p>
                     </div>
-                    <span className={'text-xs px-2 py-1 rounded-full ' + (req.status === 'Fulfilled' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700')}>
+                    <span className={'text-xs px-2 py-1 rounded-full ' + (req.status === 'Fulfilled' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400')}>
                       {req.status || 'Pending'}
                     </span>
                   </div>
@@ -101,7 +101,7 @@ export default function AdminDashboard() {
               })}
             </div>
           ) : (
-            <p className="text-sm text-gray-500">No recent blood requests</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">No recent blood requests</p>
           )}
         </FadeIn>
       </div>

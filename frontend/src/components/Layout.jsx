@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { useState } from 'react';
 
 const userNavItems = [
@@ -99,6 +100,7 @@ function ProfileIcon() {
 
 export default function Layout({ children }) {
   const { user, logout } = useAuth();
+  const { dark, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -135,10 +137,26 @@ export default function Layout({ children }) {
     return location.pathname === path;
   };
 
+  function SunIcon() {
+    return (
+      <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="5" /><line x1="12" y1="1" x2="12" y2="3" /><line x1="12" y1="21" x2="12" y2="23" /><line x1="4.22" y1="4.22" x2="5.64" y2="5.64" /><line x1="18.36" y1="18.36" x2="19.78" y2="19.78" /><line x1="1" y1="12" x2="3" y2="12" /><line x1="21" y1="12" x2="23" y2="12" /><line x1="4.22" y1="19.78" x2="5.64" y2="18.36" /><line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+      </svg>
+    );
+  }
+
+  function MoonIcon() {
+    return (
+      <svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+      </svg>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col transition-colors duration-300">
       {/* Top Navbar */}
-      <header className={`bg-white/95 backdrop-blur-xl border-b sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'border-gray-200 shadow-md' : 'border-gray-100 shadow-sm'}`}>
+      <header className={`bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl border-b sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'border-gray-200 dark:border-gray-700 shadow-md' : 'border-gray-100 dark:border-gray-700 shadow-sm'}`}>
         <div className="flex items-center justify-between h-16 px-4 lg:px-6">
           <div className="flex items-center gap-3">
             <button
@@ -156,7 +174,7 @@ export default function Layout({ children }) {
                   Medisoft
                 </span>
                 {isAdmin && (
-                  <span className="text-xs font-semibold text-red-500 hidden sm:block -mt-1">Admin Panel</span>
+                  <span className="text-xs font-semibold text-red-500 dark:text-red-400 hidden sm:block -mt-1">Admin Panel</span>
                 )}
               </div>
             </Link>
@@ -165,8 +183,8 @@ export default function Layout({ children }) {
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex items-center gap-3 mr-2 animate-fade-in">
               <div className="text-right">
-                <p className="text-sm font-semibold text-gray-800 leading-tight">{user?.full_name || 'User'}</p>
-                <p className="text-xs text-gray-500 capitalize flex items-center gap-1">
+                <p className="text-sm font-semibold text-gray-800 dark:text-gray-100 leading-tight">{user?.full_name || 'User'}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 capitalize flex items-center gap-1">
                   {isAdmin && (
                     <span className="inline-block w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
                   )}
@@ -178,8 +196,15 @@ export default function Layout({ children }) {
               {initials}
             </div>
             <button
+              onClick={toggleTheme}
+              className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500 dark:text-gray-300 transition-all duration-200 active:scale-95"
+              title={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+            >
+              {dark ? <SunIcon /> : <MoonIcon />}
+            </button>
+            <button
               onClick={handleLogout}
-              className="ml-1 p-2 rounded-xl hover:bg-red-50 text-gray-400 hover:text-red-500 transition-all duration-200 active:scale-95"
+              className="ml-1 p-2 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/30 text-gray-400 dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 transition-all duration-200 active:scale-95"
               title="Logout"
             >
               <LogoutIcon />
@@ -197,16 +222,16 @@ export default function Layout({ children }) {
         )}
 
         <aside className={
-          'fixed lg:sticky top-16 left-0 z-40 h-[calc(100vh-4rem)] w-64 bg-white/95 backdrop-blur-xl border-r border-gray-200 flex flex-col overflow-y-auto '
+          'fixed lg:sticky top-16 left-0 z-40 h-[calc(100vh-4rem)] w-64 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl border-r border-gray-200 dark:border-gray-700 flex flex-col overflow-y-auto '
           + (sidebarOpen
             ? 'translate-x-0 transition-transform duration-300 ease-out-expo shadow-2xl lg:shadow-none'
             : '-translate-x-full lg:translate-x-0 transition-transform duration-300 ease-out-expo')
         }>
           {isAdmin && (
             <div className="px-3 pt-3 pb-2">
-              <div className="bg-gradient-to-r from-red-50 to-orange-50 border border-red-200 rounded-xl px-3 py-2 flex items-center gap-2">
+              <div className="bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/30 dark:to-orange-900/30 border border-red-200 dark:border-red-800 rounded-xl px-3 py-2 flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
-                <span className="text-xs font-semibold text-red-700 uppercase tracking-wider">Admin Mode</span>
+                <span className="text-xs font-semibold text-red-700 dark:text-red-400 uppercase tracking-wider">Admin Mode</span>
               </div>
             </div>
           )}
@@ -214,11 +239,11 @@ export default function Layout({ children }) {
             {navItems.map((item, index) => {
               const active = isActive(item.path);
               const activeClass = isAdmin
-                ? 'bg-red-50 text-red-700 shadow-sm border border-red-100'
-                : 'bg-indigo-50 text-indigo-700 shadow-sm border border-indigo-100';
+                ? 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400 shadow-sm border border-red-100 dark:border-red-800'
+                : 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 shadow-sm border border-indigo-100 dark:border-indigo-800';
               const itemClass = active
                 ? 'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 scale-[1.02] ' + activeClass
-                : 'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 text-gray-600 hover:bg-gray-50 hover:text-gray-900 hover:scale-[1.01] hover:translate-x-0.5 active:scale-[0.98]';
+                : 'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white hover:scale-[1.01] hover:translate-x-0.5 active:scale-[0.98]';
               return (
                 <Link
                   key={item.path}
@@ -239,18 +264,18 @@ export default function Layout({ children }) {
             })}
           </nav>
 
-          <div className="p-3 border-t border-gray-100 space-y-1">
+          <div className="p-3 border-t border-gray-100 dark:border-gray-700 space-y-1">
             <Link
               to={isAdmin ? '/admin' : '/profile'}
               onClick={() => setSidebarOpen(false)}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200 hover:translate-x-0.5 active:scale-[0.98]"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-all duration-200 hover:translate-x-0.5 active:scale-[0.98]"
             >
               {isAdmin ? <HomeIcon /> : <ProfileIcon />}
               {isAdmin ? 'Back to Dashboard' : 'Profile'}
             </Link>
             <button
               onClick={handleLogout}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 transition-all duration-200 w-full hover:translate-x-0.5 active:scale-[0.98]"
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-900/30 transition-all duration-200 w-full hover:translate-x-0.5 active:scale-[0.98]"
             >
               <LogoutIcon2 />
               Logout
@@ -258,7 +283,7 @@ export default function Layout({ children }) {
           </div>
         </aside>
 
-        <main className="flex-1 p-4 lg:p-8 min-h-[calc(100vh-4rem)]">
+        <main className="flex-1 p-4 lg:p-8 min-h-[calc(100vh-4rem)] bg-gray-50 dark:bg-gray-900">
           <div className="page-enter" key={location.pathname}>
             {children}
           </div>

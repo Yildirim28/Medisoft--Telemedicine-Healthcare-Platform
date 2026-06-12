@@ -76,8 +76,8 @@ export default function Appointments() {
                 </svg>
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Appointments</h1>
-                <p className="text-sm text-gray-500">{appointments.length} total appointments</p>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Appointments</h1>
+                <p className="text-sm text-gray-500 dark:text-gray-400">{appointments.length} total appointments</p>
               </div>
             </div>
           </div>
@@ -93,7 +93,7 @@ export default function Appointments() {
                 className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 active:scale-[0.97] ${
                 filter === tab.value
                   ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-md'
-                  : 'bg-white text-gray-600 border border-gray-200 hover:border-indigo-200 hover:text-indigo-600'
+                  : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700 hover:border-indigo-200 hover:text-indigo-600 dark:hover:border-indigo-700 dark:hover:text-indigo-400'
               }`}
             >
               {tab.label}
@@ -114,14 +114,14 @@ export default function Appointments() {
 
         {/* Empty State */}
         {!loading && filtered.length === 0 && (
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-12 text-center">
-            <div className="w-16 h-16 bg-indigo-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-12 text-center">
+            <div className="w-16 h-16 bg-indigo-50 dark:bg-indigo-900/30 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <svg className="w-8 h-8 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
             </div>
-            <p className="text-gray-500 font-medium">No appointments found</p>
-            <p className="text-gray-400 text-sm mt-1">
+            <p className="text-gray-500 dark:text-gray-400 font-medium">No appointments found</p>
+            <p className="text-gray-400 dark:text-gray-500 text-sm mt-1">
               {filter ? 'Try changing your filter' : 'Book an appointment to get started'}
             </p>
           </div>
@@ -134,7 +134,7 @@ export default function Appointments() {
             return (
               <div
                 key={apt.appointment_id}
-                className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md hover:border-indigo-100 transition-all duration-300"
+                className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-5 hover:shadow-md hover:border-indigo-100 transition-all duration-300"
               >
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                   <div className="flex items-start gap-4 flex-1">
@@ -147,7 +147,7 @@ export default function Appointments() {
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-semibold text-gray-900 truncate">
+                        <h3 className="font-semibold text-gray-900 dark:text-gray-100 truncate">
                           {user?.role === 'doctor'
                             ? `Patient: ${apt.patient_name || apt.patient?.full_name || 'N/A'}`
                             : `Dr. ${apt.doctor_name || apt.doctor?.full_name || 'N/A'}`}
@@ -157,14 +157,14 @@ export default function Appointments() {
                           {apt.status}
                         </span>
                       </div>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
                         <svg className="w-3.5 h-3.5 inline mr-1 -mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                         {new Date(apt.appointment_date).toLocaleDateString()} at {apt.appointment_time}
                         {apt.type && (
                           <>
-                            <span className="mx-1.5 text-gray-300">|</span>
+                            <span className="mx-1.5 text-gray-300 dark:text-gray-600">|</span>
                             <svg className="w-3.5 h-3.5 inline mr-1 -mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z" />
                             </svg>
@@ -173,7 +173,7 @@ export default function Appointments() {
                         )}
                       </p>
                       {apt.reason && (
-                        <p className="text-sm text-gray-400 mt-1">
+                        <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">
                           <svg className="w-3.5 h-3.5 inline mr-1 -mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                           </svg>
@@ -209,7 +209,7 @@ export default function Appointments() {
                         </button>
                         <button
                           onClick={() => handleStatus(apt.appointment_id, 'cancelled')}
-                          className="inline-flex items-center gap-1.5 bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded-xl text-sm font-medium hover:bg-red-100 transition-all duration-200 active:scale-[0.97]"
+                          className="inline-flex items-center gap-1.5 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 px-4 py-2 rounded-xl text-sm font-medium hover:bg-red-100 dark:hover:bg-red-900/50 transition-all duration-200 active:scale-[0.97]"
                         >
                           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -232,7 +232,7 @@ export default function Appointments() {
                     {user?.role === 'patient' && apt.status === 'pending' && (
                       <button
                         onClick={() => handleStatus(apt.appointment_id, 'cancelled')}
-                        className="inline-flex items-center gap-1.5 bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded-xl text-sm font-medium hover:bg-red-100 transition-all duration-200 active:scale-[0.97]"
+                        className="inline-flex items-center gap-1.5 bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 px-4 py-2 rounded-xl text-sm font-medium hover:bg-red-100 dark:hover:bg-red-900/50 transition-all duration-200 active:scale-[0.97]"
                       >
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
