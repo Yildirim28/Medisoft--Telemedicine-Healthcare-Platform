@@ -23,7 +23,7 @@ Open a **PowerShell terminal** and run:
 ```powershell
 cd "e:\Education\11th Trimester\MEDISOFTPROJECT\backend"
 .\venv\Scripts\Activate.ps1
-python manage.py runserver 8000
+python manage.py runserver 8080
 ```
 
 You should see:
