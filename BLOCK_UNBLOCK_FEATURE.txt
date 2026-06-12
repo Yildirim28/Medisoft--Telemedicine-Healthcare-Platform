@@ -1,0 +1,152 @@
+================================================================================
+           HOW THE BLOCK/UNBLOCK FEATURE WORKS IN MEDISOFT
+================================================================================
+
+OVERVIEW
+--------
+The block/unblock system is a user management feature that allows admins to
+deactivate or reactivate user accounts. It works across every layer of the
+application: Database -> Backend API -> Frontend UI.
+
+
+1. DATABASE LAYER - The is_active Field
+---------------------------------------
+
+The User model (backend/core/models.py:53) has a boolean field:
+
+    is_active = models.BooleanField(default=True)
+
+  - True  = User is ACTIVE (unblocked) - can log in and use the system
+  - False = User is BLOCKED - cannot log in
+
+Every new user starts with is_active=True.
+
+
+2. BACKEND - Admin Toggle Endpoint
+-----------------------------------
+
+The admin_user_detail_view() (backend/core/admin_views.py:266) handles the
+PUT request from the admin panel:
+
+    # backend/core/admin_views.py:276-277
+    if 'is_active' in data:
+        user.is_active = data['is_active']
+
+When the admin clicks "Block", the frontend sends:
+    PUT /admin/users/{id}/  with body: { "is_active": false }
+
+The backend updates the field and saves.
+
+
+3. BACKEND - Login Prevention for Blocked Users
+------------------------------------------------
+
+The login_view() (backend/core/views.py:96) uses Django's built-in
+authenticate() function:
+
+    user = authenticate(request, username=email, password=password)
+    if user is not None:
+        login(request, user)
+        # ... success
+    else:
+        return error_response("Invalid email or password.", status=401)
+
+KEY BEHAVIOR:
+    Django's authenticate() checks the is_active field automatically.
+    If is_active=False, authenticate() returns None - even if the password
+    is correct. So a blocked user sees "Invalid email or password" and
+    cannot log in.
+
+
+4. FRONTEND - Admin Panel UI (AdminUsers.jsx)
+----------------------------------------------
+
+In frontend/src/pages/admin/AdminUsers.jsx:184, the toggle button works as:
+
+    <button onClick={() => {
+        updateAdminUser(u.user_id, { is_active: !u.is_active })
+            .then(loadUsers);
+    }}>
+        {u.is_active ? 'Block' : 'Unblock'}
+    </button>
+
+  - If user IS active  -> Shows amber "Block" button -> Click sets is_active: false
+  - If user IS blocked -> Shows green "Unblock" button -> Click sets is_active: true
+
+
+5. FRONTEND API Call
+---------------------
+
+The updateAdminUser() function (frontend/src/api/index.js:151):
+
+    export const updateAdminUser = (id, data) =>
+      api.put(`/admin/users/${id}/`, data).then(unwrap);
+
+This sends a PUT request to the backend with the toggled is_active value.
+
+
+================================================================================
+                         COMPLETE DATA FLOW
+================================================================================
+
+BLOCKING A USER:
+    Admin clicks "Block"
+      -> Frontend: updateAdminUser(id, { is_active: false })
+        -> API: PUT /admin/users/{id}/
+          -> Backend: user.is_active = False; user.save()
+            -> DB: users.is_active = 0
+
+BLOCKED USER TRIES TO LOGIN:
+    User enters credentials
+      -> Frontend: loginUser(email, password)
+        -> Backend: authenticate() returns None (is_active=False)
+          -> Response: 401 "Invalid email or password"
+
+UNBLOCKING A USER:
+    Admin clicks "Unblock"
+      -> Frontend: updateAdminUser(id, { is_active: true })
+        -> API: PUT /admin/users/{id}/
+          -> Backend: user.is_active = True; user.save()
+            -> DB: users.is_active = 1
+              -> User can now login normally
+
+
+================================================================================
+                    APPLICABLE ENTITIES (All use is_active)
+================================================================================
+
++------------------+---------------------+---------------------+
+| Model            | Admin Page          | Field               |
++------------------+---------------------+---------------------+
+| User             | AdminUsers.jsx      | user.is_active      |
+| Hospital         | AdminHospitals.jsx  | hospital.is_active  |
+| Medicine         | AdminMedicines.jsx  | medicine.is_active  |
++------------------+---------------------+---------------------+
+
+The mechanism is the same in all cases:
+  - Admin toggles the boolean
+  - Backend saves it
+  - Downstream queries filter by is_active=True where relevant
+
+Example: Medicine listing (backend/core/views.py:735):
+    meds = Medicine.objects.filter(is_active=True)
+
+This means blocked/deactivated medicines won't show up in the public
+medicine shop either.
+
+
+================================================================================
+                          KEY FILES INVOLVED
+================================================================================
+
+Backend:
+  - backend/core/models.py         -> User model with is_active field (line 53)
+  - backend/core/admin_views.py    -> PUT handler for toggling is_active (line 276)
+  - backend/core/views.py          -> Login blocks inactive users via authenticate() (line 107)
+
+Frontend:
+  - frontend/src/pages/admin/AdminUsers.jsx  -> Block/Unblock button UI (line 184)
+  - frontend/src/api/index.js                -> updateAdminUser() API function (line 151)
+  - frontend/src/context/AuthContext.jsx     -> login() calls the auth API (line 17)
+
+================================================================================
