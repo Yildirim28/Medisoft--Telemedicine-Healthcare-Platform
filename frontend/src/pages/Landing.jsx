@@ -69,10 +69,10 @@ const services = [
 ];
 
 const stats = [
-  { value: '500+', label: 'Verified Doctors' },
+  { value: '50+', label: 'Verified Doctors' },
   { value: '50+', label: 'Partner Hospitals' },
-  { value: '10K+', label: 'Happy Patients' },
-  { value: '24/7', label: 'Emergency Service' },
+  { value: '100+', label: 'Happy Patients' },
+  { value: '24', label: 'Emergency Service' },
 ];
 
 const testimonials = [
@@ -84,7 +84,7 @@ const testimonials = [
   {
     name: 'Fatima Khan',
     role: 'Patient',
-    text: 'I booked a cardiologist appointment within minutes. The video consultation feature is incredibly convenient.',
+    text: 'I booked a cardiologist appointment within minutes. The doctors consultation feature is incredibly convenient.',
   },
   {
     name: 'Dr. Sarah Mitchell',
