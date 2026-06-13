@@ -11,7 +11,7 @@ const CATEGORY_ICONS = {
   'Allergy': '🤧',
   'digestive': '🫁',
   'Heart': '❤️',
-  'default': '💊',
+  'Default': '💊',
 };
 
 function getMedicineIcon(category) {
