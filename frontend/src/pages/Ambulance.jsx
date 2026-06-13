@@ -113,7 +113,52 @@ export default function Ambulance() {
         )}
 
         {/* Booking Form */}
-      
+      {showForm && (
+          <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6 mb-6">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
+              <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              New Ambulance Booking
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Patient Name</label>
+                <input placeholder="e.g. John Doe" className="input-modern" value={form.patient_name} onChange={(e) => setForm({ ...form, patient_name: e.target.value })} required />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Patient Phone</label>
+                <input placeholder="e.g. 01XXXXXXXXX" className="input-modern" value={form.patient_phone} onChange={(e) => setForm({ ...form, patient_phone: e.target.value })} required />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Pickup Address</label>
+                <input placeholder="e.g. 123 Main Street" className="input-modern" value={form.pickup_address} onChange={(e) => setForm({ ...form, pickup_address: e.target.value })} required />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Dropoff Address</label>
+                <input placeholder="e.g. City Hospital" className="input-modern" value={form.dropoff_address} onChange={(e) => setForm({ ...form, dropoff_address: e.target.value })} required />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">City</label>
+                <input placeholder="e.g. Dhaka" className="input-modern" value={form.pickup_city} onChange={(e) => setForm({ ...form, pickup_city: e.target.value })} required />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Pickup Time</label>
+                <input type="datetime-local" className="input-modern" value={form.pickup_time} onChange={(e) => setForm({ ...form, pickup_time: e.target.value })} />
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Notes (optional)</label>
+                <textarea placeholder="Any special instructions..." className="input-modern" rows={2} value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} />
+              </div>
+            </div>
+            <button type="submit" className="mt-4 gradient-btn bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 inline-flex items-center gap-2 active:scale-[0.97]">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              Book Ambulance
+            </button>
+          </form>
+        )}
 
 
 
