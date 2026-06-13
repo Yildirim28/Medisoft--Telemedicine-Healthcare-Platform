@@ -85,7 +85,7 @@ export default function Payments() {
         // Redirect user to bKash payment gateway
         window.location.href = res.bkash_url;
       } else if (res.redirect_url) {
-        // Fallback for alternate response format
+       
         window.location.href = res.redirect_url;
       } else {
         setMsg('Payment initiation failed. No bKash URL received.');
