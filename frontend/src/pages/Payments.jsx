@@ -61,7 +61,7 @@ export default function Payments() {
       if (svc.defaultPrice > 0) {
         setAmount(svc.defaultPrice.toString());
       } else {
-        setAmount(''); // MedicineOrder: user enters custom amount
+        setAmount(''); 
       }
     }
   }, [selectedService]);
