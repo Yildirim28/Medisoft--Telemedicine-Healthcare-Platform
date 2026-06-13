@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { FadeIn, StaggerChildren } from '../components/AnimatedPage';
 
 const CATEGORY_ICONS = {
-  'Pain qcure': '💊',
+  'Pain Relief': '💊',
   'Antibiotics': '🦠',
   'Vitamins': '🌿',
   'Allergy': '🤧',
