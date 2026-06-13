@@ -10,7 +10,7 @@ from datetime import datetime
 
 from .models import (
     User, Patient, Doctor, Hospital, Appointment, Prescription,
-    SeatBooking, BloodDonor, BloodRequest, AmbulanceBooking,
+    SeatBooking, BloodDonor, BloodRequest, Ambulance, AmbulanceBooking,
     Medicine, MedicineOrder, LabBooking, Article, Payment
 )
 from .bkash_service import create_payment as bkash_create_payment, execute_payment as bkash_execute_payment, query_payment as bkash_query_payment, generate_tran_id
@@ -669,17 +669,43 @@ def ambulance_booking_view(request):
 
         data = parse_json(request)
         pickup = data.get('pickup_address')
-        dest = data.get('destination_address')
+        dest = data.get('dropoff_address') or data.get('destination_address')
         contact = data.get('emergency_contact', user.phone)
+        booking_type = data.get('booking_type', 'Emergency')
+        pickup_city = data.get('pickup_city', '')
+        pickup_time = data.get('pickup_time', None)
+        notes = data.get('notes', '')
+        patient_name = data.get('patient_name', user.full_name)
+        patient_phone = data.get('patient_phone', user.phone)
+        ambulance_id = data.get('ambulance_id', None)
 
         if not pickup:
             return error_response("Pickup address is required.")
 
+        valid_booking_types = ['Emergency', 'Scheduled', 'Transfer']
+        if booking_type not in valid_booking_types:
+            return error_response(f"Invalid booking type. Valid options: {valid_booking_types}")
+
+        ambulance_obj = None
+        if ambulance_id:
+            try:
+                ambulance_obj = Ambulance.objects.get(ambulance_id=ambulance_id, is_active=True)
+            except Ambulance.DoesNotExist:
+                return error_response("Selected ambulance not found or inactive.", status=404)
+
         booking = AmbulanceBooking.objects.create(
             patient=patient,
+            ambulance=ambulance_obj,
+            patient_name=patient_name,
+            patient_phone=patient_phone,
             pickup_address=pickup,
+            pickup_city=pickup_city,
             destination_address=dest,
             emergency_contact=contact,
+            booking_type=booking_type,
+            pickup_time=pickup_time if pickup_time else None,
+            notes=notes,
+            vehicle_number=ambulance_obj.vehicle_number if ambulance_obj else None,
             status='Requested'
         )
         return success_response(booking.to_dict(), status=201)
@@ -724,6 +750,15 @@ def ambulance_status_view(request, id):
     booking.status = new_status
     booking.save()
     return success_response({"message": f"Ambulance booking status updated to {new_status}.", "booking": booking.to_dict()})
+
+@csrf_exempt
+@login_required_api
+def ambulance_list_view(request):
+    """List available ambulances for booking."""
+    if request.method == 'GET':
+        ambulances = Ambulance.objects.filter(is_active=True, status='Available')
+        return success_response([a.to_dict() for a in ambulances])
+    return error_response("Method not allowed.", status=405)
 
 # Medicine Selling
 @csrf_exempt

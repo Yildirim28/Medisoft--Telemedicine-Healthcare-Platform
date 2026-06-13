@@ -9,7 +9,7 @@ from datetime import timedelta
 
 from .models import (
     User, Patient, Doctor, Hospital, Appointment, Prescription,
-    SeatBooking, BloodDonor, BloodRequest, AmbulanceBooking,
+    SeatBooking, BloodDonor, BloodRequest, Ambulance, AmbulanceBooking,
     Medicine, MedicineOrder, LabBooking, Article, Payment,
     _to_iso, _to_time
 )
@@ -707,6 +707,107 @@ def admin_medicine_order_detail_view(request, order_id):
 
 
 # ══════════════════════════════════════════════════════════════════════
+# ADMIN - Ambulance Fleet Management
+# ══════════════════════════════════════════════════════════════════════
+
+@csrf_exempt
+@admin_required_api
+def admin_ambulances_view(request):
+    if request.method == 'GET':
+        status_filter = request.GET.get('status', '')
+        ambulances = Ambulance.objects.all().order_by('-created_at')
+        if status_filter:
+            ambulances = ambulances.filter(status=status_filter)
+        return success_response([a.to_dict() for a in ambulances])
+
+    elif request.method == 'POST':
+        data = parse_json(request)
+        vehicle_number = data.get('vehicle_number', '').strip()
+        driver_name = data.get('driver_name', '').strip()
+        driver_phone = data.get('driver_phone', '').strip()
+        ambulance_type = data.get('ambulance_type', 'Basic')
+        capacity = data.get('capacity', 1)
+        base_fare = data.get('base_fare', 0)
+
+        if not vehicle_number:
+            return error_response("Vehicle number is required.")
+        if not driver_name:
+            return error_response("Driver name is required.")
+        if not driver_phone:
+            return error_response("Driver phone is required.")
+
+        if Ambulance.objects.filter(vehicle_number=vehicle_number).exists():
+            return error_response("A ambulance with this vehicle number already exists.")
+
+        try:
+            base_fare = Decimal(str(base_fare))
+        except (InvalidOperation, ValueError):
+            base_fare = Decimal('0.00')
+
+        ambulance = Ambulance.objects.create(
+            vehicle_number=vehicle_number,
+            ambulance_type=ambulance_type,
+            driver_name=driver_name,
+            driver_phone=driver_phone,
+            capacity=int(capacity),
+            base_fare=base_fare,
+            status=data.get('status', 'Available'),
+            is_active=data.get('is_active', True),
+        )
+        return success_response(ambulance.to_dict(), status=201)
+
+    return error_response("Method not allowed.", status=405)
+
+
+@csrf_exempt
+@admin_required_api
+def admin_ambulance_detail_view(request, ambulance_id):
+    try:
+        ambulance = Ambulance.objects.get(ambulance_id=ambulance_id)
+    except Ambulance.DoesNotExist:
+        return error_response("Ambulance not found.", status=404)
+
+    if request.method == 'GET':
+        return success_response(ambulance.to_dict())
+
+    elif request.method == 'PUT':
+        data = parse_json(request)
+        if 'vehicle_number' in data:
+            new_vn = data['vehicle_number'].strip()
+            if Ambulance.objects.filter(vehicle_number=new_vn).exclude(ambulance_id=ambulance_id).exists():
+                return error_response("A ambulance with this vehicle number already exists.")
+            ambulance.vehicle_number = new_vn
+        if 'ambulance_type' in data:
+            ambulance.ambulance_type = data['ambulance_type']
+        if 'driver_name' in data:
+            ambulance.driver_name = data['driver_name']
+        if 'driver_phone' in data:
+            ambulance.driver_phone = data['driver_phone']
+        if 'capacity' in data:
+            ambulance.capacity = int(data['capacity'])
+        if 'base_fare' in data:
+            try:
+                ambulance.base_fare = Decimal(str(data['base_fare']))
+            except (InvalidOperation, ValueError):
+                pass
+        if 'status' in data:
+            valid_statuses = [s[0] for s in Ambulance.AMBULANCE_STATUS_CHOICES]
+            if data['status'] not in valid_statuses:
+                return error_response(f"Invalid status. Valid options: {valid_statuses}")
+            ambulance.status = data['status']
+        if 'is_active' in data:
+            ambulance.is_active = data['is_active']
+        ambulance.save()
+        return success_response(ambulance.to_dict())
+
+    elif request.method == 'DELETE':
+        ambulance.delete()
+        return success_response({'message': 'Ambulance deleted successfully'})
+
+    return error_response("Method not allowed.", status=405)
+
+
+# ══════════════════════════════════════════════════════════════════════
 # ADMIN - Ambulance Bookings Management
 # ══════════════════════════════════════════════════════════════════════
 
@@ -741,6 +842,18 @@ def admin_ambulance_booking_detail_view(request, booking_id):
             if not valid:
                 return error_response(err)
             booking.status = data['status']
+        if 'ambulance_id' in data:
+            if data['ambulance_id']:
+                try:
+                    amb = Ambulance.objects.get(ambulance_id=data['ambulance_id'])
+                    booking.ambulance = amb
+                    booking.vehicle_number = amb.vehicle_number
+                    booking.driver_user = None  # driver assigned from ambulance
+                except Ambulance.DoesNotExist:
+                    return error_response("Ambulance not found.", status=404)
+            else:
+                booking.ambulance = None
+                booking.vehicle_number = None
         if 'vehicle_number' in data:
             booking.vehicle_number = data['vehicle_number']
         if 'fare' in data:

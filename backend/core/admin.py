@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import (
     User, Patient, Doctor, Hospital, Appointment, Prescription,
-    SeatBooking, BloodDonor, BloodRequest, AmbulanceBooking,
+    SeatBooking, BloodDonor, BloodRequest, Ambulance, AmbulanceBooking,
     Medicine, MedicineOrder, LabBooking, Article, Payment
 )
 
@@ -84,12 +84,20 @@ class BloodRequestAdmin(admin.ModelAdmin):
     ordering = ('-requested_at',)
 
 
+@admin.register(Ambulance)
+class AmbulanceAdmin(admin.ModelAdmin):
+    list_display = ('ambulance_id', 'vehicle_number', 'ambulance_type', 'driver_name', 'driver_phone', 'base_fare', 'status', 'is_active')
+    search_fields = ('vehicle_number', 'driver_name', 'driver_phone')
+    list_filter = ('ambulance_type', 'status', 'is_active')
+    ordering = ('-created_at',)
+
+
 @admin.register(AmbulanceBooking)
 class AmbulanceBookingAdmin(admin.ModelAdmin):
-    list_display = ('booking_id', 'patient', 'driver_user', 'vehicle_number', 'pickup_address', 'status', 'fare', 'requested_at')
-    search_fields = ('patient__user__full_name', 'driver_user__full_name', 'vehicle_number')
-    list_filter = ('status', 'requested_at')
-    raw_id_fields = ('patient', 'driver_user')
+    list_display = ('booking_id', 'patient', 'ambulance', 'vehicle_number', 'pickup_address', 'destination_address', 'booking_type', 'status', 'fare', 'requested_at')
+    search_fields = ('patient__user__full_name', 'patient_name', 'vehicle_number', 'pickup_address')
+    list_filter = ('status', 'booking_type', 'requested_at')
+    raw_id_fields = ('patient', 'ambulance', 'driver_user')
     ordering = ('-requested_at',)
 
 

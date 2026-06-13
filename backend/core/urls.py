@@ -24,6 +24,7 @@ urlpatterns = [
     path('blood-donors/register/', views.donor_register_view, name='donor_register'),
     path('blood-requests/', views.blood_request_view, name='blood_requests'),
     
+    path('ambulances/', views.ambulance_list_view, name='ambulance_list'),
     path('ambulance/bookings/', views.ambulance_booking_view, name='ambulance_bookings'),
     path('ambulance/bookings/<int:id>/status/', views.ambulance_status_view, name='ambulance_status'),
     
@@ -84,6 +85,10 @@ urlpatterns += [
     # Admin - Medicine Orders
     path('admin/medicine-orders/', admin_views.admin_medicine_orders_view, name='admin_medicine_orders'),
     path('admin/medicine-orders/<int:order_id>/', admin_views.admin_medicine_order_detail_view, name='admin_medicine_order_detail'),
+
+    # Admin - Ambulance Fleet
+    path('admin/ambulances/', admin_views.admin_ambulances_view, name='admin_ambulances'),
+    path('admin/ambulances/<int:ambulance_id>/', admin_views.admin_ambulance_detail_view, name='admin_ambulance_detail'),
 
     # Admin - Ambulance Bookings
     path('admin/ambulance-bookings/', admin_views.admin_ambulance_bookings_view, name='admin_ambulance_bookings'),

@@ -84,6 +84,9 @@ export const createAmbulanceBooking = (data) =>
 export const updateAmbulanceStatus = (id, data) =>
   api.put(`/ambulance/bookings/${id}/status/`, data).then((r) => r.data);
 
+export const getAmbulances = () =>
+  api.get('/ambulances/').then((r) => r.data);
+
 // ── Medicines ─────────────────────────────────────────────────────
 export const getMedicines = (params = {}) =>
   api.get('/medicines/', { params }).then((r) => r.data);
@@ -234,6 +237,19 @@ export const getAdminMedicineOrders = (params = {}) =>
 
 export const updateAdminMedicineOrder = (id, data) =>
   api.put(`/admin/medicine-orders/${id}/`, data).then(unwrap);
+
+// ── Admin Ambulance Fleet ─────────────────────────────────────────
+export const getAdminAmbulances = (params = {}) =>
+  api.get('/admin/ambulances/', { params }).then(unwrap);
+
+export const createAdminAmbulance = (data) =>
+  api.post('/admin/ambulances/', data).then(unwrap);
+
+export const updateAdminAmbulance = (id, data) =>
+  api.put(`/admin/ambulances/${id}/`, data).then(unwrap);
+
+export const deleteAdminAmbulance = (id) =>
+  api.delete(`/admin/ambulances/${id}/`).then(unwrap);
 
 // ── Admin Ambulance Bookings ──────────────────────────────────────
 export const getAdminAmbulanceBookings = (params = {}) =>

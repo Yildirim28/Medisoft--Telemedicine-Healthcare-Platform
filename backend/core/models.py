@@ -368,6 +368,49 @@ class BloodRequest(models.Model):
             'notes': self.notes,
         }
 
+class Ambulance(models.Model):
+    TYPE_CHOICES = (
+        ('Basic', 'Basic'),
+        ('ALS', 'Advanced Life Support'),
+        ('BLS', 'Basic Life Support'),
+        ('ICU', 'ICU Ambulance'),
+    )
+    AMBULANCE_STATUS_CHOICES = (
+        ('Available', 'Available'),
+        ('On-Trip', 'On-Trip'),
+        ('Maintenance', 'Maintenance'),
+        ('Offline', 'Offline'),
+    )
+
+    ambulance_id = models.AutoField(primary_key=True)
+    vehicle_number = models.CharField(max_length=50, unique=True)
+    ambulance_type = models.CharField(max_length=20, choices=TYPE_CHOICES, default='Basic')
+    driver_name = models.CharField(max_length=150)
+    driver_phone = models.CharField(max_length=20)
+    capacity = models.IntegerField(default=1)
+    base_fare = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=15, choices=AMBULANCE_STATUS_CHOICES, default='Available')
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'ambulances'
+
+    def to_dict(self):
+        return {
+            'ambulance_id': self.ambulance_id,
+            'vehicle_number': self.vehicle_number,
+            'ambulance_type': self.ambulance_type,
+            'driver_name': self.driver_name,
+            'driver_phone': self.driver_phone,
+            'capacity': self.capacity,
+            'base_fare': f"{self.base_fare:.2f}" if self.base_fare is not None else None,
+            'status': self.status,
+            'is_active': self.is_active,
+            'created_at': _to_iso(self.created_at),
+        }
+
+
 class AmbulanceBooking(models.Model):
     STATUS_CHOICES = (
         ('Requested', 'Requested'),
@@ -376,14 +419,26 @@ class AmbulanceBooking(models.Model):
         ('Completed', 'Completed'),
         ('Cancelled', 'Cancelled'),
     )
+    BOOKING_TYPE_CHOICES = (
+        ('Emergency', 'Emergency'),
+        ('Scheduled', 'Scheduled'),
+        ('Transfer', 'Transfer'),
+    )
 
     booking_id = models.AutoField(primary_key=True)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, db_column='patient_id', related_name='ambulance_bookings')
+    ambulance = models.ForeignKey(Ambulance, on_delete=models.SET_NULL, db_column='ambulance_id', null=True, blank=True, related_name='bookings')
     driver_user = models.ForeignKey(User, on_delete=models.SET_NULL, db_column='driver_user_id', null=True, blank=True, related_name='driver_bookings')
+    patient_name = models.CharField(max_length=150, null=True, blank=True)
+    patient_phone = models.CharField(max_length=20, null=True, blank=True)
     vehicle_number = models.CharField(max_length=50, null=True, blank=True)
     pickup_address = models.CharField(max_length=500)
+    pickup_city = models.CharField(max_length=100, null=True, blank=True)
     destination_address = models.CharField(max_length=500, null=True, blank=True)
     emergency_contact = models.CharField(max_length=20, null=True, blank=True)
+    booking_type = models.CharField(max_length=15, choices=BOOKING_TYPE_CHOICES, default='Emergency')
+    pickup_time = models.DateTimeField(null=True, blank=True)
+    notes = models.TextField(null=True, blank=True)
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='Requested')
     fare = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     requested_at = models.DateTimeField(auto_now_add=True)
@@ -395,13 +450,20 @@ class AmbulanceBooking(models.Model):
         return {
             'booking_id': self.booking_id,
             'patient_id': self.patient_id,
-            'patient_name': self.patient.user.full_name if self.patient else None,
+            'patient_name': self.patient_name or (self.patient.user.full_name if self.patient else None),
+            'patient_phone': self.patient_phone or (self.patient.user.phone if self.patient else None),
+            'ambulance_id': self.ambulance_id,
+            'ambulance_type': self.ambulance.ambulance_type if self.ambulance else None,
             'driver_user_id': self.driver_user_id,
             'driver_name': self.driver_user.full_name if self.driver_user else None,
-            'vehicle_number': self.vehicle_number,
+            'vehicle_number': self.vehicle_number or (self.ambulance.vehicle_number if self.ambulance else None),
             'pickup_address': self.pickup_address,
+            'pickup_city': self.pickup_city,
             'destination_address': self.destination_address,
             'emergency_contact': self.emergency_contact,
+            'booking_type': self.booking_type,
+            'pickup_time': _to_iso(self.pickup_time),
+            'notes': self.notes,
             'status': self.status,
             'fare': f"{self.fare:.2f}" if self.fare is not None else None,
             'requested_at': _to_iso(self.requested_at),
