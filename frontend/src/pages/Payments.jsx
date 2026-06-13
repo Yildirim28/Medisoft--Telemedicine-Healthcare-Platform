@@ -61,7 +61,7 @@ export default function Payments() {
       if (svc.defaultPrice > 0) {
         setAmount(svc.defaultPrice.toString());
       } else {
-        setAmount(''); // MedicineOrder: user enters custom amount
+        setAmount(''); 
       }
     }
   }, [selectedService]);
@@ -82,10 +82,10 @@ export default function Payments() {
       const res = await initBkashPayment(payload);
 
       if (res.bkash_url) {
-        // Redirect user to bKash payment gateway
+       
         window.location.href = res.bkash_url;
       } else if (res.redirect_url) {
-       
+      
         window.location.href = res.redirect_url;
       } else {
         setMsg('Payment initiation failed. No bKash URL received.');
