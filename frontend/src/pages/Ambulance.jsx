@@ -113,7 +113,7 @@ export default function Ambulance() {
         )}
 
         {/* Booking Form */}
-        {showForm && (
+      {showForm && (
           <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6 mb-6">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
               <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -159,6 +159,8 @@ export default function Ambulance() {
             </button>
           </form>
         )}
+
+
 
         {/* Loading */}
         {loading && (
